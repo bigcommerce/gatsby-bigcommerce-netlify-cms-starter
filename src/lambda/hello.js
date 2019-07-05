@@ -1,17 +1,51 @@
-// For more info, check https://www.netlify.com/docs/functions/#javascript-lambda-functions
-export function handler(event, context, callback) {
-  console.log('queryStringParameters', event.queryStringParameters)
-  callback(null, {
-    // return null to show no errors
-    statusCode: 200, // http status code
-    body: JSON.stringify({
-      msg: 'Hello, World! ' + Math.round(Math.random() * 10),
-    }),
-  })
-}
+const axios = require("axios")
+const qs = require("qs")
 
-// Now you are ready to access this API from anywhere in your Gatsby app! For example, in any event handler or lifecycle method, insert:
-// fetch("/.netlify/functions/hello")
-//    .then(response => response.json())
-//    .then(console.log)
-// For more info see: https://www.gatsbyjs.org/blog/2018-12-17-turning-the-static-dynamic/#static-dynamic-is-a-spectrum
+export function handler(event, context, callback) {
+  // apply our function to the queryStringParameters and assign it to a variable
+  const API_PARAMS = qs.stringify(event.queryStringParameters)
+  // Get env var values defined in our Netlify site UI
+  const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET } = process.env
+  // In this example, the API Key needs to be passed in the params with a key of key.
+  // We're assuming that the ApiParams var will contain the initial ?
+  const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/channels`
+  const HEADERS = {
+    'X-Auth-Client': API_CLIENT_ID,
+    'X-Auth-Token': API_TOKEN,
+    'Accept': 'application/json'
+  }
+
+  // Let's log some stuff we already have.
+  console.log("Injecting token to", API_URL);
+  console.log("logging event.....", event)
+  console.log("Constructed URL is ...", URL)
+
+
+// axios.post(URL, PARAM, { headers })
+// .catch((error) => {
+// console.log('error ' + error);
+// });
+
+
+
+   // Here's a function we'll use to define how our response will look like when we call callback
+  const pass = (body) => {callback( null, {
+    statusCode: 200,
+    body: JSON.stringify(body)
+  })}
+
+  // Perform the API call.
+  const get = () => {
+    axios.get(URL, { headers })
+    .then((response) =>
+      {
+        console.log(response.data)
+        pass(response.data)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'GET'){
+    get()
+  };
+};
