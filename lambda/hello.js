@@ -1,1 +1,51 @@
-!function(e,r){for(var t in r)e[t]=r[t]}(exports,function(e){var r={};function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}return t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:n})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,r){if(1&r&&(e=t(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(t.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var o in e)t.d(n,o,function(r){return e[r]}.bind(null,o));return n},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},t.p="",t(t.s=0)}([function(e,r,t){"use strict";function n(e,r,t){console.log("queryStringParameters",e.queryStringParameters),t(null,{statusCode:200,body:JSON.stringify({msg:"Hello, World! "+Math.round(10*Math.random())})})}t.r(r),t.d(r,"handler",function(){return n})}]));
+const axios = require("axios")
+const qs = require("qs")
+
+export function handler(event, context, callback) {
+  // apply our function to the queryStringParameters and assign it to a variable
+  const API_PARAMS = qs.stringify(event.queryStringParameters)
+  // Get env var values defined in our Netlify site UI
+  const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET } = process.env
+  // In this example, the API Key needs to be passed in the params with a key of key.
+  // We're assuming that the ApiParams var will contain the initial ?
+  const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/channels`
+  const HEADERS = {
+    'X-Auth-Client': API_CLIENT_ID,
+    'X-Auth-Token': API_TOKEN,
+    'Accept': 'application/json'
+  }
+
+  // Let's log some stuff we already have.
+  console.log("Injecting token to", API_URL);
+  console.log("logging event.....", event)
+  console.log("Constructed URL is ...", URL)
+
+
+// axios.post(URL, PARAM, { headers })
+// .catch((error) => {
+// console.log('error ' + error);
+// });
+
+
+
+   // Here's a function we'll use to define how our response will look like when we call callback
+  const pass = (body) => {callback( null, {
+    statusCode: 200,
+    body: JSON.stringify(body)
+  })}
+
+  // Perform the API call.
+  const get = () => {
+    axios.get(URL, { headers })
+    .then((response) =>
+      {
+        console.log(response.data)
+        pass(response.data)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'GET'){
+    get()
+  };
+};
