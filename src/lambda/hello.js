@@ -35,7 +35,7 @@ export function handler(event, context, callback) {
 
   // Perform the API call.
   const get = () => {
-    axios.get(URL, { headers })
+    axios.get(URL, { HEADERS })
     .then((response) =>
       {
         console.log(response.data)
