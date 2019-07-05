@@ -16,7 +16,6 @@ export function handler(event, context, callback) {
   }
 
   // Let's log some stuff we already have.
-  console.log("Injecting token to", API_URL);
   console.log("logging event.....", event)
   console.log("Constructed URL is ...", URL)
 
