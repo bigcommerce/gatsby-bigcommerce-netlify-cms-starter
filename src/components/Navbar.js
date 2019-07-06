@@ -111,7 +111,7 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to="/cart">
                 Cart 
                 {this.state.loading ? (
-                  <p>Loading Cart...</p>
+                  <h2></h2>
                 ) : numberItems > 0 ? (
                   <h2>({numberItems})</h2>
                 ) : (
