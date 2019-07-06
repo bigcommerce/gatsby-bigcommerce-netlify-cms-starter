@@ -14,8 +14,6 @@ const HEADERS = {
   'Accept': 'application/json'
 }
 
-const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${API_PARAMS.endpoint}`
-
 // Set CORS headers
 api.options('/*', (req,res) => {
   res.header('Access-Control-Allow-Origin', CORS_ORIGIN);
@@ -33,6 +31,7 @@ api.get('/status', async (req,res) => {
 
 // Define a route
 api.get('/channels', async (req,res) => {
+  // const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${API_PARAMS.endpoint}`
   console.log("- Req -", req)
   console.log("- Res -", res)
   return { channel: 'ok', data: res };
