@@ -71,11 +71,13 @@ const Cart = class extends React.Component {
         {this.state.loading ? (
           <h2 className="has-centered-text"><em>Loading Cart</em></h2>
         ) : numberItems > 0 ? (
-          
+          <div>
+          {
             lineItems.custom_items.foreach(item => {
               return (<h2>{item.name} {item.sku} {item.quantity} {item.list_price} <br /><small>id:{item.id}</small></h2>)
             }
-          
+          }
+          </div>
         ) : (
           <h2 className="has-centered-text"><em>Error Loading Cart</em></h2>
         )}
