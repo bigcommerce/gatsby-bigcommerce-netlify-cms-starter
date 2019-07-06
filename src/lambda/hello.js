@@ -1,16 +1,11 @@
 const axios = require("axios")
-const qs = require("qs")
 const cookie = require('cookie');
 const setCookie = require('set-cookie-parser')
 
 export function handler(event, context, callback) {
-  // apply our function to the queryStringParameters and assign it to a variable
-  const API_PARAMS = qs.stringify(event.queryStringParameters)
   // Get env var values defined in our Netlify site UI
   const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
-  // In this example, the API Key needs to be passed in the params with a key of key.
-  // We're assuming that the ApiParams var will contain the initial ?
-  const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${event.queryStringParameters.endpoint}`
+  // Set up headers
   const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
     'X-Auth-Token': API_TOKEN,
@@ -23,19 +18,13 @@ export function handler(event, context, callback) {
     'Access-Control-Allow-Methods': 'GET, PUT, POST',
   }
 
-  // Let's log some stuff we already have.
+  let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${event.queryStringParameters.endpoint}`
+
+  // Let's log some stuff we already have
   console.log("logging event.....", event)
   console.log("Constructed URL is ...", URL)
 
-
-// axios.post(URL, PARAM, { headers })
-// .catch((error) => {
-// console.log('error ' + error);
-// });
-
-
-
-   // Here's a function we'll use to define how our response will look like when we call callback
+  // Here's a function we'll use to define how our response will look like when we call callback
   const pass = (body, cookieHeader) => {callback( null, {
     statusCode: 200,
     body: JSON.stringify(body),
@@ -50,7 +39,10 @@ export function handler(event, context, callback) {
       map: true // default: false
     });
 
-    console.log(cookies);
+    if (cookies.cartId) {
+      URL = `${URL}/${cookies.cartId.value}`
+      console.log(`Found cardId cookie. New URL is: ${URL}`)
+    }
 
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
