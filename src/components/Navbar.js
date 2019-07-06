@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import github from '../img/github-icon.svg'
 import logo from '../img/logo.svg'
+import axios from 'axios'
 
 const Navbar = class extends React.Component {
   constructor(props) {
@@ -9,7 +10,17 @@ const Navbar = class extends React.Component {
     this.state = {
       active: false,
       navBarActiveClass: '',
+      loading: false,
+      error: false,
+      pupper: {
+        img: "",
+        breed: "",
+      },
     }
+  }
+
+  componentDidMount() {
+    this.fetchRicksPupper()
   }
 
   toggleHamburger = () => {
@@ -32,7 +43,32 @@ const Navbar = class extends React.Component {
     )
   }
 
+  fetchRicksPupper = () => {
+    this.setState({ loading: true })
+    axios
+      .get(`https://dog.ceo/api/breeds/image/random`)
+      .then(pupper => {
+        const {
+          data: { message: img },
+        } = pupper
+        const breed = img.split("/")[4]
+        this.setState({
+          loading: false,
+          pupper: {
+            ...this.state.pupper,
+            img,
+            breed,
+          },
+        })
+      })
+      .catch(error => {
+        this.setState({ loading: false, error })
+      })
+  }
+
   render() {
+    const { img, breed } = this.state.pupper
+
     return (
       <nav
         className="navbar is-transparent"
@@ -75,6 +111,18 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to="/contact/examples">
                 Form Examples
               </Link>
+              <div>
+                {this.state.loading ? (
+                  <p>Please hold, pupper incoming!</p>
+                ) : img && breed ? (
+                  <>
+                    <h2>{`${breed} pupper!`}</h2>
+                    <img src={img} alt={`cute random `} style={{ maxWidth: 300 }} />
+                  </>
+                ) : (
+                  <p>Oh noes, error fetching pupper :(</p>
+                )}
+              </div>
             </div>
             <div className="navbar-end has-text-centered">
               <a
