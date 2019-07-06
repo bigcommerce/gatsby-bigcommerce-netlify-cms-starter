@@ -8,7 +8,7 @@ export function handler(event, context, callback) {
   const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
   // In this example, the API Key needs to be passed in the params with a key of key.
   // We're assuming that the ApiParams var will contain the initial ?
-  const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${API_PARAMS.queryStringParameters.endpoint}`
+  const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${event.queryStringParameters.endpoint}`
   const HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
     'X-Auth-Token': API_TOKEN,
