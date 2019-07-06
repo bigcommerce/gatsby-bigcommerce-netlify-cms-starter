@@ -10,17 +10,17 @@ const Navbar = class extends React.Component {
     this.state = {
       active: false,
       navBarActiveClass: '',
-      loading: false,
-      error: false,
-      pupper: {
-        img: "",
-        breed: "",
+      cartLoading: false,
+      cartError: false,
+      cart: {
+        lineItems: {},
+        numberItems: 0,
       },
     }
   }
 
   componentDidMount() {
-    this.fetchRicksPupper()
+    this.fetchCart()
   }
 
   toggleHamburger = () => {
@@ -43,17 +43,18 @@ const Navbar = class extends React.Component {
     )
   }
 
-  fetchRicksPupper = () => {
+  fetchCart = () => {
     this.setState({ loading: true })
     axios
       .get(`/.netlify/functions/hello?endpoint=carts`)
-      .then(pupper => {
-        alert(JSON.stringify(pupper));
+      .then(response => {
+        const lineItems = response.data.data.line_items;
+
         this.setState({
           loading: false,
-          pupper: {
-            img: 'test',
-            breed: pupper.data.id,
+          cart: {
+            lineItems,
+            numberItems: lineItems.physical_items.length + lineItems.digital_items.length + lineItems.custom_items.length + lineItems.gift_certificates.length,
           },
         })
       })
@@ -63,7 +64,7 @@ const Navbar = class extends React.Component {
   }
 
   render() {
-    const { img, breed } = this.state.pupper
+    const { lineItems, numberItems } = this.state.cart
 
     return (
       <nav
@@ -107,18 +108,16 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to="/contact/examples">
                 Form Examples
               </Link>
-              <div>
+              <Link className="navbar-item" to="/cart">
+                Cart 
                 {this.state.loading ? (
                   <p>Loading Cart...</p>
-                ) : img && breed ? (
-                  <>
-                    <h2>{`${breed} pupper!`}</h2>
-                    <img src={img} alt={`cute random `} style={{ maxWidth: 300 }} />
-                  </>
+                ) : numberItems > 0 ? (
+                    <h2>({numberItems})</h2>
                 ) : (
-                  <p>Oh noes, error fetching pupper :(</p>
+                  <!-- No Cart Loaded //-->
                 )}
-              </div>
+              </Link>
             </div>
             <div className="navbar-end has-text-centered">
               <a
