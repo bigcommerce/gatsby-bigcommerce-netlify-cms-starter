@@ -9,10 +9,16 @@ export function handler(event, context, callback) {
   // In this example, the API Key needs to be passed in the params with a key of key.
   // We're assuming that the ApiParams var will contain the initial ?
   const URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${event.queryStringParameters.endpoint}`
-  const HEADERS = {
+  const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
     'X-Auth-Token': API_TOKEN,
     'Accept': 'application/json'
+  }
+  const CORS_HEADERS = {
+    'Access-Control-Allow-Headers': 'Content-Type, Accept',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Origin': CORS_ORIGIN,
+    'Access-Control-Allow-Methods': 'GET, PUT, POST',
   }
 
   // Let's log some stuff we already have.
@@ -28,24 +34,20 @@ export function handler(event, context, callback) {
 
 
    // Here's a function we'll use to define how our response will look like when we call callback
-  const pass = (body) => {callback( null, {
+  const pass = (body, cookieHeader) => {callback( null, {
     statusCode: 200,
     body: JSON.stringify(body),
-    headers: {
-        'Access-Control-Allow-Headers': 'Content-Type, Accept',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Origin': CORS_ORIGIN,
-        'Access-Control-Allow-Methods': 'GET, PUT, POST'
-    }
+    headers: {...CORS_HEADERS, ...cookieHeader },
+    withCredentials: true,
   })}
 
   // Process GET
   const get = () => {
-    axios.get(URL, { headers: HEADERS })
+    axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
         console.log(response.data)
-        pass(response.data)
+        pass(response.data, null)
       }
     )
     .catch(err => pass(err))
@@ -56,11 +58,17 @@ export function handler(event, context, callback) {
 
   // Process POST
   const post = (body) => {
-    axios.post(URL, body, { headers: HEADERS })
+    axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
         console.log(response.data)
-        pass(response.data)
+
+        let cookieHeader = null;
+        if (event.queryStringParameters.endpoint == 'carts' && response.data.data.id) {
+          cookieHeader = { 'Cookie': `cartId=${response.data.data.id};` }
+        }
+
+        pass(response.data, cookieHeader)
       }
     )
     .catch(err => pass(err))
