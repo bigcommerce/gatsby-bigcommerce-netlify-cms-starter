@@ -37,8 +37,7 @@ export function handler(event, context, callback) {
   const pass = (body, cookieHeader) => {callback( null, {
     statusCode: 200,
     body: JSON.stringify(body),
-    headers: {...CORS_HEADERS, ...cookieHeader },
-    withCredentials: true,
+    headers: {...CORS_HEADERS, ...cookieHeader }
   })}
 
   // Process GET
