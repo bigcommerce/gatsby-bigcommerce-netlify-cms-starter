@@ -48,18 +48,11 @@ const Navbar = class extends React.Component {
     axios
       .get(`/.netlify/functions/hello?endpoint=carts`)
       .then(pupper => {
-        debugger;
-        const {
-          data: { message: img },
-        } = pupper;
-        debugger;
-        const breed = img.split("/")[4]
         this.setState({
           loading: false,
           pupper: {
-            ...this.state.pupper,
-            img,
-            breed,
+            img: 'test',
+            breed: pupper.data.id,
           },
         })
       })
