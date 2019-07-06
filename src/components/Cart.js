@@ -1,10 +1,8 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import github from '../img/github-icon.svg'
-import logo from '../img/logo.svg'
 import axios from 'axios'
 
-const Navbar = class extends React.Component {
+const Cart = class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,6 +13,7 @@ const Navbar = class extends React.Component {
       cart: {
         lineItems: {},
         numberItems: 0,
+        redirectUrls: {},
       },
     }
   }
@@ -55,6 +54,7 @@ const Navbar = class extends React.Component {
           cart: {
             lineItems,
             numberItems: lineItems.physical_items.length + lineItems.digital_items.length + lineItems.custom_items.length + lineItems.gift_certificates.length,
+            redirectUrls: response.data.data.redirect_urls,
           },
         })
       })
@@ -64,7 +64,7 @@ const Navbar = class extends React.Component {
   }
 
   render() {
-    const { lineItems, numberItems } = this.state.cart
+    const { lineItems, numberItems, redirectUrls } = this.state.cart
 
     return (
       <div className="container">
@@ -79,9 +79,14 @@ const Navbar = class extends React.Component {
         ) : (
           <h2 className="has-centered-text"><em>Error Loading Cart</em></h2>
         )}
+
+        { redirectUrls.checkout_url }
+        <Link className="checkout-link" to={ redirectUrls.checkout_url }>
+          { redirectUrls.checkout_url }
+        </Link>
       </div>
     )
   }
 }
 
-export default Navbar
+export default Cart

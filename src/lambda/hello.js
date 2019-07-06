@@ -40,7 +40,7 @@ export function handler(event, context, callback) {
     });
 
     if (cookies.cartId) {
-      URL = `${URL}/${cookies.cartId.value}`
+      URL = `${URL}/${cookies.cartId.value}?include=redirect_urls`
       console.log(`Found cardId cookie. New URL is: ${URL}`)
     }
 
