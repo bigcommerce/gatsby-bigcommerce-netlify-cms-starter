@@ -46,11 +46,13 @@ const Navbar = class extends React.Component {
   fetchRicksPupper = () => {
     this.setState({ loading: true })
     axios
-      .get(`https://dog.ceo/api/breeds/image/random`)
+      .get(`/hello?endpoint=cart`)
       .then(pupper => {
+        debugger;
         const {
           data: { message: img },
-        } = pupper
+        } = pupper;
+        debugger;
         const breed = img.split("/")[4]
         this.setState({
           loading: false,
@@ -113,7 +115,7 @@ const Navbar = class extends React.Component {
               </Link>
               <div>
                 {this.state.loading ? (
-                  <p>Please hold, pupper incoming!</p>
+                  <p>Loading Cart...</p>
                 ) : img && breed ? (
                   <>
                     <h2>{`${breed} pupper!`}</h2>
