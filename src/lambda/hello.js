@@ -49,7 +49,7 @@ export function handler(event, context, callback) {
       {
         console.log(response.data)
 
-        var cookies = setCookie.parse(response, {
+        var cookies = setCookie.parse(event.headers.cookie, {
           decodeValues: true,  // default: true
           map: true // default: false
         });
