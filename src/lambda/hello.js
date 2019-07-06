@@ -44,20 +44,18 @@ export function handler(event, context, callback) {
 
   // Process GET
   const get = () => {
+
+    var cookies = setCookie.parse(event.headers.cookie, {
+      decodeValues: true,  // default: true
+      map: true // default: false
+    });
+
+    console.log(cookies);
+
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
         console.log(response.data)
-
-        console.log(`cookie: ${event.headers.cookie}`)
-
-        var cookies = setCookie.parse(event.headers.cookie, {
-          decodeValues: true,  // default: true
-          map: true // default: false
-        });
-       
-        cookies.forEach(console.log);
-
         pass(response.data, null)
       }
     )

@@ -46,7 +46,7 @@ const Navbar = class extends React.Component {
   fetchRicksPupper = () => {
     this.setState({ loading: true })
     axios
-      .get(`/hello?endpoint=cart`)
+      .get(`/hello?endpoint=carts`)
       .then(pupper => {
         debugger;
         const {
