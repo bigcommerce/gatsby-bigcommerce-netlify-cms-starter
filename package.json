@@ -34,6 +34,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-helmet": "^5.2.0",
+    "set-cookie-parser": "^2.3.5",
     "uuid": "^3.2.1"
   },
   "keywords": [
