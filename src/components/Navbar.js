@@ -48,6 +48,7 @@ const Navbar = class extends React.Component {
     axios
       .get(`/.netlify/functions/hello?endpoint=carts`)
       .then(pupper => {
+        alert(JSON.stringify(pupper));
         this.setState({
           loading: false,
           pupper: {
