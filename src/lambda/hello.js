@@ -1,5 +1,7 @@
 const axios = require("axios")
 const qs = require("qs")
+const cookie = require('cookie');
+const setCookie = require('set-cookie-parser')
 
 export function handler(event, context, callback) {
   // apply our function to the queryStringParameters and assign it to a variable
@@ -46,6 +48,14 @@ export function handler(event, context, callback) {
     .then((response) =>
       {
         console.log(response.data)
+
+        var cookies = setCookie.parse(response, {
+          decodeValues: true,  // default: true
+          map: true // default: false
+        });
+       
+        cookies.forEach(console.log);
+
         pass(response.data, null)
       }
     )
@@ -64,7 +74,11 @@ export function handler(event, context, callback) {
 
         let cookieHeader = null;
         if (event.queryStringParameters.endpoint == 'carts' && response.data.data.id) {
-          cookieHeader = { 'Cookie': `cartId=${response.data.data.id};` }
+          cookieHeader = {
+            'Set-Cookie', cookie.serialize('cartId', response.data.data.id, {
+              maxAge: 60 * 60 * 24 * 28 // 4 weeks
+            })
+          }
         }
 
         pass(response.data, cookieHeader)
