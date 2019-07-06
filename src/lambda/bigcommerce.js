@@ -35,7 +35,7 @@ api.get('/status', async (req,res) => {
 api.get('/channels', async (req,res) => {
   console.log("- Req -", req)
   console.log("- Res -", res)
-  return { channel: 'ok' };
+  return { channel: 'ok', data: res };
 })
  
 // Declare your Lambda handler
