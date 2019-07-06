@@ -49,6 +49,8 @@ export function handler(event, context, callback) {
       {
         console.log(response.data)
 
+        console.log(`cookie: ${event.headers.cookie}`)
+
         var cookies = setCookie.parse(event.headers.cookie, {
           decodeValues: true,  // default: true
           map: true // default: false
