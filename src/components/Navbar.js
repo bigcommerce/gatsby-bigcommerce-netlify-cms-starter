@@ -113,9 +113,9 @@ const Navbar = class extends React.Component {
                 {this.state.loading ? (
                   <p>Loading Cart...</p>
                 ) : numberItems > 0 ? (
-                    <h2>({numberItems})</h2>
+                  <h2>({numberItems})</h2>
                 ) : (
-                  <!-- No Cart Loaded //-->
+                  <h2></h2>
                 )}
               </Link>
             </div>
