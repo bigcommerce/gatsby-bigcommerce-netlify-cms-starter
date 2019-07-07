@@ -49,24 +49,15 @@ const AddToCartButton = class extends React.Component {
       })
   }
 
-  handleAddToCartClick(e) {
-    e.preventDefault();
-    this.addToCart();
-  }
-
-  handleLoadingAddToCartClick(e) {
-    e.preventDefault();
-  }
-
   render() {
     const { currency, cartAmount, lineItems, numberItems, redirectUrls } = this.state.cart
 
     return (
       <div>
         {this.state.addingToCart ? (
-          <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={handleLoadingAddToCartClick}>Adding to Cart...</button>
+          <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={(e) => {e.preventDefault()}}>Adding to Cart...</button>
         ) : (
-          <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={handleAddToCartClick}>Add to Cart</button>
+          <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={addToCart}>Add to Cart</button>
         )}
       </div>
     )
