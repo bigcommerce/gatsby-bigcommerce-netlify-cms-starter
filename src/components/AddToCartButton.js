@@ -49,13 +49,14 @@ const AddToCartButton = class extends React.Component {
       })
   }
 
-  function handleAddToCartClick(e) {
+  handleAddToCartClick => (e) => {
     e.preventDefault();
     this.addToCart();
   }
 
-  function handleLoadingAddToCartClick(e) {
-
+  handleLoadingAddToCartClick => (e) => {
+    e.preventDefault();
+  }
 
   render() {
     const { currency, cartAmount, lineItems, numberItems, redirectUrls } = this.state.cart
