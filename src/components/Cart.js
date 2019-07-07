@@ -6,8 +6,6 @@ const Cart = class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      active: false,
-      navBarActiveClass: '',
       cartLoading: false,
       cartError: false,
       cart: {
@@ -24,28 +22,8 @@ const Cart = class extends React.Component {
     this.fetchCart()
   }
 
-  toggleHamburger = () => {
-    // toggle the active boolean in the state
-    this.setState(
-      {
-        active: !this.state.active,
-      },
-      // after state has been updated,
-      () => {
-        // set the class in state for the navbar accordingly
-        this.state.active
-          ? this.setState({
-              navBarActiveClass: 'is-active',
-            })
-          : this.setState({
-              navBarActiveClass: '',
-            })
-      }
-    )
-  }
-
   fetchCart = () => {
-    this.setState({ loading: true })
+    this.setState({ cartLoading: true })
     axios
       .get(`/.netlify/functions/hello?endpoint=carts`)
       .then(response => {
@@ -65,7 +43,7 @@ const Cart = class extends React.Component {
         })
       })
       .catch(error => {
-        this.setState({ loading: false, error })
+        this.setState({ cartLoading: false, cartError: error })
       })
   }
 
@@ -83,7 +61,7 @@ const Cart = class extends React.Component {
             <div className="bc-cart-header__qty">Qty</div>
             <div className="bc-cart-header__price">Price</div>
           </header>
-          {this.state.loading ? (
+          {this.state.cartLoading ? (
             <div className="bc-cart__empty">
               <h2 className="bc-cart__title--empty"><em>Loading Cart</em></h2>
             </div>
