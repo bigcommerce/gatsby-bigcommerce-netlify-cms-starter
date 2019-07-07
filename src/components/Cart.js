@@ -11,6 +11,8 @@ const Cart = class extends React.Component {
       cartLoading: false,
       cartError: false,
       cart: {
+        currency: {},
+        cartAmount: 0,
         lineItems: {},
         numberItems: 0,
         redirectUrls: {},
@@ -48,10 +50,14 @@ const Cart = class extends React.Component {
       .get(`/.netlify/functions/hello?endpoint=carts`)
       .then(response => {
         const lineItems = response.data.data.line_items;
+        const cartAmount = response.data.data.cart_amount;
+        const currency = response.data.data.currency;
 
         this.setState({
           loading: false,
           cart: {
+            currency,
+            cartAmount,
             lineItems,
             numberItems: lineItems.physical_items.length + lineItems.digital_items.length + lineItems.custom_items.length + lineItems.gift_certificates.length,
             redirectUrls: response.data.data.redirect_urls,
@@ -64,7 +70,7 @@ const Cart = class extends React.Component {
   }
 
   render() {
-    const { lineItems, numberItems, redirectUrls } = this.state.cart
+    const { currency, cartAmount, lineItems, numberItems, redirectUrls } = this.state.cart
 
     return (
       <div className="container">
@@ -87,8 +93,8 @@ const Cart = class extends React.Component {
               <div className="bc-cart-body">
                 <div className="bc-cart-item">
                   <div className="bc-cart-item-image">
-                      <img width="270" height="270" src="https://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-270x270.jpg" className="attachment-bc-small size-bc-small wp-post-image" alt="" srcset="http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-270x270.jpg 270w, http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-150x150.jpg 150w, http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-300x300.jpg 300w, http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-768x768.jpg 768w, http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-86x86.jpg 86w, http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280-370x370.jpg 370w, http://concerned-alpaca.w5.wpsandbox.pro/wp-content/uploads/2015/07/utilitybucket1.1435949357.1280.1280.jpg 900w" sizes="(max-width: 270px) 100vw, 270px" />
-                      <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} type="button">(Remove)</button>
+                      <img width="270" height="270" src="/img/coffee.png" alt={ `Image for ${item.name}` } />
+                      <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} type="button">Remove</button>
                   </div>
 
                   <div className="bc-cart-item-meta">
@@ -117,11 +123,21 @@ const Cart = class extends React.Component {
               <Link href="/products" className="bc-cart__continue-shopping">Take a look around.</Link>
             </div>
           )}
-        </section>
 
-        <a className="checkout-link" href={ redirectUrls.checkout_url }>
-          { redirectUrls.checkout_url }
-        </a>
+          <footer className="bc-cart-footer">
+            <div className="bc-cart-subtotal">
+              <span className="bc-cart-subtotal__label">Subtotal: </span>
+              <span className="bc-cart-subtotal__amount">${cartAmount}</span>
+            </div>
+
+            <div className="bc-cart-actions">
+              <form action={ redirectUrls.checkout_url } method="post" enctype="multipart/form-data">
+                <button className="bc-btn bc-cart-actions__checkout-button" type="submit">Proceed to Checkout</button>
+              </form>
+            </div>
+          </footer>
+
+        </section>
       </div>
     )
   }
