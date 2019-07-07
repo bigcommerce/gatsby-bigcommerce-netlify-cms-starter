@@ -1,8 +1,7 @@
 import React from 'react'
-import { Link } from 'gatsby'
 import axios from 'axios'
 
-const Cart = class extends React.Component {
+const AddToCartButton = class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -73,4 +72,4 @@ const Cart = class extends React.Component {
   }
 }
 
-export default Cart
+export default AddToCartButton

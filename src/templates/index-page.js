@@ -6,6 +6,8 @@ import Layout from '../components/Layout'
 import Features from '../components/Features'
 import BlogRoll from '../components/BlogRoll'
 
+import AddToCartButton from '../components/AddToCartButton'
+
 export const IndexPageTemplate = ({
   image,
   title,
@@ -64,6 +66,7 @@ export const IndexPageTemplate = ({
         </h3>
       </div>
     </div>
+
     <section className="section section--gradient">
       <div className="container">
         <div className="section">
@@ -71,6 +74,7 @@ export const IndexPageTemplate = ({
             <div className="column is-10 is-offset-1">
               <div className="content">
                 <div className="content">
+                  <AddToCartButton productId=1 />
                   <div className="tile">
                     <h1 className="title">{mainpitch.title}</h1>
                   </div>
