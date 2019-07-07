@@ -24,7 +24,7 @@ const AddToCartButton = class extends React.Component {
         line_items: [
           {
             quantity: 1,
-            product_id: this.props.productId,
+            product_id: parseInt(this.props.productId),
           }
         ]
       })
