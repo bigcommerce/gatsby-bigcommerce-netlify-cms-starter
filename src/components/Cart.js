@@ -84,9 +84,6 @@ const Cart = class extends React.Component {
           ) : numberItems > 0 ? (
             <div>
             {lineItems.custom_items.map(item => (
-              <h2 key={item.id}>
-                {item.name} {item.sku} {item.quantity} {item.list_price} <br /><small>id:{item.id}</small>
-              </h2>
               <div className="bc-cart-body">
                 <div className="bc-cart-item">
                   <div className="bc-cart-item-image">
