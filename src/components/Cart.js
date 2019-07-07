@@ -82,10 +82,9 @@ const Cart = class extends React.Component {
           <h2 className="has-centered-text"><em>Error Loading Cart</em></h2>
         )}
 
-        { redirectUrls.checkout_url }
-        <Link className="checkout-link" to={ redirectUrls.checkout_url }>
+        <a className="checkout-link" href={ redirectUrls.checkout_url }>
           { redirectUrls.checkout_url }
-        </Link>
+        </a>
       </div>
     )
   }
