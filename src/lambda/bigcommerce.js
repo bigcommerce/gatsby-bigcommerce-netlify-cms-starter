@@ -1,0 +1,83 @@
+const axios = require("axios")
+const cookie = require('cookie');
+const setCookie = require('set-cookie-parser')
+
+export function handler(event, context, callback) {
+  // Get env var values defined in our Netlify site UI
+  const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
+  // Set up headers
+  const REQUEST_HEADERS = {
+    'X-Auth-Client': API_CLIENT_ID,
+    'X-Auth-Token': API_TOKEN,
+    'Accept': 'application/json'
+  }
+  const CORS_HEADERS = {
+    'Access-Control-Allow-Headers': 'Content-Type, Accept',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Origin': CORS_ORIGIN,
+    'Access-Control-Allow-Methods': 'GET, PUT, POST',
+  }
+
+  let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${event.queryStringParameters.endpoint}`
+
+  // Let's log some stuff we already have
+  console.log("logging event.....", event)
+  console.log("Constructed URL is ...", URL)
+
+  // Here's a function we'll use to define how our response will look like when we call callback
+  const pass = (body, cookieHeader) => {callback( null, {
+    statusCode: 200,
+    body: JSON.stringify(body),
+    headers: {...CORS_HEADERS, ...cookieHeader }
+  })}
+
+  // Parse out cookies and change endpoint to include cartId for certain cart requests
+  var cookies = setCookie.parse(event.headers.cookie, {
+    decodeValues: true,  // default: true
+    map: true // default: false
+  });
+  if (cookies.cartId && event.queryStringParameters.endpoint == 'carts') {
+    URL = `${URL}/${cookies.cartId.value}?include=redirect_urls`
+    console.log(`Found cardId cookie. New URL is: ${URL}`)
+  }
+
+  // Process GET
+  const get = () => {
+    axios.get(URL, { headers: REQUEST_HEADERS })
+    .then((response) =>
+      {
+        console.log(response.data)
+        pass(response.data, null)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'GET'){
+    get()
+  };
+
+  // Process POST
+  const post = (body) => {
+    axios.post(URL, body, { headers: REQUEST_HEADERS })
+    .then((response) =>
+      {
+        console.log(response.data)
+
+        let cookieHeader = null;
+        if (event.queryStringParameters.endpoint == 'carts' && response.data.data.id) {
+          cookieHeader = {
+            'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
+              maxAge: 60 * 60 * 24 * 28 // 4 weeks
+            })
+          }
+        }
+
+        pass(response.data, cookieHeader)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'POST'){
+    post(JSON.parse(event.body))
+  };
+};
