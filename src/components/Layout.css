@@ -23,14 +23,14 @@
     color: #34313f
 }
 
-@font-face {
+/*@font-face {
     font-family: bigcommerce-icons;
     src: url(../fonts/icons-bigcommerce/bigcommerce-icons.woff2?3rjos2) format("woff2"),url(../fonts/icons-bigcommerce/bigcommerce-icons.ttf?3rjos2) format("truetype"),url(../fonts/icons-bigcommerce/bigcommerce-icons.woff?3rjos2) format("woff"),url(../fonts/icons-bigcommerce/bigcommerce-icons.svg?3rjos2#bigcommerce-icons) format("svg");
     font-weight: 400;
     font-style: normal
-}
+}*/
 
-.bc-icon {
+/*.bc-icon {
     font-family: bigcommerce-icons!important;
     speak: none;
     font-style: normal;
@@ -42,7 +42,7 @@
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
-}
+}*/
 
 .icon-bc-bigcommerce_diagnostics:before {
     content: "\e912"
