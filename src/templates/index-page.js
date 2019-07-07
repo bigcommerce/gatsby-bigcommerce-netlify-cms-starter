@@ -74,7 +74,9 @@ export const IndexPageTemplate = ({
             <div className="column is-10 is-offset-1">
               <div className="content">
                 <div className="content">
-                  <AddToCartButton productId=1 />
+
+                  <AddToCartButton productId="1" />
+
                   <div className="tile">
                     <h1 className="title">{mainpitch.title}</h1>
                   </div>
