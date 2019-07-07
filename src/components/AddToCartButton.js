@@ -55,7 +55,7 @@ const AddToCartButton = class extends React.Component {
     return (
       <div>
         {this.state.addingToCart ? (
-          <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={(e) => {e.preventDefault()}}>Adding to Cart...</button>
+          <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit">Adding to Cart...</button>
         ) : (
           <button class="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={addToCart}>Add to Cart</button>
         )}
