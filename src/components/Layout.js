@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import './all.sass'
+import "./Layout.css"
 import useSiteMetadata from './SiteMetadata'
 
 const TemplateWrapper = ({ children }) => {
