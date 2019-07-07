@@ -101,7 +101,7 @@ const Cart = class extends React.Component {
                   <div className="bc-cart-item-quantity">
                     <label for="bc-cart-item__quantity" className="u-bc-screen-reader-text">Quantity</label>
 
-                    <input type="number" name="bc-cart-item__quantity" className="bc-cart-item__quantity-input" value={item.quantity} min="1" max="">
+                    <input type="number" name="bc-cart-item__quantity" className="bc-cart-item__quantity-input" value={item.quantity} min="1" max="" />
                   </div>
                       
                   <div className="bc-cart-item-total-price">
