@@ -32,7 +32,7 @@ const Cart = class extends React.Component {
         const currency = response.data.data.currency;
 
         this.setState({
-          loading: false,
+          cartLoading: false,
           cart: {
             currency,
             cartAmount,
