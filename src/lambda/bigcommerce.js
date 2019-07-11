@@ -80,4 +80,19 @@ export function handler(event, context, callback) {
   if(event.httpMethod == 'POST'){
     post(JSON.parse(event.body))
   };
+
+  // Process PUT
+  const put = (body) => {
+    axios.put(URL, body, { headers: REQUEST_HEADERS })
+    .then((response) =>
+      {
+        console.log(response.data)
+        pass(response.data)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'POST'){
+    put(JSON.parse(event.body))
+  };
 };
