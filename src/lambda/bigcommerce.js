@@ -25,11 +25,14 @@ export function handler(event, context, callback) {
   console.log("Constructed URL is ...", URL)
 
   // Here's a function we'll use to define how our response will look like when we call callback
-  const pass = (body, cookieHeader) => {callback( null, {
-    statusCode: 200,
-    body: JSON.stringify(body),
-    headers: {...CORS_HEADERS, ...cookieHeader }
-  })}
+  const pass = (body, cookieHeader) => {
+    console.log(body)
+    callback( null, {
+      statusCode: 200,
+      body: JSON.stringify(body),
+      headers: {...CORS_HEADERS, ...cookieHeader }
+    }
+  )}
 
   // Parse out cookies and change endpoint to include cartId for certain cart requests
   var cookies = setCookie.parse(event.headers.cookie, {
@@ -46,7 +49,6 @@ export function handler(event, context, callback) {
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        console.log(response.data)
         pass(response.data, null)
       }
     )
@@ -61,8 +63,6 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        console.log(response.data)
-
         let cookieHeader = null;
         if (event.queryStringParameters.endpoint == 'carts' && response.data.data.id) {
           cookieHeader = {
@@ -86,7 +86,6 @@ export function handler(event, context, callback) {
     axios.put(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        console.log(response.data)
         pass(response.data)
       }
     )
