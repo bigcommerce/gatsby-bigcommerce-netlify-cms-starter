@@ -29,9 +29,9 @@ export function handler(event, context, callback) {
   // Assemble BC API URL we are going to hit
   let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
   if (ENDPOINT_QUERY_STRING === 'carts/items') {
-    URL = `${URL}/carts/${cookies.cartId.value}/items?include=redirect_urls`
+    URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
   } else if (ENDPOINT_QUERY_STRING === 'carts') {
-    URL = `${URL}/carts/${cookies.cartId.value}?include=redirect_urls`
+    URL = `${URL}carts/${cookies.cartId.value}?include=redirect_urls`
   } else {
     URL += ENDPOINT_QUERY_STRING;
   }
