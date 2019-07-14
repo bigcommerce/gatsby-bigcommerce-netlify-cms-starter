@@ -75,7 +75,7 @@ export const IndexPageTemplate = ({
               <div className="content">
                 <div className="content">
 
-                  <AddToCartButton productId="1" />
+                  <AddToCartButton productId="4" />
 
                   <div className="tile">
                     <h1 className="title">{mainpitch.title}</h1>
