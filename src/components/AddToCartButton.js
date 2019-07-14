@@ -12,7 +12,7 @@ const AddToCartButton = class extends React.Component {
         cartAmount: 0,
         lineItems: {},
         numberItems: 0,
-        redirectUrls: {},
+        redirectUrls: {}
       },
     }
   }
@@ -20,7 +20,7 @@ const AddToCartButton = class extends React.Component {
   addToCart = () => {
     this.setState({ addingToCart: true })
     axios
-      .post(`/.netlify/functions/bigcommerce?endpoint=carts_items`, {
+      .post(`/.netlify/functions/bigcommerce?endpoint=carts/items`, {
         line_items: [
           {
             quantity: 1,

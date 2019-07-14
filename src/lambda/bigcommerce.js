@@ -17,8 +17,24 @@ export function handler(event, context, callback) {
     'Access-Control-Allow-Origin': CORS_ORIGIN,
     'Access-Control-Allow-Methods': 'GET, PUT, POST',
   }
+  // Get endpoint value from query string
+  const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
 
-  let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/${event.queryStringParameters.endpoint}`
+  // Parse out cookies and change endpoint to include cartId for certain cart requests
+  var cookies = setCookie.parse(event.headers.cookie, {
+    decodeValues: true,  // default: true
+    map: true // default: false
+  })
+
+  // Assemble BC API URL we are going to hit
+  let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
+  if (ENDPOINT_QUERY_STRING === 'carts/items') {
+    URL = `${URL}/carts/${cookies.cartId.value}/items?include=redirect_urls`
+  } else if (ENDPOINT_QUERY_STRING === 'carts') {
+    URL = `${URL}/carts/${cookies.cartId.value}?include=redirect_urls`
+  } else {
+    URL += ENDPOINT_QUERY_STRING;
+  }
 
   // Let's log some stuff we already have
   console.log("logging event.....", event)
@@ -33,24 +49,6 @@ export function handler(event, context, callback) {
       headers: {...CORS_HEADERS, ...cookieHeader }
     }
   )}
-
-  // Parse out cookies and change endpoint to include cartId for certain cart requests
-  var cookies = setCookie.parse(event.headers.cookie, {
-    decodeValues: true,  // default: true
-    map: true // default: false
-  })
-
-  if (cookies.cartId) {
-    console.log('Found cardId cookie')
-
-    if (event.queryStringParameters.endpoint == 'carts') {
-      URL = `${URL}/${cookies.cartId.value}?include=redirect_urls`
-    } else if (event.queryStringParameters.endpoint == 'carts_items') {
-      URL = `${URL}/${cookies.cartId.value}/items?include=redirect_urls`
-    }
-    
-    console.log(`New URL is: ${URL}`)
-  }
 
   // Process GET
   const get = () => {
