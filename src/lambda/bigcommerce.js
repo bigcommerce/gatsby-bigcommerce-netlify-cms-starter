@@ -38,10 +38,18 @@ export function handler(event, context, callback) {
   var cookies = setCookie.parse(event.headers.cookie, {
     decodeValues: true,  // default: true
     map: true // default: false
-  });
-  if (cookies.cartId && event.queryStringParameters.endpoint == 'carts') {
-    URL = `${URL}/${cookies.cartId.value}?include=redirect_urls`
-    console.log(`Found cardId cookie. New URL is: ${URL}`)
+ 
+
+  if (cookies.cartId) {
+    console.log('Found cardId cookie')
+
+    if (event.queryStringParameters.endpoint == 'carts') {
+      URL = `${URL}/${cookies.cartId.value}?include=redirect_urls`
+    } else if (event.queryStringParameters.endpoint == 'carts_items') {
+      URL = `${URL}/${cookies.cartId.value}/items?include=redirect_urls`
+    }
+    
+    console.log(`New URL is: ${URL}`)
   }
 
   // Process GET
