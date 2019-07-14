@@ -38,7 +38,7 @@ export function handler(event, context, callback) {
   var cookies = setCookie.parse(event.headers.cookie, {
     decodeValues: true,  // default: true
     map: true // default: false
- 
+  }
 
   if (cookies.cartId) {
     console.log('Found cardId cookie')
