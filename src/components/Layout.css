@@ -5478,3 +5478,74 @@ span.bc-account-address__name {
     font-size: 1em;
     text-transform: uppercase
 }
+
+.bc-btn,
+button.bc-btn,
+a.bc-btn,
+.entry-content .bc-btn,
+.entry-content button.bc-btn,
+.entry-content a.bc-btn,
+.bigcommerce-cart__item-count,
+.bc-account-login__form input[type="submit"] {
+    color: #fff;
+    background-color: #5273f4;
+}
+
+.bc-btn--inverse,
+button.bc-btn--inverse,
+a.bc-btn--inverse,
+.entry-content .bc-btn--inverse,
+.entry-content button.bc-btn--inverse,
+.entry-content a.bc-btn--inverse {
+    color: #5273f4;
+    background-color: #fff;
+    border-color: #5273f4;
+}
+
+.bc-btn--inverse:hover,
+.bc-btn--inverse:focus,
+button.bc-btn--inverse:hover,
+button.bc-btn--inverse:focus,
+a.bc-btn--inverse:hover,
+a.bc-btn--inverse:focus {
+    color: #fff;
+    background-color: #5273f4;
+    border-color: #5273f4;
+}
+
+.bc-link {
+    color: #5273f4;
+}
+
+.bc-cart-item__remove-button {
+    color: #5273f4;
+}
+
+.bc-product__out_of_stock,
+.bc-product__low_inventory {
+    color: #34313f;
+}
+
+.bc-product-flag--grey {
+    color: #34313f;
+    background-color: #e0e3e9;
+}
+
+.bc-product-flag--sale {
+    color: #fff;
+    background-color: #65c68c;
+}
+
+.bc-cart-item-total-price.bc-cart-item--on-sale,
+.bc-product__price--sale {
+    color: #65c68c;
+}
+
+.bc-account-address__edit,
+.bc-account-address__delete,
+button.bc-account-address__edit,
+button.bc-account-address__delete,
+a.bc-account-address__edit,
+a.bc-account-address__delete {
+    color: #5273f4;
+}
