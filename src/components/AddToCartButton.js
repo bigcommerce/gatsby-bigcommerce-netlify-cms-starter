@@ -59,14 +59,14 @@ const AddToCartButton = class extends React.Component {
           
           <button className="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={this.addToCart}>Add to Cart</button>
 
-          {this.state.addingToCart ? (
+          {this.state.addingToCart &&
             <div className="bc-ajax-add-to-cart__message-wrapper">
               <p className="bc-ajax-add-to-cart__message bc-alert bc-alert--success">
                 Product successfully added to your cart.
                 <a href="{ redirectUrls.checkout_url }">Proceed to Checkout</a>.
               </p>
             </div>
-          ) : ()}
+          }
         </div>
       </div>
     )
