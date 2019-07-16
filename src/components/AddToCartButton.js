@@ -6,6 +6,7 @@ const AddToCartButton = class extends React.Component {
     super(props)
     this.state = {
       addingToCart: false,
+      addedToCart: false,
       addToCartError: false,
       cart: {
         currency: {},
@@ -34,7 +35,8 @@ const AddToCartButton = class extends React.Component {
         const currency = response.data.data.currency;
 
         this.setState({
-          loading: false,
+          addingToCart: false,
+          addedToCart: true,
           cart: {
             currency,
             cartAmount,
@@ -52,15 +54,19 @@ const AddToCartButton = class extends React.Component {
   render() {
     const { currency, cartAmount, lineItems, numberItems, redirectUrls } = this.state.cart
 
+    const addToCartButtonText = this.state.addingToCart ? 'Adding to Cart...' : 'Add to Cart';
+
     return (
       <div className="bc-product-card">
         <div className="bc-product__actions" data-js="bc-product-group-actions">
           <div className="bc-form bc-product-form">
             <div className="bc-product-form__product-message"></div>
             
-            <button className="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={this.addToCart}>Add to Cart</button>
+            <button className="bc-btn bc-btn--form-submit bc-btn--add_to_cart" type="submit" onClick={this.addToCart}>
+              { addToCartButtonText }
+            </button>
 
-            {this.state.addingToCart &&
+            {this.state.addedToCart &&
               <div className="bc-ajax-add-to-cart__message-wrapper">
                 <p className="bc-ajax-add-to-cart__message bc-alert bc-alert--success">
                   Product successfully added to your cart.

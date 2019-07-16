@@ -21,17 +21,23 @@ export function handler(event, context, callback) {
   const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
 
   // Parse out cookies and change endpoint to include cartId for certain cart requests
-  var cookies = setCookie.parse(event.headers.cookie, {
+  const cookies = setCookie.parse(event.headers.cookie, {
     decodeValues: true,  // default: true
     map: true // default: false
   })
+  const hasCartIdCookie = (cookies.hasOwnProperty('cartId'))
 
   // Assemble BC API URL we are going to hit
   let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
   if (ENDPOINT_QUERY_STRING === 'carts/items') {
-    URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
+    if (hasCartIdCookie) {
+      URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
+    } else {
+      // If there is no cartId cookie when adding cart items, resort to creating the cart
+      URL = `${URL}carts?include=redirect_urls`
+    }
   } else if (ENDPOINT_QUERY_STRING === 'carts') {
-    if (cookies.hasOwnProperty('cartId')) {
+    if (hasCartIdCookie) {
       URL = `${URL}carts/${cookies.cartId.value}?include=redirect_urls`
     } else {
       URL = `${URL}carts?include=redirect_urls`
