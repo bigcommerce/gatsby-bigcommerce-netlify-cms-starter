@@ -3,7 +3,7 @@ const cookie = require('cookie');
 const setCookie = require('set-cookie-parser')
 
 export function handler(event, context, callback) {
-  // Get env var values defined in our Netlify site UI
+  // Get env var values we need to speak to the BC API
   const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
   // Set up headers
   const REQUEST_HEADERS = {
@@ -31,7 +31,11 @@ export function handler(event, context, callback) {
   if (ENDPOINT_QUERY_STRING === 'carts/items') {
     URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
   } else if (ENDPOINT_QUERY_STRING === 'carts') {
-    URL = `${URL}carts/${cookies.cartId.value}?include=redirect_urls`
+    if (cookies.hasOwnProperty('cartId')) {
+      URL = `${URL}carts/${cookies.cartId.value}?include=redirect_urls`
+    } else {
+      URL = `${URL}carts?include=redirect_urls`
+    }
   } else {
     URL += ENDPOINT_QUERY_STRING;
   }
@@ -70,7 +74,7 @@ export function handler(event, context, callback) {
     .then((response) =>
       {
         let cookieHeader = null;
-        if (event.queryStringParameters.endpoint == 'carts' && response.data.data.id) {
+        if (event.queryStringParameters.endpoint === 'carts' && response.data.data.id) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
