@@ -73,6 +73,9 @@ export function handler(event, context, callback) {
     .catch(err => pass(err))
   }
   if(event.httpMethod == 'GET'){
+    console.log("-------")
+    console.log("- GET -")
+    console.log("-------")
     get()
   };
 
@@ -96,6 +99,9 @@ export function handler(event, context, callback) {
     .catch(err => pass(err))
   }
   if(event.httpMethod == 'POST'){
+    console.log("--------")
+    console.log("- POST -")
+    console.log("--------")
     post(JSON.parse(event.body))
   };
 
@@ -110,6 +116,9 @@ export function handler(event, context, callback) {
     .catch(err => pass(err))
   }
   if(event.httpMethod == 'PUT'){
+    console.log("-------")
+    console.log("- PUT -")
+    console.log("-------")
     put(JSON.parse(event.body))
   };
 };
