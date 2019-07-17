@@ -109,7 +109,7 @@ export function handler(event, context, callback) {
     )
     .catch(err => pass(err))
   }
-  if(event.httpMethod == 'POST'){
+  if(event.httpMethod == 'PUT'){
     put(JSON.parse(event.body))
   };
 };
