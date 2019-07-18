@@ -28,7 +28,7 @@ const AddToCartButton = class extends React.Component {
             product_id: parseInt(this.props.productId),
           }
         ]
-      })
+      }, { withCredentials: true })
       .then(response => {
         const lineItems = response.data.data.line_items;
         const cartAmount = response.data.data.cart_amount;

@@ -25,7 +25,7 @@ const Cart = class extends React.Component {
   fetchCart = () => {
     this.setState({ cartLoading: true })
     axios
-      .get(`/.netlify/functions/bigcommerce?endpoint=carts`)
+      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, { withCredentials: true })
       .then(response => {
         const lineItems = response.data.data.line_items;
         const cartAmount = response.data.data.cart_amount;

@@ -46,7 +46,7 @@ const Navbar = class extends React.Component {
   fetchCart = () => {
     this.setState({ loading: true })
     axios
-      .get(`/.netlify/functions/bigcommerce?endpoint=carts`)
+      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, { withCredentials: true })
       .then(response => {
         const lineItems = response.data.data.line_items;
 
