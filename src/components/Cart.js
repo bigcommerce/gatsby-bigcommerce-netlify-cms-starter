@@ -64,7 +64,7 @@ const Cart = class extends React.Component {
       return items.map(item => 
         <div className="bc-cart-item">
           <div className="bc-cart-item-image">
-              <img width="270" height="270" src="/img/coffee.png" alt={ `Image for ${item.name}` } />
+              <img height="270" src="/img/coffee.png" alt={ `Image for ${item.name}` } />
               <button className="bc-link bc-cart-item__remove-button" onClick={this.removeCartItem(item.id)} type="button">Remove</button>
           </div>
 
@@ -88,13 +88,13 @@ const Cart = class extends React.Component {
       )
     }
 
-    const PhysicalItems = (props) => {
+    const StandardItems = (props) => {
       const items = props.items;
 
       return items.map(item => 
         <div className="bc-cart-item">
           <div className="bc-cart-item-image">
-              <img width="270" height="270" src="/img/coffee.png" alt={ `Image for ${item.name}` } />
+              <img height="270" src={item.image_url} alt={ `Image for ${item.name}` } />
               <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} type="button">Remove</button>
           </div>
 
@@ -118,75 +118,28 @@ const Cart = class extends React.Component {
       )
     }
 
+    const GiftCertificateItems = (props) => {
+      const items = props.items;
 
-    "line_items": {
-      "physical_items": [{
-        "id": "666d1bda-7885-414a-8cd8-1b671a7de930",
-        "parent_id": null,
-        "variant_id": 4,
-        "product_id": 4,
-        "sku": "TEST-2",
-        "name": "Test Product 2",
-        "url": "https://app-test-store.mybigcommerce.com/test-product-2/",
-        "quantity": 7,
-        "taxable": true,
-        "image_url": "https://cdn11.bigcommerce.com/s-2bapcono7r/products/4/images/3/apil9atk1__13801.1540585129.220.290.png?c=2",
-        "discounts": [],
-        "coupons": [],
-        "discount_amount": 0,
-        "coupon_amount": 0,
-        "list_price": 20,
-        "sale_price": 20,
-        "extended_list_price": 140,
-        "extended_sale_price": 140,
-        "is_require_shipping": true
-      }],
-      "digital_items": [{
-        "id": "5e55d159-bb87-4a77-b75b-c0944173b2d2",
-        "parent_id": null,
-        "variant_id": 110,
-        "product_id": 55,
-        "sku": "DOWNLOAD-1",
-        "name": "Downloadable Product",
-        "url": "https://app-test-store.mybigcommerce.com/downloadable-product/",
-        "quantity": 1,
-        "taxable": true,
-        "image_url": "https://cdn11.bigcommerce.com/r-cfcff2e8acd98b7a58600f747e5ddc2b7f306d38/themes/ClassicNext/images/ProductDefault.gif",
-        "discounts": [],
-        "coupons": [],
-        "discount_amount": 0,
-        "coupon_amount": 0,
-        "list_price": 50,
-        "sale_price": 50,
-        "extended_list_price": 50,
-        "extended_sale_price": 50,
-        "is_require_shipping": false
-      }],
-      "gift_certificates": [{
-        "id": "4f1c0c79-a673-4379-a8f1-391386caedcf",
-        "name": "Happy Birthday",
-        "theme": "Birthday",
-        "amount": 50,
-        "quantity": 1,
-        "taxable": false,
-        "sender": {
-          "name": "Jane Does",
-          "email": "janedoe@email.com"
-        },
-        "recipient": {
-          "name": "Jane Does",
-          "email": "janedoe@email.com"
-        },
-        "message": "Happy Birthday Jane!"
-      }],
-      "custom_items": [{
-        "id": "419a790e-9f53-488a-b6bf-f30ba7417601",
-        "sku": "abc-123",
-        "name": "Custom Product",
-        "quantity": 1,
-        "list_price": 10,
-        "extended_list_price": 10
-      }]
+      return items.map(item => 
+        <div className="bc-cart-item">
+          <div className="bc-cart-item-image">
+              <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} type="button">Remove</button>
+          </div>
+
+          <div className="bc-cart-item-meta">
+            <h3 className="bc-cart-item__product-title">
+              {item.name} - Gift Certificate for {item.recipient.name}
+            </h3>
+            <span className="bc-cart-item__product-brand">Theme: {item.theme}</span>
+          </div>
+              
+          <div className="bc-cart-item-total-price">
+            ${item.amount}
+          </div>
+        </div>
+      )
+    }
 
     return (
       <div className="container">
@@ -205,7 +158,10 @@ const Cart = class extends React.Component {
             </div>
           ) : numberItems > 0 ? (
             <div className="bc-cart-body">
+              <StandardItems items={lineItems.physical_items} />
+              <StandardItems items={lineItems.digital_items} />
               <CustomItems items={lineItems.custom_items} />
+              <GiftCertificateItems items={lineItems.gift_certificates} />
             </div>
           ) : (
             <div className="bc-cart__empty">

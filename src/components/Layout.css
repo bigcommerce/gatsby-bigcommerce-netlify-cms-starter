@@ -5553,4 +5553,5 @@ a.bc-account-address__delete {
 .bc-ajax-add-to-cart__message a {
     color: white;
     text-decoration: underline;
+    padding-left: 0.3em;
 }
