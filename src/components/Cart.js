@@ -178,11 +178,13 @@ const Cart = class extends React.Component {
               <span className="bc-cart-subtotal__amount">${cartAmount}</span>
             </div>
 
-            <div className="bc-cart-actions">
-              <form action={ redirectUrls.checkout_url } method="post" enctype="multipart/form-data">
-                <button className="bc-btn bc-cart-actions__checkout-button" type="submit">Proceed to Checkout</button>
-              </form>
-            </div>
+            { numberItems > 0 &&
+              <div className="bc-cart-actions">
+                <form action={ redirectUrls.checkout_url } method="post" enctype="multipart/form-data">
+                  <button className="bc-btn bc-cart-actions__checkout-button" type="submit">Proceed to Checkout</button>
+                </form>
+              </div>
+            }
           </footer>
 
         </section>
