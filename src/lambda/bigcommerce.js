@@ -85,7 +85,7 @@ export function handler(event, context, callback) {
     .then((response) =>
       {
         let cookieHeader = null;
-        if (event.queryStringParameters.endpoint === 'carts' && response.data.data.id) {
+        if (ENDPOINT_QUERY_STRING === 'carts' && response.data.data.id) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
