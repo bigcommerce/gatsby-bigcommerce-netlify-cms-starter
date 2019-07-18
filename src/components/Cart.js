@@ -47,7 +47,7 @@ const Cart = class extends React.Component {
       })
   }
 
-  CustomItems = (props) => {
+  CustomItems(props) {
     const items = props.items;
 
     return lineItems.physical_items.map(item => 
