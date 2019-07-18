@@ -3,6 +3,9 @@ const cookie = require('cookie');
 const setCookie = require('set-cookie-parser')
 
 export function handler(event, context, callback) {
+  console.log(" ")
+  console.log(" ")
+  console.log(" ")
   console.log("-----------------------")
   console.log("----- New Request -----")
   console.log("-----------------------")
@@ -54,7 +57,11 @@ export function handler(event, context, callback) {
 
   // Here's a function we'll use to define how our response will look like when we call callback
   const pass = (body, cookieHeader) => {
+    console.log("--------")
+    console.log("- BODY -")
     console.log(body)
+    console.log("--------")
+
     callback( null, {
       statusCode: 200,
       body: JSON.stringify(body),
