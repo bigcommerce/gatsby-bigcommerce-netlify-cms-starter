@@ -16,6 +16,7 @@ const Cart = class extends React.Component {
         redirectUrls: {},
       },
     }
+  }
 
   componentDidMount() {
     this.fetchCart()
