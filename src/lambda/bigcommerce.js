@@ -84,14 +84,22 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
+        const shouldSetCookie = ENDPOINT_QUERY_STRING === 'carts' && response.data.data.id;
         let cookieHeader = null;
+
+        console.log("--------------------")
+        console.log("- shouldSetCookie? -")
+        console.log(`- ${shouldSetCookie.toString()} -`)
         if (ENDPOINT_QUERY_STRING === 'carts' && response.data.data.id) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
             })
           }
+          console.log("- cookieHeader: -")
+          console.log(cookieHeader)
         }
+        console.log("--------------------")
 
         pass(response.data, cookieHeader)
       }
