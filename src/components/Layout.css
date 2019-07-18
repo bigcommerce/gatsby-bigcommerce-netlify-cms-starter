@@ -5549,3 +5549,8 @@ a.bc-account-address__edit,
 a.bc-account-address__delete {
     color: #5273f4;
 }
+
+.bc-ajax-add-to-cart__message a {
+    color: white;
+    text-decoration: underline;
+}
