@@ -37,14 +37,14 @@ export function handler(event, context, callback) {
 
   // Assemble BC API URL we are going to hit
   let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
-  if (ENDPOINT_QUERY_STRING === 'carts/items') {
+  if (ENDPOINT_QUERY_STRING == 'carts/items') {
     if (hasCartIdCookie) {
       URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
     } else {
       // If there is no cartId cookie when adding cart items, resort to creating the cart
       URL = `${URL}carts?include=redirect_urls`
     }
-  } else if (ENDPOINT_QUERY_STRING === 'carts') {
+  } else if (ENDPOINT_QUERY_STRING == 'carts') {
     if (hasCartIdCookie) {
       URL = `${URL}carts/${cookies.cartId.value}?include=redirect_urls`
     } else {
@@ -91,13 +91,13 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        const shouldSetCookie = ENDPOINT_QUERY_STRING === 'carts' && response.data.data.id;
+        const shouldSetCookie = ENDPOINT_QUERY_STRING == 'carts' && response.data.data.id;
         let cookieHeader = null;
 
         console.log("--------------------")
-        console.log("- shouldSetCookie? -")
+        console.log(`- shouldSetCookie? ${ENDPOINT_QUERY_STRING} == 'carts' && ${response.data.data.id} -`)
         console.log(`- ${shouldSetCookie.toString()} -`)
-        if (ENDPOINT_QUERY_STRING === 'carts' && response.data.data.id) {
+        if (ENDPOINT_QUERY_STRING == 'carts' && response.data.data.id) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
