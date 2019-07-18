@@ -2,10 +2,10 @@ import React from 'react'
 import { Link } from 'gatsby'
 import axios from 'axios'
 
-CustomItems(props) {
+const CustomItems = (props) => {
   const items = props.items;
 
-  return lineItems.physical_items.map(item => 
+  return items.map(item => 
     <div className="bc-cart-item">
       <div className="bc-cart-item-image">
           <img width="270" height="270" src="/img/coffee.png" alt={ `Image for ${item.name}` } />
