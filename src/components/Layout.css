@@ -5555,3 +5555,7 @@ a.bc-account-address__delete {
     text-decoration: underline;
     padding-left: 0.3em;
 }
+
+button.bc-link.bc-cart-item__remove-button, button.bc-btn.bc-btn--form-submit.bc-btn--add_to_cart {
+    border: none;
+}

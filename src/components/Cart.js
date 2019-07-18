@@ -47,12 +47,14 @@ const Cart = class extends React.Component {
       })
   }
 
-  updateCartItemQuantity = () => {
+  updateCartItemQuantity = (e) => {
     console.log("updateCartItemQuantity()")
+    console.log(e)
   }
 
-  removeCartItem = () => {
+  removeCartItem = (e) => {
     console.log("removeCartItem()")
+    console.log(e)
   }
 
   render() {
@@ -65,7 +67,7 @@ const Cart = class extends React.Component {
         <div className="bc-cart-item">
           <div className="bc-cart-item-image">
               <img height="270" src="/img/coffee.png" alt={ `Image for ${item.name}` } />
-              <button className="bc-link bc-cart-item__remove-button" onClick={this.removeCartItem(item.id)} type="button">Remove</button>
+              <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} onClick={this.removeCartItem} type="button">Remove</button>
           </div>
 
           <div className="bc-cart-item-meta">
@@ -78,7 +80,7 @@ const Cart = class extends React.Component {
           <div className="bc-cart-item-quantity">
             <label for="bc-cart-item__quantity" className="u-bc-screen-reader-text">Quantity</label>
 
-            <input type="number" className="bc-cart-item__quantity-input" onChange={this.updateCartItemQuantity(item.id)} value={item.quantity} min="1" max="" />
+            <input type="number" className="bc-cart-item__quantity-input" data-cart_item_id={item.id} onChange={this.updateCartItemQuantity} value={item.quantity} min="1" max="" />
           </div>
               
           <div className="bc-cart-item-total-price">
@@ -95,7 +97,7 @@ const Cart = class extends React.Component {
         <div className="bc-cart-item">
           <div className="bc-cart-item-image">
               <img height="270" src={item.image_url} alt={ `Image for ${item.name}` } />
-              <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} type="button">Remove</button>
+              <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} onClick={this.removeCartItem} type="button">Remove</button>
           </div>
 
           <div className="bc-cart-item-meta">
@@ -108,7 +110,7 @@ const Cart = class extends React.Component {
           <div className="bc-cart-item-quantity">
             <label for="bc-cart-item__quantity" className="u-bc-screen-reader-text">Quantity</label>
 
-            <input type="number" name="bc-cart-item__quantity" className="bc-cart-item__quantity-input" value={item.quantity} min="1" max="" />
+            <input type="number" className="bc-cart-item__quantity-input" data-cart_item_id={item.id} onChange={this.updateCartItemQuantity} value={item.quantity} min="1" max="" />
           </div>
               
           <div className="bc-cart-item-total-price">
@@ -124,7 +126,7 @@ const Cart = class extends React.Component {
       return items.map(item => 
         <div className="bc-cart-item">
           <div className="bc-cart-item-image">
-              <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} type="button">Remove</button>
+              <button className="bc-link bc-cart-item__remove-button" data-cart_item_id={item.id} onClick={this.removeCartItem} type="button">Remove</button>
           </div>
 
           <div className="bc-cart-item-meta">
