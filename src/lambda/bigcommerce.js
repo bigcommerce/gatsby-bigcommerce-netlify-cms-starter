@@ -9,7 +9,7 @@ export function handler(event, context, callback) {
   console.log("-----------------------")
   console.log("----- New Request -----")
   console.log("-----------------------")
-  console.log("logging event.....", event)
+  console.log("Event: ", event)
 
   // Get env var values we need to speak to the BC API
   const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
@@ -34,6 +34,7 @@ export function handler(event, context, callback) {
     map: true // default: false
   })
   const hasCartIdCookie = (cookies.hasOwnProperty('cartId'))
+  console.log(`- hasCartIdCookie? ${hasCartIdCookie.toString()} -`)
 
   // Assemble BC API URL we are going to hit
   let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
@@ -58,8 +59,9 @@ export function handler(event, context, callback) {
   // Here's a function we'll use to define how our response will look like when we call callback
   const pass = (body, cookieHeader) => {
     console.log("--------")
-    console.log("- BODY -")
+    console.log("- BODY START -")
     console.log(body)
+    console.log("- BODY END -")
     console.log("--------")
 
     callback( null, {
@@ -91,22 +93,17 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        const shouldSetCookie = ENDPOINT_QUERY_STRING == 'carts' && response.data.data.id;
         let cookieHeader = null;
-
-        console.log("--------------------")
-        console.log(`- shouldSetCookie? ${ENDPOINT_QUERY_STRING} == 'carts' && ${response.data.data.id} -`)
-        console.log(`- ${shouldSetCookie.toString()} -`)
-        if (ENDPOINT_QUERY_STRING == 'carts' && response.data.data.id) {
+        
+        if (!hasCartIdCookie && response.data.data.id) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
             })
           }
-          console.log("- cookieHeader: -")
+          console.log("- Assigning cookieHeader: -")
           console.log(cookieHeader)
         }
-        console.log("--------------------")
 
         pass(response.data, cookieHeader)
       }
