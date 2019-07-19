@@ -37,26 +37,28 @@ export function handler(event, context, callback) {
   console.log(`- hasCartIdCookie? ${hasCartIdCookie.toString()} -`)
 
   // Assemble BC API URL we are going to hit
-  let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
+  let ROOT_URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
+  let URL = ''
+
   if (ENDPOINT_QUERY_STRING == 'carts/items') {
     if (hasCartIdCookie) {
       if (event.queryStringParameters.hasOwnProperty('itemId')) {
-        URL = `${URL}carts/${cookies.cartId.value}/items/${event.queryStringParameters.itemId}?include=redirect_urls`
+        URL = `${ROOT_URL}carts/${cookies.cartId.value}/items/${event.queryStringParameters.itemId}?include=redirect_urls`
       } else {
-        URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
+        URL = `${ROOT_URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
       }
     } else {
       // If there is no cartId cookie when adding cart items, resort to creating the cart
-      URL = `${URL}carts?include=redirect_urls`
+      URL = `${ROOT_URL}carts?include=redirect_urls`
     }
   } else if (ENDPOINT_QUERY_STRING == 'carts') {
     if (hasCartIdCookie) {
-      URL = `${URL}carts/${cookies.cartId.value}?include=redirect_urls`
+      URL = `${ROOT_URL}carts/${cookies.cartId.value}?include=redirect_urls`
     } else {
-      URL = `${URL}carts?include=redirect_urls`
+      URL = `${ROOT_URL}carts?include=redirect_urls`
     }
   } else {
-    URL += ENDPOINT_QUERY_STRING;
+    URL = ROOT_URL + ENDPOINT_QUERY_STRING;
   }
   console.log("Constructed URL: ", URL)
 
@@ -95,7 +97,16 @@ export function handler(event, context, callback) {
         pass(response.data, cookieHeader)
       }
     )
-    .catch(err => pass(err))
+    .catch(err => {
+      if (ENDPOINT_QUERY_STRING == 'carts/items' && err.status == 500) {
+        // If you add an item to a cart that doesn't exist, a 500 will occur
+        // so we'll post to the base cart endpoint if that happens
+        URL = ROOT_URL
+        post(JSON.parse(event.body))
+      } else {
+        pass(err)
+      }
+    })
   }
   if(event.httpMethod == 'POST'){
     console.log("--------")
