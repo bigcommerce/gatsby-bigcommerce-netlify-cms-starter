@@ -111,6 +111,8 @@ export function handler(event, context, callback) {
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
+        console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
+        console.log('(in catch statement) response.status: ', response.status)
         pass(response.data, cookieHeader)
       }
     )
