@@ -113,6 +113,9 @@ export function handler(event, context, callback) {
       {
         let cookieHeader = null;
 
+        console.log('ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
+        console.log('response.status: ', response.status)
+
         if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', '', -1)
