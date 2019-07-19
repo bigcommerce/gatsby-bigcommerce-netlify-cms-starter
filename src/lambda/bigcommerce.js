@@ -111,21 +111,20 @@ export function handler(event, context, callback) {
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        pass(response.data, null)
+        let cookieHeader = null;
+
+        if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
+          cookieHeader = {
+            'Set-Cookie': cookie.serialize('cartId', '', -1)
+          }
+          console.log("- Removing cardId cookieHeader: -")
+          console.log(cookieHeader)
+        }
+
+        pass(response.data, cookieHeader)
       }
     )
-    .catch(err => {
-      if (ENDPOINT_QUERY_STRING == 'carts' && err.status == 404) {
-        cookieHeader = {
-          'Set-Cookie': cookie.serialize('cartId', '', -1)
-        }
-        console.log("- Removing cardId cookieHeader: -")
-        console.log(cookieHeader)
-        pass(err, cookieHeader)
-      } else {
-        pass(err)
-      }
-    })
+    .catch(err => pass(err))
   }
   if(event.httpMethod == 'GET'){
     console.log("-------")
