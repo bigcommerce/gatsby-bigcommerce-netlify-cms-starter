@@ -115,7 +115,7 @@ export function handler(event, context, callback) {
       }
     )
     .catch(err => {
-      if (ENDPOINT_QUERY_STRING == 'carts/items' && err.status == 404) {
+      if (ENDPOINT_QUERY_STRING == 'carts' && err.status == 404) {
         cookieHeader = {
           'Set-Cookie': cookie.serialize('cartId', '', -1)
         }
