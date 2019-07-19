@@ -116,11 +116,12 @@ export function handler(event, context, callback) {
     )
     .catch(err => {
         console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
+        console.log('(in catch statement) err: ', err)
         console.log('(in catch statement) err.status: ', err.status)
 
         let cookieHeader = null;
 
-        if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
+        if (ENDPOINT_QUERY_STRING == 'carts' && err.status == 404) {
           cookieHeader = {
             'Set-Cookie': cookie.serialize('cartId', '', {
               maxAge: -1
