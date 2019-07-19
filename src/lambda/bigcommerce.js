@@ -139,7 +139,7 @@ export function handler(event, context, callback) {
   };
 
   // Process DELETE
-  const delete = () => {
+  const del = () => {
     axios.delete(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
@@ -152,7 +152,7 @@ export function handler(event, context, callback) {
     console.log("-------")
     console.log("- DELETE -")
     console.log("-------")
-    delete()
+    del()
   };
 
   event.queryStringParameters.
