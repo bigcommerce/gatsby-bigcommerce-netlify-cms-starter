@@ -23,7 +23,7 @@ export function handler(event, context, callback) {
     'Access-Control-Allow-Headers': 'Content-Type, Accept',
     'Access-Control-Allow-Credentials': 'true',
     'Access-Control-Allow-Origin': CORS_ORIGIN,
-    'Access-Control-Allow-Methods': 'GET, PUT, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
   }
   // Get endpoint value from query string
   const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
@@ -149,9 +149,9 @@ export function handler(event, context, callback) {
     .catch(err => pass(err))
   }
   if(event.httpMethod == 'DELETE'){
-    console.log("-------")
+    console.log("----------")
     console.log("- DELETE -")
-    console.log("-------")
+    console.log("----------")
     del()
   };
 };
