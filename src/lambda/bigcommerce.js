@@ -9,7 +9,7 @@ export function handler(event, context, callback) {
   console.log("-----------------------")
   console.log("----- New Request -----")
   console.log("-----------------------")
-  console.log("Event: ", event)
+  // console.log("Event: ", event)
 
   // Get env var values we need to speak to the BC API
   const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
@@ -113,7 +113,7 @@ export function handler(event, context, callback) {
       {
         console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
         console.log('(in catch statement) response.status: ', response.status)
-        pass(response.data, cookieHeader)
+        pass(response.data)
       }
     )
     .catch(err => {
