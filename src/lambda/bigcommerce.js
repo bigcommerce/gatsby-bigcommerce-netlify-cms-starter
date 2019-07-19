@@ -111,27 +111,26 @@ export function handler(event, context, callback) {
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        let cookieHeader = null;
-
-        console.log('ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
-        console.log('response.status: ', response.status)
-
-        if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
-          cookieHeader = {
-            'Set-Cookie': cookie.serialize('cartId', '', -1)
-          }
-          console.log("- Removing cardId cookieHeader: -")
-          console.log(cookieHeader)
-        }
-
         pass(response.data, cookieHeader)
       }
     )
     .catch(err => {
         console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
-        console.log('(in catch statement) response.status: ', response.status)
+        console.log('(in catch statement) err.status: ', err.status)
 
-        pass(err)
+        let cookieHeader = null;
+
+        if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
+          cookieHeader = {
+            'Set-Cookie': cookie.serialize('cartId', '', {
+              maxAge: -1
+            })
+          }
+          console.log("- Expiring cardId cookieHeader: -")
+          console.log(cookieHeader)
+        }
+
+        pass(err, cookieHeader)
     })
   }
   if(event.httpMethod == 'GET'){
