@@ -127,7 +127,12 @@ export function handler(event, context, callback) {
         pass(response.data, cookieHeader)
       }
     )
-    .catch(err => pass(err))
+    .catch(err => {
+        console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
+        console.log('(in catch statement) response.status: ', response.status)
+
+        pass(err)
+    })
   }
   if(event.httpMethod == 'GET'){
     console.log("-------")
