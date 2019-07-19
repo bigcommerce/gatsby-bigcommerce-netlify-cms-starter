@@ -97,16 +97,7 @@ export function handler(event, context, callback) {
         pass(response.data, cookieHeader)
       }
     )
-    .catch(err => {
-      if (ENDPOINT_QUERY_STRING == 'carts/items' && err.status == 500) {
-        // If you add an item to a cart that doesn't exist, a 500 will occur
-        // so we'll post to the base cart endpoint if that happens
-        URL = ROOT_URL
-        post(JSON.parse(event.body))
-      } else {
-        pass(err)
-      }
-    })
+    .catch(err => pass(err))
   }
   if(event.httpMethod == 'POST'){
     console.log("--------")
@@ -123,7 +114,18 @@ export function handler(event, context, callback) {
         pass(response.data, null)
       }
     )
-    .catch(err => pass(err))
+    .catch(err => {
+      if (ENDPOINT_QUERY_STRING == 'carts/items' && err.status == 400) {
+        cookieHeader = {
+          'Set-Cookie': cookie.serialize('cartId', '', -1)
+        }
+        console.log("- Removing cardId cookieHeader: -")
+        console.log(cookieHeader)
+        pass(err, cookieHeader)
+      } else {
+        pass(err)
+      }
+    })
   }
   if(event.httpMethod == 'GET'){
     console.log("-------")
