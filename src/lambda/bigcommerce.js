@@ -40,7 +40,11 @@ export function handler(event, context, callback) {
   let URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
   if (ENDPOINT_QUERY_STRING == 'carts/items') {
     if (hasCartIdCookie) {
-      URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
+      if (event.queryStringParameters.hasOwnProperty('itemId')) {
+        URL = `${URL}carts/${cookies.cartId.value}/items/${event.queryStringParameters.itemId}?include=redirect_urls`
+      } else {
+        URL = `${URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
+      }
     } else {
       // If there is no cartId cookie when adding cart items, resort to creating the cart
       URL = `${URL}carts?include=redirect_urls`
@@ -54,9 +58,9 @@ export function handler(event, context, callback) {
   } else {
     URL += ENDPOINT_QUERY_STRING;
   }
-  console.log("Constructed URL is ...", URL)
+  console.log("Constructed URL: ", URL)
 
-  // Here's a function we'll use to define how our response will look like when we call callback
+  // Here's a function we'll use to define how our response will look like when we callback
   const pass = (body, cookieHeader) => {
     console.log("--------")
     console.log("- BODY START -")
@@ -70,23 +74,6 @@ export function handler(event, context, callback) {
       headers: {...CORS_HEADERS, ...cookieHeader }
     }
   )}
-
-  // Process GET
-  const get = () => {
-    axios.get(URL, { headers: REQUEST_HEADERS })
-    .then((response) =>
-      {
-        pass(response.data, null)
-      }
-    )
-    .catch(err => pass(err))
-  }
-  if(event.httpMethod == 'GET'){
-    console.log("-------")
-    console.log("- GET -")
-    console.log("-------")
-    get()
-  };
 
   // Process POST
   const post = (body) => {
@@ -117,6 +104,23 @@ export function handler(event, context, callback) {
     post(JSON.parse(event.body))
   };
 
+  // Process GET
+  const get = () => {
+    axios.get(URL, { headers: REQUEST_HEADERS })
+    .then((response) =>
+      {
+        pass(response.data, null)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'GET'){
+    console.log("-------")
+    console.log("- GET -")
+    console.log("-------")
+    get()
+  };
+
   // Process PUT
   const put = (body) => {
     axios.put(URL, body, { headers: REQUEST_HEADERS })
@@ -133,4 +137,23 @@ export function handler(event, context, callback) {
     console.log("-------")
     put(JSON.parse(event.body))
   };
+
+  // Process DELETE
+  const delete = () => {
+    axios.delete(URL, { headers: REQUEST_HEADERS })
+    .then((response) =>
+      {
+        pass(response.data)
+      }
+    )
+    .catch(err => pass(err))
+  }
+  if(event.httpMethod == 'DELETE'){
+    console.log("-------")
+    console.log("- DELETE -")
+    console.log("-------")
+    delete()
+  };
+
+  event.queryStringParameters.
 };

@@ -47,14 +47,40 @@ const Cart = class extends React.Component {
       })
   }
 
+  removeItemFromCart = (itemId) => {
+    this.setState({ cartLoading: true })
+    axios
+      .delete(`/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`, { withCredentials: true })
+      .then(response => {
+        const lineItems = response.data.data.line_items;
+        const cartAmount = response.data.data.cart_amount;
+        const currency = response.data.data.currency;
+
+        this.setState({
+          cartLoading: false,
+          cart: {
+            currency,
+            cartAmount,
+            lineItems,
+            numberItems: lineItems.physical_items.length + lineItems.digital_items.length + lineItems.custom_items.length + lineItems.gift_certificates.length,
+            redirectUrls: response.data.data.redirect_urls,
+          },
+        })
+      })
+      .catch(error => {
+        this.setState({ cartLoading: false, cartError: error })
+      })
+  }
+
   updateCartItemQuantity = (e) => {
     console.log("updateCartItemQuantity()")
-    console.log(e)
+    console.log(e.target.getAttribute('data-cart_item_id'))
   }
 
   removeCartItem = (e) => {
     console.log("removeCartItem()")
-    console.log(e)
+    console.log(e.target.getAttribute('data-cart_item_id'))
+    this.removeItemFromCart(e.target.getAttribute('data-cart_item_id'))
   }
 
   render() {
