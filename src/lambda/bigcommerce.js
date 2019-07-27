@@ -62,6 +62,35 @@ export function handler(event, context, callback) {
   }
   console.log("Constructed URL: ", URL)
 
+  // Function to determine return cookie header that should be returned with response
+  const setCookieHeader = (responseType, response) => {
+    let cookieHeader = null;
+
+    if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
+      cookieHeader = {
+        'Set-Cookie': cookie.serialize('cartId', '', {
+          maxAge: -1
+        })
+      }
+      console.log("- Expiring cardId cookieHeader: -")
+      console.log(cookieHeader)
+    } else if (responseType == 'response') {
+      let cookieHeader = null;
+        
+        if (!hasCartIdCookie && response.data.data.id) {
+          cookieHeader = {
+            'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
+              maxAge: 60 * 60 * 24 * 28 // 4 weeks
+            })
+          }
+          console.log("- Assigning cookieHeader: -")
+          console.log(cookieHeader)
+        }
+    }
+
+    return cookieHeader;
+  }
+
   // Here's a function we'll use to define how our response will look like when we callback
   const pass = (body, cookieHeader) => {
     console.log("--------")
@@ -82,17 +111,7 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        let cookieHeader = null;
-        
-        if (!hasCartIdCookie && response.data.data.id) {
-          cookieHeader = {
-            'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
-              maxAge: 60 * 60 * 24 * 28 // 4 weeks
-            })
-          }
-          console.log("- Assigning cookieHeader: -")
-          console.log(cookieHeader)
-        }
+        const cookieHeader = setCookieHeader('response', response);
 
         pass(response.data, cookieHeader)
       }
@@ -113,6 +132,9 @@ export function handler(event, context, callback) {
       {
         console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
         console.log('(in catch statement) response.status: ', response.status)
+
+        const cookieHeader = setCookieHeader('response', response);
+
         pass(response.data)
       }
     )
@@ -121,17 +143,7 @@ export function handler(event, context, callback) {
         console.log('(in catch statement) err: ', err)
         console.log('(in catch statement) err.status: ', err.status)
 
-        let cookieHeader = null;
-
-        if (ENDPOINT_QUERY_STRING == 'carts' && err.status == 404) {
-          cookieHeader = {
-            'Set-Cookie': cookie.serialize('cartId', '', {
-              maxAge: -1
-            })
-          }
-          console.log("- Expiring cardId cookieHeader: -")
-          console.log(cookieHeader)
-        }
+        const cookieHeader = setCookieHeader('error', err);
 
         pass(err, cookieHeader)
     })
