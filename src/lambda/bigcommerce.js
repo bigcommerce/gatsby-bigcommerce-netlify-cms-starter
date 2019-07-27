@@ -93,14 +93,14 @@ export function handler(event, context, callback) {
 
   // Here's a function we'll use to define how our response will look like when we callback
   const pass = (body, cookieHeader) => {
-    console.log("--------")
-    console.log("- BODY START -")
-    console.log(body)
-    console.log("- BODY END -")
-    console.log("--------")
+    // console.log("--------")
+    // console.log("- BODY START -")
+    // console.log(body)
+    // console.log("- BODY END -")
+    // console.log("--------")
 
     callback( null, {
-      statusCode: 200,
+      statusCode: body.status,
       body: JSON.stringify(body),
       headers: {...CORS_HEADERS, ...cookieHeader }
     }
