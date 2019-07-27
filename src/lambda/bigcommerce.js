@@ -66,6 +66,8 @@ export function handler(event, context, callback) {
   const setCookieHeader = (responseType, response) => {
     let cookieHeader = null;
 
+    console.log('(in setCookieHeader function) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
+
     if (ENDPOINT_QUERY_STRING == 'carts' && response.status == 404) {
       cookieHeader = {
         'Set-Cookie': cookie.serialize('cartId', '', {
@@ -130,20 +132,13 @@ export function handler(event, context, callback) {
     axios.get(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
-        console.log('(in catch statement) response.status: ', response.status)
+        const cookieHeader = setCookieHeader('response', response)
 
-        const cookieHeader = setCookieHeader('response', response);
-
-        pass(response.data)
+        pass(response.data, cookieHeader)
       }
     )
     .catch(err => {
-        console.log('(in catch statement) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
-        console.log('(in catch statement) err: ', err)
-        console.log('(in catch statement) err.status: ', err.status)
-
-        const cookieHeader = setCookieHeader('error', err);
+        const cookieHeader = setCookieHeader('error', err)
 
         pass(err, cookieHeader)
     })
