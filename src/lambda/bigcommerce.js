@@ -68,13 +68,13 @@ export function handler(event, context, callback) {
 
     console.log('(in setCookieHeader function) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
 
-    if (typeof response.status != undefined) {
-      console.log('(in setCookieHeader function) response.status: ', response.status)
+    if (typeof response.status != 'undefined') {
+      console.log('(in setCookieHeader function) response.status: ', response.status, ' (', typeof response.status, ')')
     } else {
       console.log('(in setCookieHeader function) response.status not defined')
     }
 
-    if (ENDPOINT_QUERY_STRING == 'carts' && typeof response.status != undefined && response.status == 404) {
+    if (ENDPOINT_QUERY_STRING == 'carts' && typeof response.status != 'undefined' && response.status == 404) {
       cookieHeader = {
         'Set-Cookie': cookie.serialize('cartId', '', {
           maxAge: -1
