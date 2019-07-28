@@ -66,7 +66,7 @@ export function handler(event, context, callback) {
   const setCookieHeader = (responseType, response) => {
     let cookieHeader = null;
 
-    console.log('(in setCookieHeader function) response: ', response)
+    console.log('(in setCookieHeader function) response: ', response.response)
 
     console.log('(in setCookieHeader function) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
 
