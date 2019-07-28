@@ -106,7 +106,7 @@ export function handler(event, context, callback) {
     console.log("- in pass() -")
     console.log("-------------")
     console.log(JSON.stringify(axiosResponse))
-    console.log(axiosResponse)
+    // console.log(axiosResponse)
 
     // if (JSON.stringify(axiosResponse) == {}) {
     //   console.log("- axiosResponse.response is empty -")
@@ -128,6 +128,9 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
+        console.log("- in post() response: -")
+        console.log(response)
+
         const cookieHeader = setCookieHeader('response', response);
 
         pass(response, cookieHeader)
