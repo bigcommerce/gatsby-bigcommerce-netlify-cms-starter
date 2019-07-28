@@ -129,7 +129,9 @@ export function handler(event, context, callback) {
     .then((response) =>
       {
         console.log("- in post() response: -")
-        console.log(response)
+        console.log('status: ', response.response.status);
+        console.log('headers: ', response.response.headers);
+        console.log('data: ', response.response.data);
 
         const cookieHeader = setCookieHeader('response', response);
 
