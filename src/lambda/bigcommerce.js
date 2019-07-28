@@ -63,20 +63,18 @@ export function handler(event, context, callback) {
   console.log("Constructed URL: ", URL)
 
   // Function to determine return cookie header that should be returned with response
-  const setCookieHeader = (responseType, response) => {
+  const setCookieHeader = (responseType, axiosResponse) => {
     let cookieHeader = null;
-
-    console.log('(in setCookieHeader function) response: ', response.response)
 
     console.log('(in setCookieHeader function) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
 
-    if (typeof response.status != 'undefined') {
-      console.log('(in setCookieHeader function) response.status: ', response.status, ' (', typeof response.status, ')')
+    if (typeof axiosResponse.response.status != 'undefined') {
+      console.log('(in setCookieHeader function) axiosResponse.response.status: ', axiosResponse.response.status)
     } else {
-      console.log('(in setCookieHeader function) response.status not defined')
+      console.log('(in setCookieHeader function) axiosResponse.response.status not defined')
     }
 
-    if (ENDPOINT_QUERY_STRING == 'carts' && typeof response.status != 'undefined' && response.status == 404) {
+    if (ENDPOINT_QUERY_STRING == 'carts' && typeof axiosResponse.response.status != 'undefined' && axiosResponse.response.status == 404) {
       cookieHeader = {
         'Set-Cookie': cookie.serialize('cartId', '', {
           maxAge: -1
@@ -87,9 +85,9 @@ export function handler(event, context, callback) {
     } else if (responseType == 'response') {
       let cookieHeader = null;
         
-        if (!hasCartIdCookie && response.data.data.id) {
+        if (!hasCartIdCookie && axiosResponse.response.data.data.id) {
           cookieHeader = {
-            'Set-Cookie': cookie.serialize('cartId', response.data.data.id, {
+            'Set-Cookie': cookie.serialize('cartId', axiosResponse.response.data.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
             })
           }
