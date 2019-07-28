@@ -107,8 +107,8 @@ export function handler(event, context, callback) {
     console.log("-------------")
     console.log(JSON.stringify(axiosResponse))
 
-    if (typeof axiosResponse.response.status == 'undefined') {
-      console.log("- axiosResponse.response.status is undefined -")
+    if (JSON.stringify(axiosResponse) == {}) {
+      console.log("- axiosResponse.response is empty -")
       console.log(axiosResponse)
     }
 
