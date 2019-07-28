@@ -66,6 +66,7 @@ export function handler(event, context, callback) {
   const setCookieHeader = (responseType, axiosResponse) => {
     let cookieHeader = null;
 
+    console.log('(in setCookieHeader function) responseType: ', responseType)
     console.log('(in setCookieHeader function) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
 
     if (typeof axiosResponse.response.status != 'undefined') {
@@ -100,15 +101,17 @@ export function handler(event, context, callback) {
   }
 
   // Here's a function we'll use to define how our response will look like when we callback
-  const pass = (body, cookieHeader) => {
-    // console.log("--------")
-    // console.log("- BODY START -")
-    // console.log(body)
-    // console.log("- BODY END -")
-    // console.log("--------")
+  const pass = (axiosResponse, cookieHeader) => {
+    console.log("-------------")
+    console.log("- in pass() -")
+    console.log("-------------")
+    console.log(JSON.stringify(axiosResponse))
+
+    const statusCode = axiosResponse.response.status
+    const body = axiosResponse.response.data
 
     callback( null, {
-      statusCode: body.status,
+      statusCode: statusCode,
       body: JSON.stringify(body),
       headers: {...CORS_HEADERS, ...cookieHeader }
     }
@@ -121,7 +124,7 @@ export function handler(event, context, callback) {
       {
         const cookieHeader = setCookieHeader('response', response);
 
-        pass(response.data, cookieHeader)
+        pass(response, cookieHeader)
       }
     )
     .catch(err => pass(err))
@@ -140,7 +143,7 @@ export function handler(event, context, callback) {
       {
         const cookieHeader = setCookieHeader('response', response)
 
-        pass(response.data, cookieHeader)
+        pass(response, cookieHeader)
       }
     )
     .catch(err => {
@@ -161,7 +164,7 @@ export function handler(event, context, callback) {
     axios.put(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        pass(response.data)
+        pass(response)
       }
     )
     .catch(err => pass(err))
@@ -178,7 +181,7 @@ export function handler(event, context, callback) {
     axios.delete(URL, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        pass(response.data)
+        pass(response)
       }
     )
     .catch(err => pass(err))
