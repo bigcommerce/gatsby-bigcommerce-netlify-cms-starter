@@ -106,11 +106,12 @@ export function handler(event, context, callback) {
     console.log("- in pass() -")
     console.log("-------------")
     console.log(JSON.stringify(axiosResponse))
+    console.log(axiosResponse)
 
-    if (JSON.stringify(axiosResponse) == {}) {
-      console.log("- axiosResponse.response is empty -")
-      console.log(axiosResponse)
-    }
+    // if (JSON.stringify(axiosResponse) == {}) {
+    //   console.log("- axiosResponse.response is empty -")
+    //   console.log(axiosResponse)
+    // }
 
     const statusCode = axiosResponse.response.status
     const body = axiosResponse.response.data
