@@ -1,5 +1,6 @@
+require('dotenv').config()
 const axios = require("axios")
-const cookie = require('cookie');
+const cookie = require('cookie')
 const setCookie = require('set-cookie-parser')
 
 export function handler(event, context, callback) {
@@ -12,7 +13,11 @@ export function handler(event, context, callback) {
   // console.log("Event: ", event)
 
   // Get env var values we need to speak to the BC API
-  const { API_STORE_HASH, API_CLIENT_ID, API_TOKEN, API_SECRET, CORS_ORIGIN } = process.env
+  const API_STORE_HASH = process.env.API_STORE_HASH
+  const API_CLIENT_ID = process.env.API_CLIENT_ID
+  const API_TOKEN = process.env.API_TOKEN
+  const API_SECRET = process.env.API_SECRET
+  const CORS_ORIGIN = process.env.CORS_ORIGIN
   // Set up headers
   const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
@@ -42,7 +47,7 @@ export function handler(event, context, callback) {
 
   if (ENDPOINT_QUERY_STRING == 'carts/items') {
     if (hasCartIdCookie) {
-      if (event.queryStringParameters.hasOwnProperty('itemId')) {
+      if (typeof event.queryStringParameters.itemId != 'undefined') {
         URL = `${ROOT_URL}carts/${cookies.cartId.value}/items/${event.queryStringParameters.itemId}?include=redirect_urls`
       } else {
         URL = `${ROOT_URL}carts/${cookies.cartId.value}/items?include=redirect_urls`
@@ -63,19 +68,17 @@ export function handler(event, context, callback) {
   console.log("Constructed URL: ", URL)
 
   // Function to determine return cookie header that should be returned with response
-  const setCookieHeader = (responseType, axiosResponse) => {
+  const setCookieHeader = (responseType, response) => {
     let cookieHeader = null;
 
     console.log('(in setCookieHeader function) responseType: ', responseType)
     console.log('(in setCookieHeader function) ENDPOINT_QUERY_STRING: ', ENDPOINT_QUERY_STRING)
+    // console.log('(in setCookieHeader function) response: ', response)
 
-    if (typeof axiosResponse.response.status != 'undefined') {
-      console.log('(in setCookieHeader function) axiosResponse.response.status: ', axiosResponse.response.status)
-    } else {
-      console.log('(in setCookieHeader function) axiosResponse.response.status not defined')
-    }
+    const statusCode = response.status
+    const body = response.data
 
-    if (ENDPOINT_QUERY_STRING == 'carts' && typeof axiosResponse.response.status != 'undefined' && axiosResponse.response.status == 404) {
+    if (ENDPOINT_QUERY_STRING == 'carts' && statusCode == 404) {
       cookieHeader = {
         'Set-Cookie': cookie.serialize('cartId', '', {
           maxAge: -1
@@ -84,11 +87,9 @@ export function handler(event, context, callback) {
       console.log("- Expiring cardId cookieHeader: -")
       console.log(cookieHeader)
     } else if (responseType == 'response') {
-      let cookieHeader = null;
-        
-        if (!hasCartIdCookie && axiosResponse.response.data.data.id) {
+        if (!hasCartIdCookie && body.data.id) {
           cookieHeader = {
-            'Set-Cookie': cookie.serialize('cartId', axiosResponse.response.data.data.id, {
+            'Set-Cookie': cookie.serialize('cartId', body.data.id, {
               maxAge: 60 * 60 * 24 * 28 // 4 weeks
             })
           }
@@ -101,25 +102,15 @@ export function handler(event, context, callback) {
   }
 
   // Here's a function we'll use to define how our response will look like when we callback
-  const pass = (axiosResponse, cookieHeader) => {
-    console.log("-------------")
-    console.log("- in pass() -")
-    console.log("-------------")
-    console.log(JSON.stringify(axiosResponse))
-    // console.log(axiosResponse)
-
-    // if (JSON.stringify(axiosResponse) == {}) {
-    //   console.log("- axiosResponse.response is empty -")
-    //   console.log(axiosResponse)
-    // }
-
-    const statusCode = axiosResponse.response.status
-    const body = axiosResponse.response.data
+  const pass = (response, cookieHeader) => {
+    const statusCode = response.status
+    const body = response.data
+    const headers = {...CORS_HEADERS, ...cookieHeader }
 
     callback( null, {
       statusCode: statusCode,
       body: JSON.stringify(body),
-      headers: {...CORS_HEADERS, ...cookieHeader }
+      headers: headers
     }
   )}
 
@@ -128,17 +119,12 @@ export function handler(event, context, callback) {
     axios.post(URL, body, { headers: REQUEST_HEADERS })
     .then((response) =>
       {
-        console.log("- in post() response: -")
-        console.log('status: ', response.response.status);
-        console.log('headers: ', response.response.headers);
-        console.log('data: ', response.response.data);
-
         const cookieHeader = setCookieHeader('response', response);
 
         pass(response, cookieHeader)
       }
     )
-    .catch(err => pass(err))
+    .catch(err => pass(err.response))
   }
   if(event.httpMethod == 'POST'){
     console.log("--------")
@@ -158,9 +144,9 @@ export function handler(event, context, callback) {
       }
     )
     .catch(err => {
-        const cookieHeader = setCookieHeader('error', err)
+        const cookieHeader = setCookieHeader('error', err.response)
 
-        pass(err, cookieHeader)
+        pass(err.response, cookieHeader)
     })
   }
   if(event.httpMethod == 'GET'){
@@ -178,7 +164,7 @@ export function handler(event, context, callback) {
         pass(response)
       }
     )
-    .catch(err => pass(err))
+    .catch(err => pass(err.response))
   }
   if(event.httpMethod == 'PUT'){
     console.log("-------")
@@ -195,7 +181,7 @@ export function handler(event, context, callback) {
         pass(response)
       }
     )
-    .catch(err => pass(err))
+    .catch(err => pass(err.response))
   }
   if(event.httpMethod == 'DELETE'){
     console.log("----------")

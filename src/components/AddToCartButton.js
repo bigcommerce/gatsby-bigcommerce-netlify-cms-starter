@@ -52,7 +52,7 @@ const AddToCartButton = class extends React.Component {
   }
 
   render() {
-    const { currency, cartAmount, lineItems, numberItems, redirectUrls } = this.state.cart
+    const { redirectUrls } = this.state.cart
 
     const addToCartButtonText = this.state.addingToCart ? 'Adding to Cart...' : 'Add to Cart';
 

@@ -64,7 +64,7 @@ const Navbar = class extends React.Component {
   }
 
   render() {
-    const { lineItems, numberItems } = this.state.cart
+    const { numberItems } = this.state.cart
 
     return (
       <nav
@@ -110,13 +110,9 @@ const Navbar = class extends React.Component {
               </Link>
               <Link className="navbar-item" to="/cart">
                 Cart 
-                {this.state.loading ? (
-                  <h2></h2>
-                ) : numberItems > 0 ? (
+                {numberItems > 0 && 
                   <h2>({numberItems})</h2>
-                ) : (
-                  <h2></h2>
-                )}
+                }
               </Link>
             </div>
             <div className="navbar-end has-text-centered">

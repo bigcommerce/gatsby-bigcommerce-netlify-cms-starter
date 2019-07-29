@@ -5559,3 +5559,36 @@ a.bc-account-address__delete {
 button.bc-link.bc-cart-item__remove-button, button.bc-btn.bc-btn--form-submit.bc-btn--add_to_cart, button.bc-btn.bc-cart-actions__checkout-button {
     border: none;
 }
+
+.bc-btn {
+    cursor: pointer;
+}
+
+.bc-cart-item-quantity {
+    display: flex
+}
+
+.bc-cart-item-quantity button {
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 1.25em;
+    font-weight: 300;
+}
+
+.bc-cart-item-quantity button:hover {
+    color: #5273f4;
+}
+
+.bc-cart-item-quantity button.inactive, .bc-cart-item-quantity button.inactive:hover {
+    color: #ccc;
+    cursor: initial;
+}
+
+.bc-cart-item-quantity div {
+    font-size: 1.25em;
+    font-weight: 700;
+    line-height: 3em;
+    min-width: 30px;
+    text-align: center;
+}
