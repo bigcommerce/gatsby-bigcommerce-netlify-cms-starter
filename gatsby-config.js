@@ -1,4 +1,5 @@
 var proxy = require('http-proxy-middleware')
+require("dotenv").config()
 
 module.exports = {
   siteMetadata: {
@@ -7,6 +8,20 @@ module.exports = {
       'This repo contains an example business website that is built with Gatsby, and Netlify CMS.It follows the JAMstack architecture by using Git as a single source of truth, and Netlify for continuous deployment, and CDN distribution.',
   },
   plugins: [
+    {
+      resolve: 'gatsby-source-bigcommerce',
+      options: {
+        // REQUIRED
+        clientId: `${process.env.API_CLIENT_ID}`,
+        secret: `${process.env.API_SECRET}`,
+        accessToken: `${process.env.API_TOKEN}`,
+        storeHash: `${process.env.API_STORE_HASH}`,
+        endpoints: {
+          BigCommerceProducts: "/catalog/products?include=images,variants",
+          BigCommerceCategories: "/catalog/categories",
+        },
+      }
+    },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sass',
     {

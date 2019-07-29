@@ -7,6 +7,9 @@ import Testimonials from '../components/Testimonials'
 import Pricing from '../components/Pricing'
 import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
 
+import AddToCartButton from '../components/AddToCartButton'
+
+
 export const ProductPageTemplate = ({
   image,
   title,
@@ -17,6 +20,7 @@ export const ProductPageTemplate = ({
   testimonials,
   fullImage,
   pricing,
+  products,
 }) => (
   <div className="content">
     <div
@@ -41,6 +45,14 @@ export const ProductPageTemplate = ({
     </div>
     <section className="section section--gradient">
       <div className="container">
+        <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
+          {products.map(product => (
+            <div key={product.id} className="bc-product-card">
+              <div>{product.name}</div>
+              <AddToCartButton productId={product.variants[0].product_id} variantId={product.variants[0].id} />
+            </div>
+          ))}
+        </div>
         <div className="section">
           <div className="columns">
             <div className="column is-7 is-offset-1">
@@ -126,10 +138,12 @@ ProductPageTemplate.propTypes = {
     description: PropTypes.string,
     plans: PropTypes.array,
   }),
+  products: PropTypes.array,
 }
 
 const ProductPage = ({ data }) => {
   const { frontmatter } = data.markdownRemark
+  const { nodes } = data.allBigCommerceProducts
 
   return (
     <Layout>
@@ -143,6 +157,7 @@ const ProductPage = ({ data }) => {
         testimonials={frontmatter.testimonials}
         fullImage={frontmatter.full_image}
         pricing={frontmatter.pricing}
+        products={nodes}
       />
     </Layout>
   )
@@ -153,6 +168,9 @@ ProductPage.propTypes = {
     markdownRemark: PropTypes.shape({
       frontmatter: PropTypes.object,
     }),
+    allBigCommerceProducts: PropTypes.shape({
+      nodes: PropTypes.array,
+    }),
   }),
 }
 
@@ -160,6 +178,26 @@ export default ProductPage
 
 export const productPageQuery = graphql`
   query ProductPage($id: String!) {
+    allBigCommerceProducts {
+      nodes {
+        id
+        name
+        sku
+        price
+        images {
+          url_thumbnail
+        }
+        variants {
+          product_id
+          id
+          option_values {
+            label
+            option_display_name
+          }
+          sku
+        }
+      }
+    }
     markdownRemark(id: { eq: $id }) {
       frontmatter {
         title

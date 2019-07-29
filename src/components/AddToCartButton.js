@@ -26,6 +26,7 @@ const AddToCartButton = class extends React.Component {
           {
             quantity: 1,
             product_id: parseInt(this.props.productId),
+            variant_id: parseInt(this.props.variantId),
           }
         ]
       }, { withCredentials: true })
