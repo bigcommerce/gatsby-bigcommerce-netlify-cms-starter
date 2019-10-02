@@ -1,14 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
-import Features from '../components/Features'
-import Testimonials from '../components/Testimonials'
-import Pricing from '../components/Pricing'
-import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'gatsby';
+import Layout from '../components/Layout';
+import Features from '../components/Features';
+import Testimonials from '../components/Testimonials';
+import Pricing from '../components/Pricing';
+import PreviewCompatibleImage from '../components/PreviewCompatibleImage';
 
-import AddToCartButton from '../components/AddToCartButton'
-
+import AddToCartButton from '../components/AddToCartButton';
 
 export const ProductPageTemplate = ({
   image,
@@ -20,7 +19,7 @@ export const ProductPageTemplate = ({
   testimonials,
   fullImage,
   pricing,
-  products,
+  products
 }) => (
   <div className="content">
     <div
@@ -28,18 +27,16 @@ export const ProductPageTemplate = ({
       style={{
         backgroundImage: `url(${
           !!image.childImageSharp ? image.childImageSharp.fluid.src : image
-        })`,
-      }}
-    >
+        })`
+      }}>
       <h2
         className="has-text-weight-bold is-size-1"
         style={{
           boxShadow: '0.5rem 0 0 #f40, -0.5rem 0 0 #f40',
           backgroundColor: '#f40',
           color: 'white',
-          padding: '1rem',
-        }}
-      >
+          padding: '1rem'
+        }}>
         {title}
       </h2>
     </div>
@@ -49,7 +46,14 @@ export const ProductPageTemplate = ({
           {products.map(product => (
             <div key={product.id} className="bc-product-card">
               <div>{product.name}</div>
-              <AddToCartButton productId={product.variants[0].product_id} variantId={product.variants[0].id} />
+              <img
+                src={product.images.length && product.images[0].url_standard}
+                alt={product.name}
+              />
+              <AddToCartButton
+                productId={product.variants[0].product_id}
+                variantId={product.variants[0].id}
+              />
             </div>
           ))}
         </div>
@@ -100,7 +104,7 @@ export const ProductPageTemplate = ({
                     fullImage.childImageSharp
                       ? fullImage.childImageSharp.fluid.src
                       : fullImage
-                  })`,
+                  })`
                 }}
               />
               <h2 className="has-text-weight-semibold is-size-2">
@@ -114,7 +118,7 @@ export const ProductPageTemplate = ({
       </div>
     </section>
   </div>
-)
+);
 
 ProductPageTemplate.propTypes = {
   image: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
@@ -122,28 +126,28 @@ ProductPageTemplate.propTypes = {
   heading: PropTypes.string,
   description: PropTypes.string,
   intro: PropTypes.shape({
-    blurbs: PropTypes.array,
+    blurbs: PropTypes.array
   }),
   main: PropTypes.shape({
     heading: PropTypes.string,
     description: PropTypes.string,
     image1: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     image2: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    image3: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    image3: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
   }),
   testimonials: PropTypes.array,
   fullImage: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   pricing: PropTypes.shape({
     heading: PropTypes.string,
     description: PropTypes.string,
-    plans: PropTypes.array,
+    plans: PropTypes.array
   }),
-  products: PropTypes.array,
-}
+  products: PropTypes.array
+};
 
 const ProductPage = ({ data }) => {
-  const { frontmatter } = data.markdownRemark
-  const { nodes } = data.allBigCommerceProducts
+  const { frontmatter } = data.markdownRemark;
+  const { nodes } = data.allBigCommerceProducts;
 
   return (
     <Layout>
@@ -160,21 +164,21 @@ const ProductPage = ({ data }) => {
         products={nodes}
       />
     </Layout>
-  )
-}
+  );
+};
 
 ProductPage.propTypes = {
   data: PropTypes.shape({
     markdownRemark: PropTypes.shape({
-      frontmatter: PropTypes.object,
+      frontmatter: PropTypes.object
     }),
     allBigCommerceProducts: PropTypes.shape({
-      nodes: PropTypes.array,
-    }),
-  }),
-}
+      nodes: PropTypes.array
+    })
+  })
+};
 
-export default ProductPage
+export default ProductPage;
 
 export const productPageQuery = graphql`
   query ProductPage($id: String!) {
@@ -186,6 +190,7 @@ export const productPageQuery = graphql`
         price
         images {
           url_thumbnail
+          url_standard
         }
         variants {
           product_id
@@ -282,4 +287,4 @@ export const productPageQuery = graphql`
       }
     }
   }
-`
+`;
