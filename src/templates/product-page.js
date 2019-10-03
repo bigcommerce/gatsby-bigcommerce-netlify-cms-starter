@@ -46,8 +46,11 @@ export const ProductPageTemplate = ({
           {products.map(product => (
             <div key={product.id} className="bc-product-card">
               <Link to={`/products/${product.sku}`}>
-                <div>{product.name}</div>
+                <div className="bc-product-card-product-name">
+                  {product.name}
+                </div>
                 <img
+                  className="bc-product-card-image"
                   src={product.images.length && product.images[0].url_standard}
                   alt={product.name}
                 />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 
 import AddToCartButton from '../components/AddToCartButton';
@@ -6,10 +6,12 @@ import Layout from '../components/Layout';
 
 export default ({
   data: {
-    allBigCommerceProducts: { nodes }
+    allBigCommerceProducts: {
+      nodes: [{ name, id, sku, price, description, variants, images }]
+    }
   }
 }) => {
-  const { name, id, sku, price, description, variants, images } = nodes[0];
+  const currency = '$'; // lets find currency somewhere, ok?
   return (
     <Layout>
       <div className="content">
@@ -27,12 +29,21 @@ export default ({
         </div>
         <section className="section">
           <div className="container">
-            <img src={images[0]} alt="" />
-            <div className="content">{description}</div>
+            {images.map(img => (
+              <img src={img.url_standard} alt="" />
+            ))}
+            <img src={images[0].url_standard} alt="" />
+            <div
+              className="content"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+            <strong>
+              {currency}
+              {Number(price).toFixed(2)}
+            </strong>
             <AddToCartButton productId={id} variantId={variants[0].id} />
           </div>
         </section>
-        <h3>tap tap tap, is this thing on??</h3>
       </div>
     </Layout>
   );
