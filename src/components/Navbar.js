@@ -1,12 +1,14 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import github from '../img/github-icon.svg'
-import logo from '../img/logo.svg'
-import axios from 'axios'
+import React from 'react';
+import { Link } from 'gatsby';
+import github from '../img/github-icon.svg';
+import logo from '../img/logo.svg';
+import axios from 'axios';
+import CartProvider from '../context/CartProvider';
+import CartContext from '../context/CartProvider';
 
 const Navbar = class extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       active: false,
       navBarActiveClass: '',
@@ -14,39 +16,41 @@ const Navbar = class extends React.Component {
       cartError: false,
       cart: {
         lineItems: {},
-        numberItems: 0,
-      },
-    }
+        numberItems: 0
+      }
+    };
   }
 
   componentDidMount() {
-    this.fetchCart()
+    this.fetchCart();
   }
 
   toggleHamburger = () => {
     // toggle the active boolean in the state
     this.setState(
       {
-        active: !this.state.active,
+        active: !this.state.active
       },
       // after state has been updated,
       () => {
         // set the class in state for the navbar accordingly
         this.state.active
           ? this.setState({
-              navBarActiveClass: 'is-active',
+              navBarActiveClass: 'is-active'
             })
           : this.setState({
-              navBarActiveClass: '',
-            })
+              navBarActiveClass: ''
+            });
       }
-    )
-  }
+    );
+  };
 
   fetchCart = () => {
-    this.setState({ loading: true })
+    this.setState({ loading: true });
     axios
-      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, { withCredentials: true })
+      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, {
+        withCredentials: true
+      })
       .then(response => {
         const lineItems = response.data.data.line_items;
 
@@ -54,24 +58,27 @@ const Navbar = class extends React.Component {
           loading: false,
           cart: {
             lineItems,
-            numberItems: lineItems.physical_items.length + lineItems.digital_items.length + lineItems.custom_items.length + lineItems.gift_certificates.length,
-          },
-        })
+            numberItems:
+              lineItems.physical_items.length +
+              lineItems.digital_items.length +
+              lineItems.custom_items.length +
+              lineItems.gift_certificates.length
+          }
+        });
       })
       .catch(error => {
-        this.setState({ loading: false, error })
-      })
-  }
+        this.setState({ loading: false, error });
+      });
+  };
 
   render() {
-    const { numberItems } = this.state.cart
+    const { numberItems } = this.state.cart;
 
     return (
       <nav
         className="navbar is-transparent"
         role="navigation"
-        aria-label="main-navigation"
-      >
+        aria-label="main-navigation">
         <div className="container">
           <div className="navbar-brand">
             <Link to="/" className="navbar-item" title="Logo">
@@ -81,8 +88,7 @@ const Navbar = class extends React.Component {
             <div
               className={`navbar-burger burger ${this.state.navBarActiveClass}`}
               data-target="navMenu"
-              onClick={() => this.toggleHamburger()}
-            >
+              onClick={() => this.toggleHamburger()}>
               <span />
               <span />
               <span />
@@ -90,8 +96,7 @@ const Navbar = class extends React.Component {
           </div>
           <div
             id="navMenu"
-            className={`navbar-menu ${this.state.navBarActiveClass}`}
-          >
+            className={`navbar-menu ${this.state.navBarActiveClass}`}>
             <div className="navbar-start has-text-centered">
               <Link className="navbar-item" to="/about">
                 About
@@ -108,20 +113,21 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to="/contact/examples">
                 Form Examples
               </Link>
-              <Link className="navbar-item" to="/cart">
-                Cart 
-                {numberItems > 0 && 
-                  <h2>({numberItems})</h2>
-                }
-              </Link>
+              <CartContext.Consumer>
+                {({ itemsTotal }) => (
+                  <Link className="navbar-item" to="/cart">
+                    Cart
+                    {itemsTotal > 0 && <h2>({itemsTotal})</h2>}
+                  </Link>
+                )}
+              </CartContext.Consumer>
             </div>
             <div className="navbar-end has-text-centered">
               <a
                 className="navbar-item"
                 href="https://github.com/netlify-templates/gatsby-starter-netlify-cms"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 <span className="icon">
                   <img src={github} alt="Github" />
                 </span>
@@ -130,8 +136,8 @@ const Navbar = class extends React.Component {
           </div>
         </div>
       </nav>
-    )
+    );
   }
-}
+};
 
-export default Navbar
+export default Navbar;
