@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Layout from '../components/Layout';
 import Features from '../components/Features';
 import Testimonials from '../components/Testimonials';
@@ -45,11 +45,13 @@ export const ProductPageTemplate = ({
         <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
           {products.map(product => (
             <div key={product.id} className="bc-product-card">
-              <div>{product.name}</div>
-              <img
-                src={product.images.length && product.images[0].url_standard}
-                alt={product.name}
-              />
+              <Link to={`/products/${product.sku}`}>
+                <div>{product.name}</div>
+                <img
+                  src={product.images.length && product.images[0].url_standard}
+                  alt={product.name}
+                />
+              </Link>
               <AddToCartButton
                 productId={product.variants[0].product_id}
                 variantId={product.variants[0].id}
