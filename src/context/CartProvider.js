@@ -25,7 +25,6 @@ export const CartProvider = ({ children }) => {
     })
       .then(res => res.json())
       .then(response => {
-        console.log(response);
         refreshCart(response);
       })
       .catch(error => {
@@ -36,7 +35,6 @@ export const CartProvider = ({ children }) => {
   useEffect(() => fetchCart(), []);
 
   const refreshCart = response => {
-    console.log('refreshcart', response);
     if (response.status === 204 || response.status === 404) {
       setState({ ...state, cartLoading: false, cart: emptyCartObj });
     } else {
@@ -61,11 +59,13 @@ export const CartProvider = ({ children }) => {
       });
     }
   };
+
   const addToCart = (productId, variantId) => {
     setState({ ...state, addingToCart: true });
     fetch(`/.netlify/functions/bigcommerce?endpoint=carts/items`, {
       method: 'POST',
       credentials: 'same-origin',
+      mode: 'same-origin',
       body: JSON.stringify({
         line_items: [
           {
@@ -85,7 +85,7 @@ export const CartProvider = ({ children }) => {
         setState({
           ...state,
           addingToCart: false,
-          addedToCart: true,
+          addedToCart: productId,
           cart: {
             currency,
             cartAmount,
@@ -103,8 +103,73 @@ export const CartProvider = ({ children }) => {
         setState({ ...state, addingToCart: false, addToCartError: error });
       });
   };
+
+  const updateItemInCart = (itemId, updatedItemData) => {
+    setState({ ...state, cartLoading: true });
+    fetch(
+      `/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`,
+      {
+        credentials: 'same-origin',
+        mode: 'same-origin',
+        method: 'post',
+        body: JSON.stringify(updatedItemData)
+      }
+    )
+      .then(res => res.json())
+      .then(response => {
+        refreshCart(response);
+      })
+      .catch(error => {
+        setState({ ...state, cartLoading: false, cartError: error });
+      });
+  };
+
+  const removeItemFromCart = itemId => {
+    setState({ ...state, cartLoading: true });
+    fetch(
+      `/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`,
+      {
+        credentials: 'same-origin',
+        mode: 'same-origin',
+        method: 'delete'
+      }
+    )
+      .then(res => res.json())
+      .then(response => {
+        refreshCart(response);
+      })
+      .catch(error => {
+        setState({ ...state, cartLoading: false, cartError: error });
+      });
+  };
+
+  const updateCartItemQuantity = (item, action) => {
+    const newQuantity = item.quantity + (action === 'minus' ? -1 : 1);
+
+    if (newQuantity < 1) {
+      removeItemFromCart(item.id);
+    } else {
+      let productVariantReferences = null;
+
+      if (typeof item.product_id !== 'undefined') {
+        productVariantReferences = {
+          product_id: item.product_id,
+          variant_id: item.variant_id
+        };
+      }
+
+      updateItemInCart(item.id, {
+        line_item: {
+          quantity: newQuantity,
+          ...productVariantReferences
+        }
+      });
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ state, addToCart }}>
+    <CartContext.Provider
+      value={{ state, addToCart, removeItemFromCart, updateCartItemQuantity }}>
       {children}
     </CartContext.Provider>
   );
