@@ -4,6 +4,8 @@ import { graphql } from 'gatsby';
 import AddToCartButton from '../components/AddToCartButton';
 import Layout from '../components/Layout';
 
+import useWindow from '../hooks/useWindow';
+
 export default ({
   data: {
     allBigCommerceProducts: {
@@ -13,6 +15,7 @@ export default ({
 }) => {
   const [selectedImage, updateSelectedImage] = useState(images[0].url_standard);
   const currency = '$'; // lets find currency somewhere, ok?
+  const { width } = useWindow();
   return (
     <Layout>
       <div className="content">
@@ -29,15 +32,26 @@ export default ({
           </h1>
         </div>
         <section className="section">
-          <div className="container" style={{ display: 'flex' }}>
+          <div
+            className="container"
+            style={{
+              display: 'flex',
+              flexDirection: width < 1200 ? 'column' : 'row'
+            }}>
             <section
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                minWidth: '30vw'
+                minWidth: '30vw',
+                paddingBottom: '50px'
               }}>
-              <img src={selectedImage} />
-              <div style={{ display: 'flex', cursor: 'pointer' }}>
+              <img src={selectedImage} style={{ objectFit: 'contain' }} />
+              <div
+                style={{
+                  display: 'flex',
+                  cursor: 'pointer',
+                  justifyContent: 'center'
+                }}>
                 {images.map(img => (
                   <img
                     height="100px"
@@ -49,7 +63,7 @@ export default ({
                 ))}
               </div>
             </section>
-            <section style={{ paddingLeft: '150px' }}>
+            <section style={{ padding: ' 0 200px' }}>
               <div
                 className="content"
                 dangerouslySetInnerHTML={{ __html: description }}
