@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 import github from '../img/github-icon.svg';
 import logo from '../img/logo.svg';
-import axios from 'axios';
-import CartProvider from '../context/CartProvider';
+
 import CartContext from '../context/CartProvider';
 
 const Navbar = class extends React.Component {
@@ -19,10 +18,6 @@ const Navbar = class extends React.Component {
         numberItems: 0
       }
     };
-  }
-
-  componentDidMount() {
-    this.fetchCart();
   }
 
   toggleHamburger = () => {
@@ -43,32 +38,6 @@ const Navbar = class extends React.Component {
             });
       }
     );
-  };
-
-  fetchCart = () => {
-    this.setState({ loading: true });
-    axios
-      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, {
-        withCredentials: true
-      })
-      .then(response => {
-        const lineItems = response.data.data.line_items;
-
-        this.setState({
-          loading: false,
-          cart: {
-            lineItems,
-            numberItems:
-              lineItems.physical_items.length +
-              lineItems.digital_items.length +
-              lineItems.custom_items.length +
-              lineItems.gift_certificates.length
-          }
-        });
-      })
-      .catch(error => {
-        this.setState({ loading: false, error });
-      });
   };
 
   render() {
@@ -114,10 +83,12 @@ const Navbar = class extends React.Component {
                 Form Examples
               </Link>
               <CartContext.Consumer>
-                {({ itemsTotal }) => (
+                {({ state }) => (
                   <Link className="navbar-item" to="/cart">
                     Cart
-                    {itemsTotal > 0 && <h2>({itemsTotal})</h2>}
+                    {state.cart && state.cart.numberItems > 0 && (
+                      <h2>({state.cart.numberItems})</h2>
+                    )}
                   </Link>
                 )}
               </CartContext.Consumer>

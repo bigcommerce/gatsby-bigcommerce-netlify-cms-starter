@@ -72,7 +72,9 @@ export default ({
                 {currency}
                 {Number(price).toFixed(2)}
               </strong>
-              <AddToCartButton productId={id} variantId={variants[0].id} />
+              <AddToCartButton productId={id} variantId={variants[0].id}>
+                Add to Cart
+              </AddToCartButton>
             </section>
           </div>
         </section>

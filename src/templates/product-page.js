@@ -57,8 +57,9 @@ export const ProductPageTemplate = ({
               </Link>
               <AddToCartButton
                 productId={product.variants[0].product_id}
-                variantId={product.variants[0].id}
-              />
+                variantId={product.variants[0].id}>
+                Add to Cart
+              </AddToCartButton>
             </div>
           ))}
         </div>

@@ -1,19 +1,19 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import axios from 'axios'
+import React from 'react';
+import { Link } from 'gatsby';
+import axios from 'axios';
 
 const Cart = class extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       cartLoading: false,
       cartError: false,
-      cart: this.emptyCartObj(),
-    }
+      cart: this.emptyCartObj()
+    };
   }
 
   componentDidMount() {
-    this.fetchCart()
+    this.fetchCart();
   }
 
   emptyCartObj = () => {
@@ -24,15 +24,15 @@ const Cart = class extends React.Component {
       cartAmount: 0,
       lineItems: {},
       numberItems: 0,
-      redirectUrls: {},
-    }
-  }
+      redirectUrls: {}
+    };
+  };
 
-  refreshCart = (response) => {
+  refreshCart = response => {
     if (response.status === 204 || response.status === 404) {
-      this.setState({ 
+      this.setState({
         cartLoading: false,
-        cart: this.emptyCartObj(),
+        cart: this.emptyCartObj()
       });
     } else {
       const lineItems = response.data.data.line_items;
@@ -45,62 +45,75 @@ const Cart = class extends React.Component {
           currency,
           cartAmount,
           lineItems,
-          numberItems: lineItems.physical_items.length + lineItems.digital_items.length + lineItems.custom_items.length + lineItems.gift_certificates.length,
-          redirectUrls: response.data.data.redirect_urls,
-        },
-      })
+          numberItems:
+            lineItems.physical_items.length +
+            lineItems.digital_items.length +
+            lineItems.custom_items.length +
+            lineItems.gift_certificates.length,
+          redirectUrls: response.data.data.redirect_urls
+        }
+      });
     }
-  }
+  };
 
   fetchCart = () => {
-    this.setState({ cartLoading: true })
+    this.setState({ cartLoading: true });
     axios
-      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, { withCredentials: true })
+      .get(`/.netlify/functions/bigcommerce?endpoint=carts`, {
+        withCredentials: true
+      })
       .then(response => {
-        this.refreshCart(response)
+        this.refreshCart(response);
       })
       .catch(error => {
-        this.setState({ cartLoading: false, cartError: error })
-      })
-  }
+        this.setState({ cartLoading: false, cartError: error });
+      });
+  };
 
   updateItemInCart = (itemId, updatedItemData) => {
-    this.setState({ cartLoading: true })
+    this.setState({ cartLoading: true });
     axios
-      .put(`/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`, updatedItemData, { withCredentials: true })
+      .put(
+        `/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`,
+        updatedItemData,
+        { withCredentials: true }
+      )
       .then(response => {
-        this.refreshCart(response)
+        this.refreshCart(response);
       })
       .catch(error => {
-        this.setState({ cartLoading: false, cartError: error })
-      })
-  }
+        this.setState({ cartLoading: false, cartError: error });
+      });
+  };
 
-  removeItemFromCart = (itemId) => {
-    this.setState({ cartLoading: true })
+  removeItemFromCart = itemId => {
+    this.setState({ cartLoading: true });
     axios
-      .delete(`/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`, { withCredentials: true })
+      .delete(
+        `/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`,
+        { withCredentials: true }
+      )
       .then(response => {
-        this.refreshCart(response)
+        this.refreshCart(response);
       })
       .catch(error => {
-        this.setState({ cartLoading: false, cartError: error })
-      })
-  }
+        this.setState({ cartLoading: false, cartError: error });
+      });
+  };
 
   updateCartItemQuantity = (item, action) => {
-    const newQuantity = item.quantity + ((action === 'minus') ? -1 : 1)
+    const newQuantity = item.quantity + (action === 'minus' ? -1 : 1);
 
     if (newQuantity < 1) {
-      this.removeItemFromCart(item.id)
+      this.removeItemFromCart(item.id);
     } else {
-      let productVariantReferences = null
-      
+      let productVariantReferences = null;
+
       if (typeof item.product_id !== 'undefined') {
         productVariantReferences = {
           product_id: item.product_id,
           variant_id: item.variant_id
-        }
+        };
       }
 
       this.updateItemInCart(item.id, {
@@ -108,107 +121,154 @@ const Cart = class extends React.Component {
           quantity: newQuantity,
           ...productVariantReferences
         }
-      })
+      });
     }
-  }
+  };
 
-  removeCartItem = (itemId) => {
-    this.removeItemFromCart(itemId)
-  }
+  removeCartItem = itemId => {
+    this.removeItemFromCart(itemId);
+  };
 
   render() {
-    const { currency, cartAmount, lineItems, numberItems, redirectUrls } = this.state.cart
+    const {
+      currency,
+      cartAmount,
+      lineItems,
+      numberItems,
+      redirectUrls
+    } = this.state.cart;
 
-    const FormattedAmount = (props) => {
-      const currency = props.currency
-      const amount = props.amount
-      const languageCode = (typeof window !== 'undefined') ? window.navigator.language || 'en-US' : 'en-US'
-      const formattedPrice = new Intl.NumberFormat(languageCode, { style: 'currency', currency }).format(amount)
-      return formattedPrice
-    }
+    const FormattedAmount = props => {
+      const currency = props.currency;
+      const amount = props.amount;
+      const languageCode =
+        typeof window !== 'undefined'
+          ? window.navigator.language || 'en-US'
+          : 'en-US';
+      const formattedPrice = new Intl.NumberFormat(languageCode, {
+        style: 'currency',
+        currency
+      }).format(amount);
+      return formattedPrice;
+    };
 
-    const CustomItems = (props) => {
+    const CustomItems = props => {
       const items = props.items;
 
-      return items.map(item => 
+      return items.map(item => (
         <div className="bc-cart-item" key={item.id}>
           <div className="bc-cart-item-image">
-              <img height="270" src="/img/coffee.png" alt={ `${item.name}` } />
-              <button className="bc-link bc-cart-item__remove-button" onClick={this.removeCartItem.bind(this, item.id)} type="button">Remove</button>
+            <img height="270" src="/img/coffee.png" alt={`${item.name}`} />
+            <button
+              className="bc-link bc-cart-item__remove-button"
+              onClick={this.removeCartItem.bind(this, item.id)}
+              type="button">
+              Remove
+            </button>
           </div>
 
           <div className="bc-cart-item-meta">
-            <h3 className="bc-cart-item__product-title">
-              {item.name}
-            </h3>
+            <h3 className="bc-cart-item__product-title">{item.name}</h3>
             <span className="bc-cart-item__product-brand">{item.sku}</span>
           </div>
 
           <div className="bc-cart-item-quantity">
-            <button className="bc-btn" onClick={this.updateCartItemQuantity.bind(this, item, 'minus')}>-</button>
+            <button
+              className="bc-btn"
+              onClick={this.updateCartItemQuantity.bind(this, item, 'minus')}>
+              -
+            </button>
             <div>{item.quantity}</div>
-            <button className="bc-btn" onClick={this.updateCartItemQuantity.bind(this, item, 'plus')}>+</button>
+            <button
+              className="bc-btn"
+              onClick={this.updateCartItemQuantity.bind(this, item, 'plus')}>
+              +
+            </button>
           </div>
-              
+
           <div className="bc-cart-item-total-price">
-            <FormattedAmount currency={currency.code} amount={item.list_price} />
+            <FormattedAmount
+              currency={currency.code}
+              amount={item.list_price}
+            />
           </div>
         </div>
-      )
-    }
+      ));
+    };
 
-    const StandardItems = (props) => {
+    const StandardItems = props => {
       const items = props.items;
 
-      return items.map(item => 
+      return items.map(item => (
         <div className="bc-cart-item" key={item.id}>
           <div className="bc-cart-item-image">
-              <img height="270" src={item.image_url} alt={ `${item.name}` } />
-              <button className="bc-link bc-cart-item__remove-button" onClick={this.removeCartItem.bind(this, item.id)} type="button">Remove</button>
+            <img height="270" src={item.image_url} alt={`${item.name}`} />
+            <button
+              className="bc-link bc-cart-item__remove-button"
+              onClick={this.removeCartItem.bind(this, item.id)}
+              type="button">
+              Remove
+            </button>
           </div>
 
           <div className="bc-cart-item-meta">
-            <h3 className="bc-cart-item__product-title">
-              {item.name}
-            </h3>
+            <h3 className="bc-cart-item__product-title">{item.name}</h3>
             <span className="bc-cart-item__product-brand">{item.sku}</span>
           </div>
 
           <div className="bc-cart-item-quantity">
-            <button className="bc-btn" onClick={this.updateCartItemQuantity.bind(this, item, 'minus')}>-</button>
+            <button
+              className="bc-btn"
+              onClick={this.updateCartItemQuantity.bind(this, item, 'minus')}>
+              -
+            </button>
             <div>{item.quantity}</div>
-            <button className="bc-btn" onClick={this.updateCartItemQuantity.bind(this, item, 'plus')}>+</button>
+            <button
+              className="bc-btn"
+              onClick={this.updateCartItemQuantity.bind(this, item, 'plus')}>
+              +
+            </button>
           </div>
-              
+
           <div className="bc-cart-item-total-price">
-            <FormattedAmount currency={currency.code} amount={item.list_price} />
+            <FormattedAmount
+              currency={currency.code}
+              amount={item.list_price}
+            />
           </div>
         </div>
-      )
-    }
+      ));
+    };
 
-    const GiftCertificateItems = (props) => {
+    const GiftCertificateItems = props => {
       const items = props.items;
 
-      return items.map(item => 
+      return items.map(item => (
         <div className="bc-cart-item" key={item.id}>
           <div className="bc-cart-item-image">
-              <button className="bc-link bc-cart-item__remove-button" onClick={this.removeCartItem.bind(this, item.id)} type="button">Remove</button>
+            <button
+              className="bc-link bc-cart-item__remove-button"
+              onClick={this.removeCartItem.bind(this, item.id)}
+              type="button">
+              Remove
+            </button>
           </div>
 
           <div className="bc-cart-item-meta">
             <h3 className="bc-cart-item__product-title">
               {item.name} - Gift Certificate for {item.recipient.name}
             </h3>
-            <span className="bc-cart-item__product-brand">Theme: {item.theme}</span>
+            <span className="bc-cart-item__product-brand">
+              Theme: {item.theme}
+            </span>
           </div>
-              
+
           <div className="bc-cart-item-total-price">
             <FormattedAmount currency={currency.code} amount={item.amount} />
           </div>
         </div>
-      )
-    }
+      ));
+    };
 
     return (
       <div className="container">
@@ -223,7 +283,9 @@ const Cart = class extends React.Component {
           </header>
           {this.state.cartLoading ? (
             <div className="bc-cart__empty">
-              <h2 className="bc-cart__title--empty"><em>Loading Cart</em></h2>
+              <h2 className="bc-cart__title--empty">
+                <em>Loading Cart</em>
+              </h2>
             </div>
           ) : numberItems > 0 ? (
             <div className="bc-cart-body">
@@ -235,7 +297,9 @@ const Cart = class extends React.Component {
           ) : (
             <div className="bc-cart__empty">
               <h2 className="bc-cart__title--empty">Your cart is empty.</h2>
-              <Link to="/products" className="bc-cart__continue-shopping">Take a look around.</Link>
+              <Link to="/products" className="bc-cart__continue-shopping">
+                Take a look around.
+              </Link>
             </div>
           )}
 
@@ -247,19 +311,25 @@ const Cart = class extends React.Component {
               </span>
             </div>
 
-            { numberItems > 0 &&
+            {numberItems > 0 && (
               <div className="bc-cart-actions">
-                <form action={ redirectUrls.checkout_url } method="post" encType="multipart/form-data">
-                  <button className="bc-btn bc-cart-actions__checkout-button" type="submit">Proceed to Checkout</button>
+                <form
+                  action={redirectUrls.checkout_url}
+                  method="post"
+                  encType="multipart/form-data">
+                  <button
+                    className="bc-btn bc-cart-actions__checkout-button"
+                    type="submit">
+                    Proceed to Checkout
+                  </button>
                 </form>
               </div>
-            }
+            )}
           </footer>
-
         </section>
       </div>
-    )
+    );
   }
-}
+};
 
-export default Cart
+export default Cart;
