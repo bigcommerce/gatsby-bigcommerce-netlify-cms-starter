@@ -11,6 +11,7 @@ export default ({
     }
   }
 }) => {
+  const [selectedImage, updateSelectedImage] = useState(images[0].url_standard);
   const currency = '$'; // lets find currency somewhere, ok?
   return (
     <Layout>
@@ -28,20 +29,37 @@ export default ({
           </h1>
         </div>
         <section className="section">
-          <div className="container">
-            {images.map(img => (
-              <img src={img.url_standard} alt="" />
-            ))}
-            <img src={images[0].url_standard} alt="" />
-            <div
-              className="content"
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
-            <strong>
-              {currency}
-              {Number(price).toFixed(2)}
-            </strong>
-            <AddToCartButton productId={id} variantId={variants[0].id} />
+          <div className="container" style={{ display: 'flex' }}>
+            <section
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: '30vw'
+              }}>
+              <img src={selectedImage} />
+              <div style={{ display: 'flex', cursor: 'pointer' }}>
+                {images.map(img => (
+                  <img
+                    height="100px"
+                    width="100px"
+                    src={img.url_thumbnail}
+                    alt="thumb"
+                    onClick={() => updateSelectedImage(img.url_standard)}
+                  />
+                ))}
+              </div>
+            </section>
+            <section style={{ paddingLeft: '150px' }}>
+              <div
+                className="content"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+              <strong>
+                {currency}
+                {Number(price).toFixed(2)}
+              </strong>
+              <AddToCartButton productId={id} variantId={variants[0].id} />
+            </section>
           </div>
         </section>
       </div>
@@ -60,6 +78,7 @@ export const query = graphql`
         description
         images {
           url_standard
+          url_thumbnail
         }
         variants {
           product_id
