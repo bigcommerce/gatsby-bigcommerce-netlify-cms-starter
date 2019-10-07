@@ -70,8 +70,8 @@ export const CartProvider = ({ children }) => {
         line_items: [
           {
             quantity: 1,
-            product_id: parseInt(productId),
-            variant_id: parseInt(variantId)
+            product_id: parseInt(productId, 10),
+            variant_id: parseInt(variantId, 10)
           }
         ]
       })
@@ -105,13 +105,12 @@ export const CartProvider = ({ children }) => {
   };
 
   const updateItemInCart = (itemId, updatedItemData) => {
-    setState({ ...state, cartLoading: true });
     fetch(
       `/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`,
       {
         credentials: 'same-origin',
         mode: 'same-origin',
-        method: 'post',
+        method: 'put',
         body: JSON.stringify(updatedItemData)
       }
     )
@@ -125,7 +124,6 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeItemFromCart = itemId => {
-    setState({ ...state, cartLoading: true });
     fetch(
       `/.netlify/functions/bigcommerce?endpoint=carts/items&itemId=${itemId}`,
       {
