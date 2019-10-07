@@ -45,6 +45,7 @@ export const CartProvider = ({ children }) => {
       setState({
         ...state,
         cartLoading: false,
+        updatingItem: false,
         cart: {
           currency,
           cartAmount,
@@ -143,26 +144,25 @@ export const CartProvider = ({ children }) => {
 
   const updateCartItemQuantity = (item, action) => {
     const newQuantity = item.quantity + (action === 'minus' ? -1 : 1);
-
+    setState({ ...state, updatingItem: item.id });
     if (newQuantity < 1) {
-      removeItemFromCart(item.id);
-    } else {
-      let productVariantReferences = null;
-
-      if (typeof item.product_id !== 'undefined') {
-        productVariantReferences = {
-          product_id: item.product_id,
-          variant_id: item.variant_id
-        };
-      }
-
-      updateItemInCart(item.id, {
-        line_item: {
-          quantity: newQuantity,
-          ...productVariantReferences
-        }
-      });
+      return removeItemFromCart(item.id);
     }
+    let productVariantReferences = null;
+
+    if (typeof item.product_id !== 'undefined') {
+      productVariantReferences = {
+        product_id: item.product_id,
+        variant_id: item.variant_id
+      };
+    }
+
+    updateItemInCart(item.id, {
+      line_item: {
+        quantity: newQuantity,
+        ...productVariantReferences
+      }
+    });
   };
 
   return (

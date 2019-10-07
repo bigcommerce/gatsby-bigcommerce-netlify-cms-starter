@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'gatsby';
+
+import Loader from './Loader';
+
 import CartContext from '../context/CartProvider';
 
 const FormattedAmount = props => {
@@ -16,9 +19,27 @@ const FormattedAmount = props => {
   return formattedPrice;
 };
 
-const CustomItems = props => {
-  const items = props.items;
+const AdjustItem = props => {
+  const { item, updatingItem } = props;
+  return (
+    <div className="bc-cart-item-quantity">
+      <button
+        className="bc-btn"
+        onClick={() => props.updateCartItemQuantity(item, 'minus')}>
+        -
+      </button>
+      {updatingItem === item.id ? <Loader /> : <div>{item.quantity}</div>}
+      <button
+        className="bc-btn"
+        onClick={() => props.updateCartItemQuantity(item, 'plus')}>
+        +
+      </button>
+    </div>
+  );
+};
 
+const CustomItems = props => {
+  const { items } = props;
   return (
     <>
       {items.map(item => (
@@ -38,19 +59,7 @@ const CustomItems = props => {
             <span className="bc-cart-item__product-brand">{item.sku}</span>
           </div>
 
-          <div className="bc-cart-item-quantity">
-            <button
-              className="bc-btn"
-              onClick={() => props.updateCartItemQuantity(item, 'minus')}>
-              -
-            </button>
-            <div>{item.quantity}</div>
-            <button
-              className="bc-btn"
-              onClick={() => props.updateCartItemQuantity(item, 'plus')}>
-              +
-            </button>
-          </div>
+          <AdjustItem {...props} item={item} />
 
           <div className="bc-cart-item-total-price">
             <FormattedAmount
@@ -65,8 +74,7 @@ const CustomItems = props => {
 };
 
 const StandardItems = props => {
-  const items = props.items;
-
+  const { items } = props;
   return (
     <>
       {items.map(item => (
@@ -85,21 +93,7 @@ const StandardItems = props => {
             <h3 className="bc-cart-item__product-title">{item.name}</h3>
             <span className="bc-cart-item__product-brand">{item.sku}</span>
           </div>
-
-          <div className="bc-cart-item-quantity">
-            <button
-              className="bc-btn"
-              onClick={() => props.updateCartItemQuantity(item, 'minus')}>
-              -
-            </button>
-            <div>{item.quantity}</div>
-            <button
-              className="bc-btn"
-              onClick={() => props.updateCartItemQuantity(item, 'plus')}>
-              +
-            </button>
-          </div>
-
+          <AdjustItem {...props} item={item} />
           <div className="bc-cart-item-total-price">
             <FormattedAmount
               currency={props.currency.code}
@@ -161,6 +155,7 @@ const Cart = class extends React.Component {
             numberItems,
             redirectUrls
           } = state.cart;
+          const { updatingItem } = state;
           return (
             <div className="container">
               <section className="bc-cart">
@@ -182,24 +177,28 @@ const Cart = class extends React.Component {
                   <div className="bc-cart-body">
                     <StandardItems
                       currency={currency}
+                      updatingItem={updatingItem}
                       updateCartItemQuantity={updateCartItemQuantity}
                       removeItemFromCart={removeItemFromCart}
                       items={lineItems.physical_items}
                     />
                     <StandardItems
                       currency={currency}
+                      updatingItem={updatingItem}
                       updateCartItemQuantity={updateCartItemQuantity}
                       removeItemFromCart={removeItemFromCart}
                       items={lineItems.digital_items}
                     />
                     <CustomItems
                       currency={currency}
+                      updatingItem={updatingItem}
                       updateCartItemQuantity={updateCartItemQuantity}
                       removeItemFromCart={removeItemFromCart}
                       items={lineItems.custom_items}
                     />
                     <GiftCertificateItems
                       currency={currency}
+                      updatingItem={updatingItem}
                       removeItemFromCart={removeItemFromCart}
                       items={lineItems.gift_certificates}
                     />
