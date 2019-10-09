@@ -47,7 +47,7 @@
     "clean": "gatsby clean",
     "start:app": "npm run develop",
     "start:lambda": "netlify-lambda serve src/lambda",
-    "start": "netlify dev",
+    "start": "yarn start:lambda | yarn develop",
     "build:app": "npm run clean && gatsby build",
     "build:lambda": "netlify-lambda build src/lambda",
     "build": "run-p build:**",

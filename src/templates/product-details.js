@@ -13,7 +13,9 @@ export default ({
     }
   }
 }) => {
-  const [selectedImage, updateSelectedImage] = useState(images[0].url_standard);
+  const [selectedImage, updateSelectedImage] = useState(
+    images.length && images[0].url_standard
+  );
   const currency = '$'; // lets find currency somewhere, ok?
   const { width } = useWindow();
   return (
@@ -45,22 +47,26 @@ export default ({
                 minWidth: '30vw',
                 paddingBottom: '50px'
               }}>
-              <img src={selectedImage} style={{ objectFit: 'contain' }} />
+              <img
+                src={selectedImage && selectedImage}
+                style={{ objectFit: 'contain' }}
+              />
               <div
                 style={{
                   display: 'flex',
                   cursor: 'pointer',
                   justifyContent: 'center'
                 }}>
-                {images.map(img => (
-                  <img
-                    height="100px"
-                    width="100px"
-                    src={img.url_thumbnail}
-                    alt="thumb"
-                    onClick={() => updateSelectedImage(img.url_standard)}
-                  />
-                ))}
+                {images.length &&
+                  images.map(img => (
+                    <img
+                      height="100px"
+                      width="100px"
+                      src={img.url_thumbnail}
+                      alt="thumb"
+                      onClick={() => updateSelectedImage(img.url_standard)}
+                    />
+                  ))}
               </div>
             </section>
             <section style={{ padding: ' 0 200px' }}>
