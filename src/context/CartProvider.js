@@ -2,20 +2,19 @@ import React, { createContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
-const emptyCartObj = {
-  currency: {
-    code: 'USD'
-  },
-  cartAmount: 0,
-  lineItems: {},
-  numberItems: 0,
-  redirectUrls: {}
-};
 export const CartProvider = ({ children }) => {
   const [state, setState] = useState({
     cartLoading: false,
     cartError: false,
-    cart: emptyCartObj
+    cart: {
+      currency: {
+        code: 'USD'
+      },
+      cartAmount: 0,
+      lineItems: {},
+      numberItems: 0,
+      redirectUrls: {}
+    }
   });
 
   const fetchCart = () => {
@@ -36,7 +35,7 @@ export const CartProvider = ({ children }) => {
 
   const refreshCart = response => {
     if (response.status === 204 || response.status === 404) {
-      setState({ ...state, cartLoading: false, cart: emptyCartObj });
+      setState({ ...state, cartLoading: false });
     } else {
       const lineItems = response.data.line_items;
       const cartAmount = response.data.cart_amount;

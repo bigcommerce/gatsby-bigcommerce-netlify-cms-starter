@@ -147,7 +147,11 @@ const Cart = class extends React.Component {
   render() {
     return (
       <CartContext.Consumer>
-        {({ state, removeItemFromCart, updateCartItemQuantity }) => {
+        {value => {
+          if (!value) {
+            return null;
+          }
+          const { state, removeItemFromCart, updateCartItemQuantity } = value;
           const {
             currency,
             cartAmount,

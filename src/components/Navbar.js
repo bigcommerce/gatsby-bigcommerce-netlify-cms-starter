@@ -83,14 +83,18 @@ const Navbar = class extends React.Component {
                 Form Examples
               </Link>
               <CartContext.Consumer>
-                {({ state }) => (
-                  <Link className="navbar-item" to="/cart">
-                    Cart
-                    {state.cart && state.cart.numberItems > 0 && (
-                      <h2>({state.cart.numberItems})</h2>
-                    )}
-                  </Link>
-                )}
+                {value => {
+                  return (
+                    <Link className="navbar-item" to="/cart">
+                      Cart
+                      {value &&
+                        value.state.cart &&
+                        value.state.cart.numberItems > 0 && (
+                          <h2>({value.state.cart.numberItems})</h2>
+                        )}
+                    </Link>
+                  );
+                }}
               </CartContext.Consumer>
             </div>
             <div className="navbar-end has-text-centered">

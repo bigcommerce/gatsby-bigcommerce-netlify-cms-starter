@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import CartContext from '../context/CartProvider';
-import { relative } from 'path';
 
 const AddToCartButton = ({ children, productId, variantId }) => {
-  const { addToCart, state } = useContext(CartContext);
-
-  const { redirectUrls } = state && state.cart;
+  const value = useContext(CartContext);
+  const addToCart = value && value.addToCart;
+  const state = value && value.state;
+  const redirectUrls = state && state.cart && state.cart.redirectUrls;
 
   return (
     <div className="bc-product-card">
@@ -18,7 +18,7 @@ const AddToCartButton = ({ children, productId, variantId }) => {
             onClick={() => addToCart(productId, variantId)}>
             {children}
           </button>
-          {state.addedToCart === productId && (
+          {state && state.addedToCart === productId && (
             <div
               style={{
                 position: 'relative',
