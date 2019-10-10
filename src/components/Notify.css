@@ -1,0 +1,46 @@
+.Notify {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 100;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.Animate {
+  animation: fadeIn;
+  animation-duration: 300ms;
+}
+.Notification {
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  margin-top: 0.3rem;
+  max-width: 40rem;
+  min-height: 20px;
+  background-color: white;
+  color: rgb(255, 68, 0);
+  font-weight: 600;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+}
+.Content {
+  display: flex;
+  font-size: 20px;
+  width: 100%;
+}
+
+.Message {
+  flex: 1;
+  flex-basis: auto;
+}
+.Close {
+  margin-right: 1rem;
+  cursor: pointer;
+  justify-self: flex-start;
+  align-self: center;
+}

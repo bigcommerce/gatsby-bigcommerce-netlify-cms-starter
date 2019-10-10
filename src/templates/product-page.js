@@ -51,7 +51,10 @@ export const ProductPageTemplate = ({
                 </div>
                 <img
                   className="bc-product-card-image"
-                  src={product.images.length && product.images[0].url_standard}
+                  src={
+                    (product.images.length && product.images[0].url_standard) ||
+                    '/img/default-bc-product.png'
+                  }
                   alt={product.name}
                 />
               </Link>

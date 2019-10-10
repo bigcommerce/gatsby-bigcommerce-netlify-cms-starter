@@ -48,7 +48,7 @@ const CustomItems = props => {
             <img height="270" src="/img/coffee.png" alt={`${item.name}`} />
             <button
               className="bc-link bc-cart-item__remove-button"
-              onClick={() => props.removeCartItem(item.id)}
+              onClick={() => props.removeItemFromCart(item.id)}
               type="button">
               Remove
             </button>

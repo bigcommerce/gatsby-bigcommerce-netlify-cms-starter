@@ -48,7 +48,10 @@ export default ({
                 paddingBottom: '50px'
               }}>
               <img
-                src={selectedImage && selectedImage}
+                src={
+                  (selectedImage && selectedImage) ||
+                  '/img/default-bc-product.png'
+                }
                 style={{ objectFit: 'contain' }}
               />
               <div
