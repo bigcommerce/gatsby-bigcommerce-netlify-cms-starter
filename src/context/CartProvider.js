@@ -1,21 +1,24 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { responsePathAsArray } from 'graphql';
 
 const CartContext = createContext();
 
+const initialState = {
+  cartLoading: false,
+  cartError: false,
+  cart: {
+    currency: {
+      code: 'USD'
+    },
+    cartAmount: 0,
+    lineItems: {},
+    numberItems: 0,
+    redirectUrls: {}
+  }
+};
+
 export const CartProvider = ({ children }) => {
-  const [state, setState] = useState({
-    cartLoading: false,
-    cartError: false,
-    cart: {
-      currency: {
-        code: 'USD'
-      },
-      cartAmount: 0,
-      lineItems: {},
-      numberItems: 0,
-      redirectUrls: {}
-    }
-  });
+  const [state, setState] = useState(initialState);
 
   const fetchCart = () => {
     fetch(`/.netlify/functions/bigcommerce?endpoint=carts`, {
@@ -61,7 +64,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = (productId, variantId) => {
-    setState({ ...state, addingToCart: true });
+    setState({ ...state, addingToCart: productId });
     fetch(`/.netlify/functions/bigcommerce?endpoint=carts/items`, {
       method: 'POST',
       credentials: 'same-origin',
@@ -132,9 +135,15 @@ export const CartProvider = ({ children }) => {
         method: 'delete'
       }
     )
-      .then(res => res.json())
+      .then(res => {
+        if (res.status === 204) {
+          setState(initialState);
+          return;
+        }
+        return res.json();
+      })
       .then(response => {
-        refreshCart(response);
+        response && refreshCart(response);
       })
       .catch(error => {
         setState({ ...state, cartLoading: false, cartError: error });
