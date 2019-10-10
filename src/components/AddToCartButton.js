@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import CartContext from '../context/CartProvider';
-import Loader from './Loader';
 
 const AddToCartButton = ({ children, productId, variantId }) => {
   const value = useContext(CartContext);

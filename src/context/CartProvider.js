@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { responsePathAsArray } from 'graphql';
 
 const CartContext = createContext();
 
@@ -19,6 +18,15 @@ const initialState = {
 
 export const CartProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
+  const [notifications, updateNotifications] = useState([]);
+
+  const addNotification = (text, type = 'notify') => {
+    updateNotifications([...notifications, { text, type, id: Date.now() }]);
+  };
+
+  const removeNotification = id => {
+    updateNotifications(notifications.filter(ntfy => ntfy.id !== id));
+  };
 
   const fetchCart = () => {
     fetch(`/.netlify/functions/bigcommerce?endpoint=carts`, {
@@ -81,6 +89,8 @@ export const CartProvider = ({ children }) => {
     })
       .then(res => res.json())
       .then(response => {
+        addNotification('Item added successfully');
+
         const lineItems = response.data.line_items;
         const cartAmount = response.data.cart_amount;
         const currency = response.data.currency;
@@ -136,6 +146,7 @@ export const CartProvider = ({ children }) => {
       }
     )
       .then(res => {
+        addNotification('Item removed successfully');
         if (res.status === 204) {
           setState(initialState);
           return;
@@ -175,7 +186,15 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ state, addToCart, removeItemFromCart, updateCartItemQuantity }}>
+      value={{
+        state,
+        addToCart,
+        removeItemFromCart,
+        updateCartItemQuantity,
+        notifications,
+        addNotification,
+        removeNotification
+      }}>
       {children}
     </CartContext.Provider>
   );
