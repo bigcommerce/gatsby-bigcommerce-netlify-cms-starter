@@ -53,12 +53,12 @@ const CustomItems = props => {
               Remove
             </button>
           </div>
-
-          <div className="bc-cart-item-meta">
-            <h3 className="bc-cart-item__product-title">{item.name}</h3>
-            <span className="bc-cart-item__product-brand">{item.sku}</span>
-          </div>
-
+          <Link to={`/products/${item.sku}`}>
+            <div className="bc-cart-item-meta">
+              <h3 className="bc-cart-item__product-title">{item.name}</h3>
+              <span className="bc-cart-item__product-brand">{item.sku}</span>
+            </div>
+          </Link>
           <AdjustItem {...props} item={item} />
 
           <div className="bc-cart-item-total-price">
@@ -88,11 +88,12 @@ const StandardItems = props => {
               Remove
             </button>
           </div>
-
-          <div className="bc-cart-item-meta">
-            <h3 className="bc-cart-item__product-title">{item.name}</h3>
-            <span className="bc-cart-item__product-brand">{item.sku}</span>
-          </div>
+          <Link to={`/products/${item.sku}`}>
+            <div className="bc-cart-item-meta">
+              <h3 className="bc-cart-item__product-title">{item.name}</h3>
+              <span className="bc-cart-item__product-brand">{item.sku}</span>
+            </div>
+          </Link>
           <AdjustItem {...props} item={item} />
           <div className="bc-cart-item-total-price">
             <FormattedAmount

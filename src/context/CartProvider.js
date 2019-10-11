@@ -71,7 +71,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const addToCart = (productId, variantId) => {
+  const addToCart = (productId, variantId, retry) => {
     setState({ ...state, addingToCart: productId });
     fetch(`/.netlify/functions/bigcommerce?endpoint=carts/items`, {
       method: 'POST',
@@ -87,9 +87,16 @@ export const CartProvider = ({ children }) => {
         ]
       })
     })
-      .then(res => res.json())
-      .then(response => {
-        addNotification('Item added successfully');
+      .then(async res => ({ response: await res.json(), status: res.status }))
+      .then(({ response, status }) => {
+        if (status === 404) {
+          // re create a cart if cart was destroyed
+          return fetch(`/.netlify/functions/bigcommerce?endpoint=carts`, {
+            credentials: 'same-origin',
+            mode: 'same-origin'
+          }).then(() => addToCart(productId, variantId, true));
+        }
+        status < 300 && addNotification('Item added successfully');
 
         const lineItems = response.data.line_items;
         const cartAmount = response.data.cart_amount;
@@ -151,6 +158,7 @@ export const CartProvider = ({ children }) => {
           setState(initialState);
           return;
         }
+        addNotification('Item removed successfully');
         return res.json();
       })
       .then(response => {
