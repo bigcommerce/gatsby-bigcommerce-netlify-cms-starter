@@ -89,7 +89,7 @@ export const CartProvider = ({ children }) => {
     })
       .then(async res => ({ response: await res.json(), status: res.status }))
       .then(({ response, status }) => {
-        if (status === 404) {
+        if (status === 404 && !retry) {
           // re create a cart if cart was destroyed
           return fetch(`/.netlify/functions/bigcommerce?endpoint=carts`, {
             credentials: 'same-origin',
