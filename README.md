@@ -7,17 +7,40 @@
 - [Netlify CLI](https://www.netlify.com/docs/cli/)
 - [A BigCommerce Instance with API keys](https://developer.bigcommerce.com/api-docs)
 
-## Setting up BigCommerce
+## Setting up BigCommerce & the Repo
 
 The BigCommerce source plugin relies on API Keys. In this starter we are using the node project `dotenv` to access these variables. Make a copy of the `SAMPLE.env` file and fill in the variables from your [BigCommerce API user details](https://developer.bigcommerce.com/api-docs/getting-started/authentication#authentication_getting-api-credentials).
 
-Once youve already run `yarn` in the root of this project to install all dependencies, you can then run `yarn start`.
+Once you have your API keys, do the following:
+  * Install dependencies
+  	* `yarn`
+  * Set up environment variables
+    * `cp SAMPLE.env .env` 
+    * Enter your API credentials in .env file
+  * Link to your Netlify site
+  	* `netlify link`
+  * Build
+  	* `npm run build`
+  * Deploy to Netlify
+  	* `netlify deploy`
 
-## Getting Started (Recommended)
 
-Netlify CMS can run in any frontend web environment, but the quickest way to try it out is by running it on a pre-configured starter site with Netlify. The example here is the Kaldi coffee company template (adapted from [One Click Hugo CMS](https://github.com/netlify-templates/one-click-hugo-cms)). Use the button below to build and deploy your own copy of the repository:
+## Getting Started (Recommended - Netlify CLI)
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/gatsby-starter-netlify-cms&amp;stack=cms"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
+Netlify CMS can run in any frontend web environment, but the quickest way to try it out is by running it on a pre-configured starter site with Netlify. Because
+
+
+### "One Click" Deploy
+Alternative to the CLI, you can use the deploy button below to build and deploy your own copy of the repository. This is recommended if you have not already forked the repo (as it will make a copy of it). 
+
+*Note: The initial deploy will fail, as you need to set build environment variables for your Netlify site*
+
+To set the variables:
+ * Navigate to your Netlify site's "Build & Deploy" settings 
+ * Go to "Environment variables" > "Edit variables"
+ * Enter the environment variables specified in "SAMPLE.env" and your BC API credentials 
+
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/becomevocal/gatsby-starter-netlify-cms"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
 After clicking that button, you’ll authenticate with GitHub and choose a repository name. Netlify will then automatically create a repository in your GitHub account with a copy of the files from the template. Next, it will build and deploy the new site on Netlify, bringing you to the site dashboard when the build is complete. Next, you’ll need to set up Netlify’s Identity service to authorize users to log in to the CMS.
 
