@@ -67,6 +67,7 @@ export default ({
                       width="100px"
                       src={img.url_thumbnail}
                       alt="thumb"
+                      key={JSON.stringify(img)}
                       onClick={() => updateSelectedImage(img.url_standard)}
                     />
                   ))}

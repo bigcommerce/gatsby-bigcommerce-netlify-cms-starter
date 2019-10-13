@@ -1,7 +1,7 @@
 .Notify {
   position: fixed;
   top: 2rem;
-  left: 2rem;
+  right: 2rem;
   z-index: 100;
 }
 @keyframes fadeIn {
@@ -18,7 +18,7 @@
 }
 .Notification {
   bottom: 0;
-  left: 0;
+  right: 0;
   padding: 1rem;
   margin-top: 0.3rem;
   max-width: 40rem;
