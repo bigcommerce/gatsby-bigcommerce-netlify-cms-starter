@@ -7,7 +7,7 @@
 - [Netlify CLI](https://www.netlify.com/docs/cli/)
 - [A BigCommerce Instance with API keys](https://developer.bigcommerce.com/api-docs)
 
-## Setting up BigCommerce & the Repo
+## Setting up BigCommerce
 
 The BigCommerce source plugin relies on API Keys. In this starter we are using the node project `dotenv` to access these variables. Make a copy of the `SAMPLE.env` file and fill in the variables from your [BigCommerce API user details](https://developer.bigcommerce.com/api-docs/getting-started/authentication#authentication_getting-api-credentials).
 
@@ -17,17 +17,17 @@ Once you have your API keys, do the following:
   * Set up environment variables
     * `cp SAMPLE.env .env` 
     * Enter your API credentials in .env file
+
+## Getting Started (Recommended - Netlify CLI)
+
+Netlify CMS can run in any frontend web environment, but the quickest way to try it out is by running it on a pre-configured starter site with Netlify. Because the app requires credentials for the BigCommerce API, the easiest way to get started with a working deploy is via the Netlify CLI. To do so, run the following commands:
+
   * Link to your Netlify site
   	* `netlify link`
   * Build
   	* `npm run build`
   * Deploy to Netlify
   	* `netlify deploy`
-
-
-## Getting Started (Recommended - Netlify CLI)
-
-Netlify CMS can run in any frontend web environment, but the quickest way to try it out is by running it on a pre-configured starter site with Netlify. Because
 
 
 ### "One Click" Deploy
