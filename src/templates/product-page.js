@@ -139,8 +139,6 @@ ProductPageTemplate.propTypes = {
 };
 
 const ProductPage = ({ data }) => {
-  console.log(data);
-
   const { frontmatter } = data.markdownRemark;
   const products = data.allBigCommerceProducts.nodes;
 

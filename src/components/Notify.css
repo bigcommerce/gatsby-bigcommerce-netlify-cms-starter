@@ -28,9 +28,13 @@
   font-weight: 600;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
 }
+.Notification .bc-btn {
+  margin-top: 0.5rem;
+  min-width: 100%;
+}
 .Content {
   display: flex;
-  font-size: 20px;
+  font-size: 1rem;
   width: 100%;
 }
 
@@ -38,9 +42,14 @@
   flex: 1;
   flex-basis: auto;
 }
+.Message p {
+  line-height: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 .Close {
   margin-right: 1rem;
   cursor: pointer;
-  justify-self: flex-start;
-  align-self: center;
+  position: absolute;
+  right: 0;
 }
