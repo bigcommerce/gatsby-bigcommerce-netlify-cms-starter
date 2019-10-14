@@ -6,9 +6,7 @@ import Features from '../components/Features';
 import Testimonials from '../components/Testimonials';
 import Pricing from '../components/Pricing';
 import PreviewCompatibleImage from '../components/PreviewCompatibleImage';
-import ProductPrices from '../components/bigcommerce/ProductPrices';
-
-import AddToCartButton from '../components/AddToCartButton';
+import ProductCard from '../components/bigcommerce/ProductCard';
 
 export const ProductPageTemplate = ({
   image,
@@ -44,39 +42,12 @@ export const ProductPageTemplate = ({
     </div>
     <section className="section section--gradient">
       <div className="container">
+
         <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
           {products.map(product => (
-
-            <div key={product.id} className="bc-product-card">
-              <Link to={`/products${product.custom_url.url}`} className="bc-product-card-image-anchor" title={product.name}>
-                <div className="bc-product-card__featured-image">
-                  <img
-                    className="attachment-bc-medium size-bc-medium"
-                    src={
-                      (product.images.length && product.images[0].url_standard) ||
-                      '/img/default-bc-product.png'
-                    }
-                    alt={product.name}
-                  />
-                </div>
-              </Link>
-
-              <div className="bc-product__meta">
-                <h3 className="bc-product__title">
-                  <Link to={`/products${product.custom_url.url}`} className="bc-product__title-link" title={product.name}>{product.name}</Link>
-                </h3>
-                
-                <ProductPrices product={product} />
-              </div>
-
-              <AddToCartButton
-                productId={product.variants[0].product_id}
-                variantId={product.variants[0].id}>
-                Add to Cart
-              </AddToCartButton>
-            </div>
-
+            <ProductCard key={product.id} product={product} />
           ))}
+          
         </div>
         <div className="section">
           <div className="columns">
