@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 
-import AddToCartButton from '../components/AddToCartButton';
+import AddToCartButton from '../components/bigcommerce/AddToCartButton';
 import Layout from '../components/Layout';
 
 import useWindow from '../hooks/useWindow';
@@ -9,7 +9,7 @@ import useWindow from '../hooks/useWindow';
 export default ({
   data: {
     allBigCommerceProducts: {
-      nodes: [{ name, id, sku, price, description, variants, images }]
+      nodes: [{ name, id, bigcommerce_id, sku, price, description, variants, images }]
     }
   }
 }) => {
@@ -82,7 +82,7 @@ export default ({
                 {currency}
                 {Number(price).toFixed(2)}
               </strong>
-              <AddToCartButton productId={id} variantId={variants[0].id}>
+              <AddToCartButton productId={bigcommerce_id} variantId={variants[0].id}>
                 Add to Cart
               </AddToCartButton>
             </section>
@@ -98,6 +98,7 @@ export const query = graphql`
     allBigCommerceProducts(filter: { id: { eq: $productId } }) {
       nodes {
         id
+        bigcommerce_id
         name
         sku
         price
