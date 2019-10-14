@@ -1,23 +1,10 @@
 import React from 'react';
 import { Link } from 'gatsby';
 
+import CurrencyFormatter from './bigcommerce/CurrencyFormatter';
 import Loader from './Loader';
 
 import CartContext from '../context/CartProvider';
-
-const FormattedAmount = props => {
-  const currency = props.currency;
-  const amount = props.amount;
-  const languageCode =
-    typeof window !== 'undefined'
-      ? window.navigator.language || 'en-US'
-      : 'en-US';
-  const formattedPrice = new Intl.NumberFormat(languageCode, {
-    style: 'currency',
-    currency
-  }).format(amount);
-  return formattedPrice;
-};
 
 const AdjustItem = props => {
   const { item, updatingItem } = props;
@@ -62,7 +49,7 @@ const CustomItems = props => {
           <AdjustItem {...props} item={item} />
 
           <div className="bc-cart-item-total-price">
-            <FormattedAmount
+            <CurrencyFormatter
               currency={props.currency.code}
               amount={item.list_price}
             />
@@ -96,7 +83,7 @@ const StandardItems = props => {
           </Link>
           <AdjustItem {...props} item={item} />
           <div className="bc-cart-item-total-price">
-            <FormattedAmount
+            <CurrencyFormatter
               currency={props.currency.code}
               amount={item.list_price}
             />
@@ -133,7 +120,7 @@ const GiftCertificateItems = props => {
           </div>
 
           <div className="bc-cart-item-total-price">
-            <FormattedAmount
+            <CurrencyFormatter
               currency={props.currency.code}
               amount={item.amount}
             />
@@ -223,7 +210,7 @@ const Cart = class extends React.Component {
                   <div className="bc-cart-subtotal">
                     <span className="bc-cart-subtotal__label">Subtotal: </span>
                     <span className="bc-cart-subtotal__amount">
-                      <FormattedAmount
+                      <CurrencyFormatter
                         currency={currency.code}
                         amount={cartAmount}
                       />

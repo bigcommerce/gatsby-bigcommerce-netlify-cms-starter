@@ -6,6 +6,7 @@ import Features from '../components/Features';
 import Testimonials from '../components/Testimonials';
 import Pricing from '../components/Pricing';
 import PreviewCompatibleImage from '../components/PreviewCompatibleImage';
+import ProductPrices from '../components/bigcommerce/ProductPrices';
 
 import AddToCartButton from '../components/AddToCartButton';
 
@@ -19,7 +20,8 @@ export const ProductPageTemplate = ({
   testimonials,
   fullImage,
   pricing,
-  products
+  products,
+  brands
 }) => (
   <div className="content">
     <div
@@ -44,26 +46,36 @@ export const ProductPageTemplate = ({
       <div className="container">
         <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
           {products.map(product => (
+
             <div key={product.id} className="bc-product-card">
-              <Link to={`/products/${product.sku}`}>
-                <div className="bc-product-card-product-name">
-                  {product.name}
+              <Link to={`/products/${product.sku}`} className="bc-product-card-image-anchor" title={product.name}>
+                <div className="bc-product-card__featured-image">
+                  <img
+                    className="attachment-bc-medium size-bc-medium"
+                    src={
+                      (product.images.length && product.images[0].url_standard) ||
+                      '/img/default-bc-product.png'
+                    }
+                    alt={product.name}
+                  />
                 </div>
-                <img
-                  className="bc-product-card-image"
-                  src={
-                    (product.images.length && product.images[0].url_standard) ||
-                    '/img/default-bc-product.png'
-                  }
-                  alt={product.name}
-                />
               </Link>
+
+              <div className="bc-product__meta">
+                <h3 className="bc-product__title">
+                  <Link to={`/products/${product.sku}`} className="bc-product__title-link" title={product.name}>{product.name}</Link>
+                </h3>
+                
+                <ProductPrices product={product} />
+              </div>
+
               <AddToCartButton
                 productId={product.variants[0].product_id}
                 variantId={product.variants[0].id}>
                 Add to Cart
               </AddToCartButton>
             </div>
+
           ))}
         </div>
         <div className="section">
@@ -151,12 +163,15 @@ ProductPageTemplate.propTypes = {
     description: PropTypes.string,
     plans: PropTypes.array
   }),
-  products: PropTypes.array
+  products: PropTypes.array,
+  brands: PropTypes.array
 };
 
 const ProductPage = ({ data }) => {
+  console.log(data);
+
   const { frontmatter } = data.markdownRemark;
-  const { nodes } = data.allBigCommerceProducts;
+  const products = data.allBigCommerceProducts.nodes;
 
   return (
     <Layout>
@@ -170,7 +185,7 @@ const ProductPage = ({ data }) => {
         testimonials={frontmatter.testimonials}
         fullImage={frontmatter.full_image}
         pricing={frontmatter.pricing}
-        products={nodes}
+        products={products}
       />
     </Layout>
   );
@@ -194,9 +209,14 @@ export const productPageQuery = graphql`
     allBigCommerceProducts {
       nodes {
         id
+        brand_id
         name
         sku
         price
+        calculated_price
+        retail_price
+        sale_price
+        map_price
         images {
           url_thumbnail
           url_standard
