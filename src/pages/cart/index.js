@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Layout from '../../components/Layout'
-import Cart from '../../components/Cart'
+import Cart from '../../components/bigcommerce/Cart'
 
 export default class CartIndexPage extends React.Component {
   render() {
