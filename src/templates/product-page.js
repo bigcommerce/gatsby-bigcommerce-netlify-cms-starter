@@ -48,7 +48,7 @@ export const ProductPageTemplate = ({
           {products.map(product => (
 
             <div key={product.id} className="bc-product-card">
-              <Link to={`/products/${product.sku}`} className="bc-product-card-image-anchor" title={product.name}>
+              <Link to={`/products${product.custom_url.url}`} className="bc-product-card-image-anchor" title={product.name}>
                 <div className="bc-product-card__featured-image">
                   <img
                     className="attachment-bc-medium size-bc-medium"
@@ -63,7 +63,7 @@ export const ProductPageTemplate = ({
 
               <div className="bc-product__meta">
                 <h3 className="bc-product__title">
-                  <Link to={`/products/${product.sku}`} className="bc-product__title-link" title={product.name}>{product.name}</Link>
+                  <Link to={`/products${product.custom_url.url}`} className="bc-product__title-link" title={product.name}>{product.name}</Link>
                 </h3>
                 
                 <ProductPrices product={product} />
@@ -217,6 +217,9 @@ export const productPageQuery = graphql`
         retail_price
         sale_price
         map_price
+        custom_url {
+          url
+        }
         images {
           url_thumbnail
           url_standard

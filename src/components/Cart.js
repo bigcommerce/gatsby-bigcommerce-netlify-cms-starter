@@ -40,12 +40,12 @@ const CustomItems = props => {
               Remove
             </button>
           </div>
-          <Link to={`/products/${item.sku}`}>
-            <div className="bc-cart-item-meta">
-              <h3 className="bc-cart-item__product-title">{item.name}</h3>
-              <span className="bc-cart-item__product-brand">{item.sku}</span>
-            </div>
-          </Link>
+          
+          <div className="bc-cart-item-meta">
+            <h3 className="bc-cart-item__product-title">{item.name}</h3>
+            <span className="bc-cart-item__product-brand">{item.sku}</span>
+          </div>
+          
           <AdjustItem {...props} item={item} />
 
           <div className="bc-cart-item-total-price">
