@@ -2,22 +2,36 @@ import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 
 import AddToCartButton from '../components/bigcommerce/AddToCartButton';
+import ProductPrices from '../components/bigcommerce/ProductPrices';
 import Layout from '../components/Layout';
-
-import useWindow from '../hooks/useWindow';
 
 export default ({
   data: {
     allBigCommerceProducts: {
-      nodes: [{ name, id, bigcommerce_id, sku, price, description, variants, images }]
+      nodes: [{ 
+        name, 
+        id, 
+        bigcommerce_id, 
+        sku, 
+        price,
+        calculated_price,
+        retail_price,
+        sale_price,
+        map_price,
+        description,
+        weight,
+        variants, 
+        images
+      }]
     }
   }
 }) => {
   const [selectedImage, updateSelectedImage] = useState(
     images.length && images[0].url_standard
   );
-  const currency = '$'; // lets find currency somewhere, ok?
-  const { width } = useWindow();
+
+  const product = { price, calculated_price, retail_price, sale_price, map_price };
+
   return (
     <Layout>
       <div className="content">
@@ -34,59 +48,76 @@ export default ({
           </h1>
         </div>
         <section className="section">
-          <div
-            className="container"
-            style={{
-              display: 'flex',
-              flexDirection: width < 1200 ? 'column' : 'row'
-            }}>
-            <section
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                minWidth: '30vw',
-                paddingBottom: '50px'
-              }}>
-              <img
-                src={
-                  (selectedImage && selectedImage) ||
-                  '/img/default-bc-product.png'
-                }
-                style={{ objectFit: 'contain' }}
-              />
-              <div
-                style={{
-                  display: 'flex',
-                  cursor: 'pointer',
-                  justifyContent: 'center'
-                }}>
-                {images.length &&
-                  images.map(img => (
-                    <img
-                      height="100px"
-                      width="100px"
-                      src={img.url_thumbnail}
-                      alt="thumb"
-                      key={JSON.stringify(img)}
-                      onClick={() => updateSelectedImage(img.url_standard)}
-                    />
-                  ))}
+          
+          <div className="bc-product-single">
+            <section className="bc-product-single__top">
+              <div className="bc-product__gallery">
+                <img
+                  src={
+                    (selectedImage && selectedImage) ||
+                    '/img/default-bc-product.png'
+                  }
+                  alt="Main"
+                  style={{ objectFit: 'contain' }}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    cursor: 'pointer',
+                    justifyContent: 'center'
+                  }}>
+                  {images.length &&
+                    images.map(img => (
+                      <img
+                        height="100px"
+                        width="100px"
+                        src={img.url_thumbnail}
+                        alt="Thumb"
+                        key={JSON.stringify(img)}
+                        onClick={() => updateSelectedImage(img.url_standard)}
+                      />
+                    ))}
+                </div>
+              </div>
+
+              <div className="bc-product-single__meta">
+
+                <h1 className="bc-product__title">
+                  {name}
+                </h1>
+
+                <ProductPrices product={product} />
+
+                <span className="bc-product__sku">
+                  <span className="bc-product-single__meta-label">SKU:</span> {sku}
+                </span>
+
+                <AddToCartButton
+                  productId={bigcommerce_id} 
+                  variantId={variants[0].id}>
+                  Add to Cart
+                </AddToCartButton>
               </div>
             </section>
-            <section style={{ padding: ' 0 200px' }}>
-              <div
-                className="content"
-                dangerouslySetInnerHTML={{ __html: description }}
-              />
-              <strong>
-                {currency}
-                {Number(price).toFixed(2)}
-              </strong>
-              <AddToCartButton productId={bigcommerce_id} variantId={variants[0].id}>
-                Add to Cart
-              </AddToCartButton>
+            <section className="bc-single-product__description">
+              <h4 className="bc-single-product__section-title">
+                Product Description
+              </h4>
+              <div className="bc-product__description"dangerouslySetInnerHTML={{ __html: description }}>
+              </div>
+            </section>
+            <section className="bc-single-product__specifications">
+              <h4 className="bc-single-product__section-title">
+                Specifications
+              </h4>
+              <ul className="bc-product__spec-list">
+                <li className="bc-product__spec">
+                  <span className="bc-product__spec-title">Weight:</span> <span className="bc-product__spec-value">{weight} oz</span>
+                </li>
+              </ul>
             </section>
           </div>
+
         </section>
       </div>
     </Layout>
@@ -102,7 +133,12 @@ export const query = graphql`
         name
         sku
         price
+        calculated_price
+        retail_price
+        sale_price
+        map_price
         description
+        weight
         images {
           url_standard
           url_thumbnail

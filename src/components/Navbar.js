@@ -10,13 +10,7 @@ const Navbar = class extends React.Component {
     super(props);
     this.state = {
       active: false,
-      navBarActiveClass: '',
-      cartLoading: false,
-      cartError: false,
-      cart: {
-        lineItems: {},
-        numberItems: 0
-      }
+      navBarActiveClass: ''
     };
   }
 
@@ -41,7 +35,6 @@ const Navbar = class extends React.Component {
   };
 
   render() {
-    const { numberItems } = this.state.cart;
 
     return (
       <nav
