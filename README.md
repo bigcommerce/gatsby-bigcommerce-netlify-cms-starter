@@ -1,5 +1,7 @@
 # Gatsby + BigCommerce + Netlify CMS Starter
 
+Note: This starter uses Gatsby v2.
+
 ## Prerequisites
 
 - Node (v8.2.0 or higher)
@@ -40,7 +42,7 @@ To set the variables:
  * Go to "Environment variables" > "Edit variables"
  * Enter the environment variables specified in "SAMPLE.env" and your BC API credentials 
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/becomevocal/gatsby-starter-netlify-cms"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/bigcommerce/gatsby-bigcommerce-netlify-cms-starter"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
 
 After clicking that button, you’ll authenticate with GitHub and choose a repository name. Netlify will then automatically create a repository in your GitHub account with a copy of the files from the template. Next, it will build and deploy the new site on Netlify, bringing you to the site dashboard when the build is complete. Next, you’ll need to set up Netlify’s Identity service to authorize users to log in to the CMS.
 
@@ -111,6 +113,10 @@ npm install --global --production windows-build-tools
 ## Purgecss
 
 This plugin uses [gatsby-plugin-purgecss](https://www.gatsbyjs.org/packages/gatsby-plugin-purgecss/) and [bulma](https://bulma.io/). The bulma builds are usually ~170K but reduced 90% by purgecss.
+
+# Kudos
+
+This is based on the [Gatsby Netlify CMS Starter](https://github.com/netlify-templates/gatsby-starter-netlify-cms) repo. Major kudos!
 
 # CONTRIBUTING
 
