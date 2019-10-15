@@ -6016,3 +6016,9 @@ button.bc-btn.bc-cart-actions__checkout-button {
   min-width: 30px;
   text-align: center;
 }
+
+@media only screen and (max-width: 600px) {
+  .bc-product__actions {
+    margin-bottom: 1rem;
+  }
+}

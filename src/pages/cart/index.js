@@ -25,7 +25,7 @@ export default class CartIndexPage extends React.Component {
         <section className="section">
           <div className="container">
             <div className="content">
-              <Cart />
+              <Cart cartType="full" />
             </div>
           </div>
         </section>
