@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'gatsby';
-import CartContext from '../context/CartProvider';
-import Cart from './bigcommerce/Cart'
+import CartContext from '../../context/CartProvider';
+import Cart from './Cart'
 
 import './Notify.css';
 
@@ -25,7 +25,7 @@ const Notification = ({ id, text, type }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       removeNotification(id);
-    }, 100000);
+    }, 7000);
     return () => clearTimeout(timer);
   }, []);
 
