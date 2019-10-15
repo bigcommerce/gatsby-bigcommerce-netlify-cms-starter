@@ -1,12 +1,11 @@
 @import "~bulma/sass/utilities/initial-variables"
 
 // Config vars
-// Kaldi logo brand color: #FD461E
-$kaldi-red: #D64000
-$kaldi-red-invert: #fff
+$brand-black: #000
+$brand-black-invert: #fff
 
-$primary: $kaldi-red
-$primary-invert: $kaldi-red-invert
+$primary: $brand-black
+$primary-invert: $brand-black-invert
 $body-color: #333
 $black: #2b2523
 
@@ -58,15 +57,13 @@ $black: #2b2523
     font-size: 1rem
     line-height: 1.25
     background-color: #fff
-    border-radius: .25rem
+    border: 2px solid #000
     text-decoration: none
     font-weight: 700
-    color: #CC3700
+    color: #000
     text-align: center
-    -webkit-box-shadow: inset 0 0 0 2px #CC3700
-    box-shadow: inset 0 0 0 2px #f40
-    -webkit-transition: all .15s ease
     transition: all .15s ease
+    cursor: pointer
 
 .margin-top-0
   margin-top: 0 !important
@@ -81,16 +78,16 @@ $black: #2b2523
 .navbar-brand .navbar-item.logo
   padding: 0 1rem
 footer.footer
-  padding: 3rem 0rem 0rem
+  padding: 0rem 0rem 0rem 0rem
   background-color: transparent
 
 //Menu overrides
 $menu-item-color: $white-ter
 $menu-item-hover-color: $black !important
 $menu-item-hover-background-color: $black
-$menu-item-active-color: $kaldi-red-invert
-$menu-item-active-background-color:	$kaldi-red-invert
-$menu-list-border-left: 1px solid $kaldi-red-invert
+$menu-item-active-color: $brand-black-invert
+$menu-item-active-background-color:	$brand-black-invert
+$menu-list-border-left: 1px solid $brand-black-invert
 $menu-label-color: $white-ter
 
 
@@ -113,18 +110,26 @@ $menu-label-color: $white-ter
     display: inline
 
 // blog roll
+.blog-list-item
+  border-radius: 0 !important
+  border-left: 4px solid #000 !important
+  box-shadow: none !important
+  background-color: #fff !important
 .blog-list-item.is-featured
-  background-color: #d6400033;
+  border: 1px solid #000
 .blog-list-item header
   display: flex;
   margin-bottom: 1em;
 .blog-list-item .featured-thumbnail
   flex-basis: 35%;
   margin: 0 1.5em 0 0;
-
+.blog-list-item .button, .blog-list-item .button:hover
+  background-color: #000
+  border-color: #000
+  border-radius: 0
+  color: #fff
 
 @import "~bulma"
-
 
 // responsiveness
 +tablet-only
@@ -138,3 +143,14 @@ $menu-label-color: $white-ter
     text-align: center;
     max-width: 70%;
     margin: 0 0 1em;
+
+// overrides
+
+a.navbar-item
+  max-height: 3rem
+
+.navbar-item img
+  max-height: 125px;
+
+.has-background-black
+  background-color: #000000 !important;

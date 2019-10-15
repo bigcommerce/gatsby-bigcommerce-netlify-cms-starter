@@ -16,7 +16,7 @@
 .spinner::before {
   animation: 2s linear infinite spinner;
   border: solid 3px #eee;
-  border-bottom-color: rgb(255, 68, 0);
+  border-bottom-color: #000;
   border-radius: 50%;
   content: '';
   height: 40px;
