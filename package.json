@@ -39,7 +39,10 @@
     "uuid": "^3.2.1"
   },
   "keywords": [
-    "gatsby", "ecommerce", "bigcommerce", "netlify"
+    "gatsby",
+    "ecommerce",
+    "bigcommerce",
+    "netlify"
   ],
   "license": "MIT",
   "main": "n/a",
