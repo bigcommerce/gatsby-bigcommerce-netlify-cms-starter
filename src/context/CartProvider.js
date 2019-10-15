@@ -153,12 +153,12 @@ export const CartProvider = ({ children }) => {
       }
     )
       .then(res => {
-        addNotification('Item removed successfully');
+        // addNotification('Item removed successfully');
         if (res.status === 204) {
           setState(initialState);
           return;
         }
-        addNotification('Item removed successfully');
+        // addNotification('Item removed successfully');
         return res.json();
       })
       .then(response => {

@@ -5,7 +5,7 @@ module.exports = {
   siteMetadata: {
     title: 'Gatsby + BigCommerce + Netlify CMS Starter',
     description:
-      'This repo contains an example business website that is built with Gatsby, and Netlify CMS.It follows the JAMstack architecture by using Git as a single source of truth, BigCommerce, and Netlify for continuous deployment, and CDN distribution.'
+      'This repo contains an example ecommerce website that is built with Gatsby, BigCommerce and Netlify CMS. It follows the JAMstack architecture by using Git as a single source of truth for content, BigCommerce for catalog / cart / checkout, and Netlify for continuous deployment.'
   },
   plugins: [
     {
@@ -17,8 +17,9 @@ module.exports = {
         accessToken: process.env.API_TOKEN,
         storeHash: process.env.API_STORE_HASH,
         endpoints: {
-          BigCommerceProducts: '/catalog/products?include=images,variants',
-          BigCommerceCategories: '/catalog/categories'
+          BigCommerceProducts: '/catalog/products?include=images,variants,custom_fields,options,modifiers,videos',
+          BigCommerceCategories: '/catalog/categories',
+          BigCommerceBrands: "/catalog/brands"
         }
       }
     },

@@ -10,13 +10,7 @@ const Navbar = class extends React.Component {
     super(props);
     this.state = {
       active: false,
-      navBarActiveClass: '',
-      cartLoading: false,
-      cartError: false,
-      cart: {
-        lineItems: {},
-        numberItems: 0
-      }
+      navBarActiveClass: ''
     };
   }
 
@@ -41,7 +35,6 @@ const Navbar = class extends React.Component {
   };
 
   render() {
-    const { numberItems } = this.state.cart;
 
     return (
       <nav
@@ -79,9 +72,6 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to="/contact">
                 Contact
               </Link>
-              <Link className="navbar-item" to="/contact/examples">
-                Form Examples
-              </Link>
               <CartContext.Consumer>
                 {value => {
                   return (
@@ -100,7 +90,7 @@ const Navbar = class extends React.Component {
             <div className="navbar-end has-text-centered">
               <a
                 className="navbar-item"
-                href="https://github.com/netlify-templates/gatsby-starter-netlify-cms"
+                href="https://github.com/becomevocal/gatsby-starter-netlify-cms"
                 target="_blank"
                 rel="noopener noreferrer">
                 <span className="icon">

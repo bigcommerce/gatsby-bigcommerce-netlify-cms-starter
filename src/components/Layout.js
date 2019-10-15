@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import Footer from './Footer';
 import Navbar from './Navbar';
-import Notify from './Notify';
+import Notify from './bigcommerce/Notify';
 import './all.sass';
 import './Layout.css';
 import useSiteMetadata from './SiteMetadata';

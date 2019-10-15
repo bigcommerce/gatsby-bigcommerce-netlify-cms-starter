@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import CartContext from '../context/CartProvider';
+import CartContext from '../../context/CartProvider';
 
 const AddToCartButton = ({ children, productId, variantId }) => {
   const value = useContext(CartContext);
@@ -16,7 +16,7 @@ const AddToCartButton = ({ children, productId, variantId }) => {
             type="submit"
             disabled={addingToCart === productId}
             onClick={() => addToCart(productId, variantId)}>
-            {addingToCart === productId ? 'adding to card' : children}
+            {addingToCart === productId ? 'Adding to Cart' : children}
           </button>
         </div>
       </div>

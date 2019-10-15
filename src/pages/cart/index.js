@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Layout from '../../components/Layout'
-import Cart from '../../components/Cart'
+import Cart from '../../components/bigcommerce/Cart'
 
 export default class CartIndexPage extends React.Component {
   render() {
@@ -25,7 +25,7 @@ export default class CartIndexPage extends React.Component {
         <section className="section">
           <div className="container">
             <div className="content">
-              <Cart />
+              <Cart cartType="full" />
             </div>
           </div>
         </section>

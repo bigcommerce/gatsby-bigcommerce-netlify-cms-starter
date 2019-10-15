@@ -26,7 +26,9 @@ exports.createPages = async ({ actions, graphql }) => {
         nodes {
           id
           name
-          sku
+          custom_url {
+            url
+          }
         }
       }
     }
@@ -40,9 +42,9 @@ exports.createPages = async ({ actions, graphql }) => {
   const posts = result.data.allMarkdownRemark.edges;
   const products = result.data.allBigCommerceProducts.nodes;
 
-  products.forEach(({ sku, id }) => {
+  products.forEach(({ custom_url, id }) => {
     createPage({
-      path: `/products/${sku}`,
+      path: `/products${custom_url.url}`,
       component: path.resolve(`src/templates/product-details.js`),
       context: {
         productId: id
