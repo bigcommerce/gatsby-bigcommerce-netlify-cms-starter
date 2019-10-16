@@ -22,7 +22,10 @@ export function handler(event, context, callback) {
   const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
     'X-Auth-Token': API_TOKEN,
-    'Accept': 'application/json'
+    'X-Client-Type': 'Gatsby',
+    'X-Client-Name': 'gatsby-bigcommerce-netlify-cms-starter',
+    'X-Plugin-Version': '1.0.0',
+    'Accept': 'application/json',
   }
   const CORS_HEADERS = {
     'Access-Control-Allow-Headers': 'Content-Type, Accept',
