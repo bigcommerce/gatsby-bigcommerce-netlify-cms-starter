@@ -120,6 +120,20 @@ This plugin uses [gatsby-plugin-purgecss](https://www.gatsbyjs.org/packages/gats
 
 This is based on the [Gatsby Netlify CMS Starter](https://github.com/netlify-templates/gatsby-starter-netlify-cms) repo. Major kudos!
 
+Photos in starter from various photographers:
+[Aden Ardenrich](https://www.pexels.com/photo/bags-business-commerce-hanging-581344/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Pixabay](https://www.pexels.com/photo/architecture-bar-blur-boutique-264570/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Artem Beliaikin](https://www.pexels.com/photo/multi-colored-hunged-coats-2872879/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Daria Shevtsova](https://www.pexels.com/photo/red-motor-scooter-parking-on-front-of-chez-michele-store-1070981/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Aleksandar Pasaric](https://www.pexels.com/photo/people-walking-on-street-near-buildings-2339009/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Naim Benjelloun](https://www.pexels.com/photo/photo-of-people-walking-in-marketplace-2610817/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Kiara Coll](https://www.pexels.com/photo/close-up-photo-of-assorted-textiles-2928381/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Artem Beliaikin](https://www.pexels.com/photo/white-and-black-floral-cap-sleeved-shirt-994523/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Eric Montanah](https://www.pexels.com/photo/two-assorted-color-padded-chairs-near-side-table-1350789/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Sanketh Rao](https://www.pexels.com/photo/assorted-commemorative-plates-716107/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Artem Beliaikin](https://www.pexels.com/photo/photo-of-beaded-accessories-994515/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+[Jamie Diaz](https://www.pexels.com/photo/cat-mascot-outdoors-2133243/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels)
+
 # CONTRIBUTING
 
 Contributions are always welcome, no matter how large or small.

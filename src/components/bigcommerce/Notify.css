@@ -64,11 +64,10 @@
 .Message {
   flex: 1;
   flex-basis: auto;
-  height: 75%;
 }
 .Message .container {
   overflow: scroll;
-  height: 85%;
+  height: 100%;
 }
 .Actions {
   flex: 1;
@@ -88,6 +87,9 @@
   }
   .Notification {
     width: 100vw;
+  }
+  .Message .container {
+    height: 75%;
   }
   .bc-cart-header div {
     min-width: 4.6rem;

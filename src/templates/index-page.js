@@ -5,7 +5,6 @@ import { Link, graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import PhotoGrid from '../components/PhotoGrid';
 import BlogItem from '../components/BlogItem';
-import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
 
 export const IndexPageTemplate = ({
   image,
@@ -84,8 +83,8 @@ export const IndexPageTemplate = ({
                     
                     <PhotoGrid gridItems={intro.blurbs} />
                     
-                    <h4 className="title is-spaced is-4">Purpose</h4>
-                    <p className="subtitle">{description}</p>
+                    <h4 className="title is-spaced is-4">{intro.heading}</h4>
+                    <p className="subtitle">{intro.description}</p>
                   </div>
                 </section>
                 
@@ -189,7 +188,6 @@ export const pageQuery = graphql`
           }
           alt
         }
-        description
         intro {
           blurbs {
             image {

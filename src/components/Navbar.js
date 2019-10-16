@@ -75,12 +75,13 @@ const Navbar = class extends React.Component {
               <CartContext.Consumer>
                 {value => {
                   return (
-                    <Link className="navbar-item" to="/cart">
+                    <Link className="navbar-item menu-item-bigcommerce-cart" to="/cart">
                       Cart
+                      
                       {value &&
                         value.state.cart &&
                         value.state.cart.numberItems > 0 && (
-                          <h2>({value.state.cart.numberItems})</h2>
+                          <span className="bigcommerce-cart__item-count full">{value.state.cart.numberItems}</span>
                         )}
                     </Link>
                   );
