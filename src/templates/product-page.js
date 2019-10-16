@@ -32,13 +32,6 @@ export const ProductPageTemplate = ({
     </div>
     <section className="section section--gradient">
       <div className="container">
-        
-        <div className="columns">
-          <div className="column is-10 is-offset-1">
-            <h3 className="has-text-weight-semibold is-size-2">{heading}</h3>
-            <p>{description}</p>
-          </div>
-        </div>
 
         <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
           {products.map(product => (
@@ -130,8 +123,6 @@ export const productPageQuery = graphql`
             }
           }
         }
-        heading
-        description
       }
     }
   }

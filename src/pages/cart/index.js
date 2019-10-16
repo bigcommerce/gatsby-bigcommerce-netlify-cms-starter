@@ -19,7 +19,7 @@ export default class CartIndexPage extends React.Component {
               padding: '1rem',
             }}
           >
-            Cart
+            Your Cart
           </h1>
         </div>
         <section className="section">

@@ -1,44 +1,45 @@
 ---
 templateKey: index-page
-title: Great coffee with a conscience
-image: /img/home-jumbotron.jpg
-heading: Great coffee with a conscience
-subheading: Support sustainable farming while enjoying a cup
+title: The world brought to your doorstep
+subtitle: Your one-stop shop for unique products you'll love
+image: /img/city-background.jpg
+heading: The world brought to your doorstep
 mainpitch:
-  title: Why Kaldi
+  title: What is My Store?
   description: >
-    Kaldi is the coffee store for everyone who believes that great coffee
-    shouldn't just taste good, it should do good too. We source all of our beans
-    directly from small scale sustainable farmers and make sure part of the
-    profits are reinvested in their communities.
+    My Store is a journey waiting to be had, from our journeys in the past. An 
+    ever changing collection of products that are meant to help broaden your 
+    daily life through the creation of others.
 description: >-
-  Kaldi is the ultimate spot for coffee lovers who want to learn about their
-  java’s origin and support the farmers that grew it. We take coffee production,
-  roasting and brewing seriously and we’re glad to pass that knowledge to
-  anyone.
-intro:
+  Looking for a final set piece for your home that brings you back to a certain memort? Something 
+  for a rainy day to help open your mind? A piece of apparel that tells a story all it's
+  own? That's what we seek out and hope you'll find here.
+bigimage:
+  image: /img/bazaar-home.jpg
+  alt: We sell green and roasted coffee beans.
+intro:  
   blurbs:
-    - image: /img/coffee.png
+    - image: /img/close-up-cloth.jpg
       text: >
         We sell green and roasted coffee beans that are sourced directly from
         independent farmers and farm cooperatives. We’re proud to offer a
         variety of coffee beans grown with great care for the environment and
         local communities. Check our post or contact us directly for current
         availability.
-    - image: /img/coffee-gear.png
+    - image: /img/art-chairs.jpg
       text: >
         We offer a small, but carefully curated selection of brewing gear and
         tools for every taste and experience level. No matter if you roast your
         own beans or just bought your first french press, you’ll find a gadget
         to fall in love with in our shop.
-    - image: /img/tutorials.png
+    - image: /img/arts-and-crafts.jpg
       text: >
         Love a great cup of coffee, but never knew how to make one? Bought a
         fancy new Chemex but have no clue how to use it? Don't worry, we’re here
         to help. You can schedule a custom 1-on-1 consultation with our baristas
         to learn anything you want to know about coffee roasting and brewing.
         Email us or call the store for details.
-    - image: /img/meeting-space.png
+    - image: /img/assorted-boutique.jpg
       text: >
         We believe that good coffee has the power to bring people together.
         That’s why we decided to turn a corner of our shop into a cozy meeting

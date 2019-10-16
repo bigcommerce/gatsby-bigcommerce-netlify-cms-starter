@@ -30,7 +30,7 @@ $black: #2b2523
 // Helper Classes
 .full-width-image-container
   width: 100vw
-  height: 400px
+  height: 200px
   position: relative
   left: 50%
   right: 50%
@@ -115,8 +115,17 @@ $menu-label-color: $white-ter
   border-left: 4px solid #000 !important
   box-shadow: none !important
   background-color: #fff !important
-.blog-list-item.is-featured
-  border: 1px solid #000
+.blog-list-item.is-featured:before
+  border: 2px solid #000
+  color: #000
+  content: "Featured Blog Post"
+  font-size: .8rem
+  font-variant: all-small-caps;
+  padding: .2rem
+  position: relative
+  top: -10px
+.blog-list-item.is-featured .blog-list-item .featured-thumbnail
+  flex-basis: 15%
 .blog-list-item header
   display: flex;
   margin-bottom: 1em;
@@ -128,6 +137,9 @@ $menu-label-color: $white-ter
   border-color: #000
   border-radius: 0
   color: #fff
+
+.frontpage > div
+  max-height: 150px
 
 @import "~bulma"
 
@@ -150,7 +162,7 @@ a.navbar-item
   max-height: 3rem
 
 .navbar-item img
-  max-height: 125px;
+  max-height: 125px
 
 .has-background-black
-  background-color: #000000 !important;
+  background-color: #000000 !important

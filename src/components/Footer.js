@@ -18,7 +18,7 @@ const Footer = class extends React.Component {
             style={{ height: '10em' }}
           />
         </div>
-        <div className="content has-text-centered has-background-black has-text-white-ter">
+        <div className="content has-text-centered has-background-black has-text-white-ter" style={{ paddingBottom: '3em' }}>
           <div className="container has-background-black has-text-white-ter">
             <div className="columns">
               <div className="column is-4">
@@ -31,12 +31,12 @@ const Footer = class extends React.Component {
                     </li>
                     <li>
                       <Link className="navbar-item" to="/about">
-                        About
+                        About Us
                       </Link>
                     </li>
                     <li>
                       <Link className="navbar-item" to="/products">
-                        Products
+                        Our Products
                       </Link>
                     </li>
                     <li>
@@ -57,12 +57,12 @@ const Footer = class extends React.Component {
                   <ul className="menu-list">
                     <li>
                       <Link className="navbar-item" to="/blog">
-                        Latest Stories
+                        The Store Blog
                       </Link>
                     </li>
                     <li>
                       <Link className="navbar-item" to="/contact">
-                        Contact
+                        Contact Us
                       </Link>
                     </li>
                   </ul>
