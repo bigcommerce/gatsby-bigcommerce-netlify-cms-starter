@@ -22,8 +22,8 @@ export const ProductPageTemplate = ({
       <h2
         className="has-text-weight-bold is-size-1"
         style={{
-          boxShadow: '0.5rem 0 0 #f40, -0.5rem 0 0 #f40',
-          backgroundColor: '#f40',
+          boxShadow: '0.5rem 0 0 rgba(0, 0, 0, 0.75), -0.5rem 0 0 rgba(0, 0, 0, 0.75)',
+          backgroundColor: 'rgba(0, 0, 0, 0.75)',
           color: 'white',
           padding: '1rem'
         }}>
@@ -32,13 +32,6 @@ export const ProductPageTemplate = ({
     </div>
     <section className="section section--gradient">
       <div className="container">
-        
-        <div className="columns">
-          <div className="column is-10 is-offset-1">
-            <h3 className="has-text-weight-semibold is-size-2">{heading}</h3>
-            <p>{description}</p>
-          </div>
-        </div>
 
         <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
           {products.map(product => (
@@ -130,8 +123,6 @@ export const productPageQuery = graphql`
             }
           }
         }
-        heading
-        description
       }
     }
   }

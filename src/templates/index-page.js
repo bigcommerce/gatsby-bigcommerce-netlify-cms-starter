@@ -3,17 +3,20 @@ import PropTypes from 'prop-types';
 import { Link, graphql } from 'gatsby';
 
 import Layout from '../components/Layout';
-import Features from '../components/Features';
-import BlogRoll from '../components/BlogRoll';
+import PhotoGrid from '../components/PhotoGrid';
+import BlogItem from '../components/BlogItem';
+import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
 
 export const IndexPageTemplate = ({
   image,
   title,
+  subtitle,
   heading,
-  subheading,
   mainpitch,
+  bigimage,
   description,
-  intro
+  intro,
+  post
 }) => (
   <div>
     <div
@@ -38,8 +41,8 @@ export const IndexPageTemplate = ({
           className="has-text-weight-bold is-size-3-mobile is-size-2-tablet is-size-1-widescreen"
           style={{
             boxShadow:
-              'rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px',
-            backgroundColor: 'rgb(255, 68, 0)',
+              'rgba(0, 0, 0, 0.75) 0.5rem 0px 0px, rgba(0, 0, 0, 0.75) -0.5rem 0px 0px',
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
             color: 'white',
             lineHeight: '1',
             padding: '0.25em'
@@ -50,13 +53,13 @@ export const IndexPageTemplate = ({
           className="has-text-weight-bold is-size-5-mobile is-size-5-tablet is-size-4-widescreen"
           style={{
             boxShadow:
-              'rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px',
-            backgroundColor: 'rgb(255, 68, 0)',
+              'rgba(0, 0, 0, 0.75) 0.5rem 0px 0px, rgba(0, 0, 0, 0.75) -0.5rem 0px 0px',
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
             color: 'white',
             lineHeight: '1',
             padding: '0.25em'
           }}>
-          {subheading}
+          {subtitle}
         </h3>
       </div>
     </div>
@@ -69,21 +72,23 @@ export const IndexPageTemplate = ({
               <div className="content">
                 <div className="content">
                   <div className="tile">
-                    <h1 className="title">{mainpitch.title}</h1>
-                  </div>
-                  <div className="tile">
                     <h3 className="subtitle">{mainpitch.description}</h3>
                   </div>
                 </div>
-                <div className="columns">
-                  <div className="column is-12">
-                    <h3 className="has-text-weight-semibold is-size-2">
-                      {heading}
-                    </h3>
-                    <p>{description}</p>
+                
+                <section className="section">
+                  <div className="container has-text-centered">
+                    <div className="block">
+                      <img src={bigimage.image.publicURL} alt={bigimage.alt} />
+                    </div>
+                    
+                    <PhotoGrid gridItems={intro.blurbs} />
+                    
+                    <h4 className="title is-spaced is-4">Purpose</h4>
+                    <p className="subtitle">{description}</p>
                   </div>
-                </div>
-                <Features gridItems={intro.blurbs} />
+                </section>
+                
                 <div className="columns">
                   <div className="column is-12 has-text-centered">
                     <Link className="btn" to="/products">
@@ -92,14 +97,11 @@ export const IndexPageTemplate = ({
                   </div>
                 </div>
                 <div className="column is-12">
-                  <h3 className="has-text-weight-semibold is-size-2">
-                    Latest stories
-                  </h3>
-                  <BlogRoll />
+                  <BlogItem post={post} columnWidth="is-12" />
                   <div className="column is-12 has-text-centered">
                     <Link className="btn" to="/blog">
                       Read more
-                    </Link>
+                    </Link> 
                   </div>
                 </div>
               </div>
@@ -114,13 +116,15 @@ export const IndexPageTemplate = ({
 IndexPageTemplate.propTypes = {
   image: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   title: PropTypes.string,
+  subtitle: PropTypes.string,
   heading: PropTypes.string,
-  subheading: PropTypes.string,
   mainpitch: PropTypes.object,
+  bigimage: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   description: PropTypes.string,
   intro: PropTypes.shape({
     blurbs: PropTypes.array
-  })
+  }),
+  post: PropTypes.object
 };
 
 const IndexPage = ({ data }) => {
@@ -131,11 +135,13 @@ const IndexPage = ({ data }) => {
       <IndexPageTemplate
         image={frontmatter.image}
         title={frontmatter.title}
+        subtitle={frontmatter.subtitle}
         heading={frontmatter.heading}
-        subheading={frontmatter.subheading}
         mainpitch={frontmatter.mainpitch}
+        bigimage={frontmatter.bigimage}
         description={frontmatter.description}
         intro={frontmatter.intro}
+        post={data.allMarkdownRemark.edges[0].node}
       />
     </Layout>
   );
@@ -145,6 +151,9 @@ IndexPage.propTypes = {
   data: PropTypes.shape({
     markdownRemark: PropTypes.shape({
       frontmatter: PropTypes.object
+    }),
+    allMarkdownRemark: PropTypes.shape({
+      edges: PropTypes.array,
     })
   })
 };
@@ -156,6 +165,7 @@ export const pageQuery = graphql`
     markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
       frontmatter {
         title
+        subtitle
         image {
           childImageSharp {
             fluid(maxWidth: 2048, quality: 100) {
@@ -164,10 +174,20 @@ export const pageQuery = graphql`
           }
         }
         heading
-        subheading
         mainpitch {
           title
           description
+        }
+        bigimage {
+         image {
+            childImageSharp {
+              fluid(maxWidth: 240, quality: 64) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+            publicURL
+          }
+          alt
         }
         description
         intro {
@@ -183,6 +203,34 @@ export const pageQuery = graphql`
           }
           heading
           description
+        }
+      }
+    }
+    allMarkdownRemark(
+      sort: { order: DESC, fields: [frontmatter___featuredpost, frontmatter___date] }
+      filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
+      limit: 1
+    ) {
+      edges {
+        node {
+          excerpt(pruneLength: 400)
+          id
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            templateKey
+            date(formatString: "MMMM DD, YYYY")
+            featuredpost
+            featuredimage {
+              childImageSharp {
+                fluid(maxWidth: 120, quality: 100) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
+          }
         }
       }
     }

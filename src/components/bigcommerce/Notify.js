@@ -27,6 +27,7 @@ const Notification = ({ id, text, type }) => {
       removeNotification(id);
     }, 7000);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -1,19 +1,17 @@
 ---
 templateKey: 'about-page'
 path: /about
-title: About our values
+title: About Us
+image: /img/bags-commerce-hanging.jpg
 ---
-### Shade-grown coffee
-Coffee is a small tree or shrub that grows in the forest understory in its wild form, and traditionally was grown commercially under other trees that provided shade. The forest-like structure of shade coffee farms provides habitat for a great number of migratory and resident species.
+### Creatively sourced for those that care
+We've searched the world to find products that we feel will not only speak to us, but any individuals that desire a positive outlook in a sustainable way.
 
-### Single origin
-Single-origin coffee is coffee grown within a single known geographic origin. Sometimes, this is a single farm or a specific collection of beans from a single country. The name of the coffee is then usually the place it was grown to whatever degree available.
+### We're adventurers
+Check in and you'll see us focused on an exciting experience that is typically a bold, sometimes risky, undertaking. Our travels have taken us into activities ranging from skydiving to mountain climbing to scuba diving and back.
 
-### Sustainable farming
-Sustainable agriculture is farming in sustainable ways based on an understanding of ecosystem services, the study of relationships between organisms and their environment. What grows where and how it is grown are a matter of choice and careful consideration for nature and communities.
+### Retail is our therapy
+Taking the scenic route through a city and figuring out what resonates with us is one of our favorite activies. Curation equals relaxation for us. 
 
-### Direct sourcing
-Direct trade is a form of sourcing practiced by some coffee roasters. Advocates of direct trade practices promote direct communication and price negotiation between buyer and farmer, along with systems that encourage and incentivize quality.
-
-### Reinvest profits
-We want to truly empower the communities that bring amazing coffee to you. That’s why we reinvest 20% of our profits into farms, local businesses and schools everywhere our coffee is grown. You can see the communities grow and learn more about coffee farming on our blog.
+### We started a while ago
+Our first retail shop was up and running almost 30 years ago!

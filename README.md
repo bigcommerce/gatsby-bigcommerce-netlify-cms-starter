@@ -13,6 +13,8 @@ Note: This starter uses Gatsby v2.
 
 The BigCommerce source plugin relies on API Keys. In this starter we are using the node project `dotenv` to access these variables. Make a copy of the `SAMPLE.env` file and fill in the variables from your [BigCommerce API user details](https://developer.bigcommerce.com/api-docs/getting-started/authentication#authentication_getting-api-credentials).
 
+*Note: You can sign up for a free trial on bigcommerce.com, which includes API access, if you don't already have an account. There is also a partner program which includes a sandbox account to play around in.*
+
 Once you have your API keys, do the following:
   * Install dependencies
   	* `yarn`

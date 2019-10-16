@@ -42,6 +42,7 @@ export const CartProvider = ({ children }) => {
       });
   };
 
+  // eslint-disable-next-line
   useEffect(() => fetchCart(), []);
 
   const refreshCart = response => {
