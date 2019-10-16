@@ -46,11 +46,11 @@ const Notification = ({ id, text, type }) => {
             <p className="bc-ajax-add-to-cart__message bc-alert bc-alert--success">{text}</p>
           </div>
           <Cart cartType="overlay" />
+          <div className="Actions">
+            <Link to="/cart" className="bc-btn" onClick={() => removeNotification(id)}>View Cart</Link>
+            <a href={value.state.cart.redirectUrls.checkout_url} className="bc-btn">Proceed to Checkout</a>
+          </div>
         </div>
-      </div>
-      <div className="Actions">
-        <Link to="/cart" className="bc-btn" onClick={() => removeNotification(id)}>View Cart</Link>
-        <a href={value.state.cart.redirectUrls.checkout_url} className="bc-btn">Proceed to Checkout</a>
       </div>
     </article>
   );
