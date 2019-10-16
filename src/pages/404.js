@@ -1,12 +1,24 @@
 import React from 'react'
+import { Link } from 'gatsby';
 import Layout from '../components/Layout'
 
 const NotFoundPage = () => (
   <Layout>
-    <div>
-      <h1>NOT FOUND</h1>
-      <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
-    </div>
+    <section className="section">
+      <div className="container">
+        <div className="content">
+          <div className="container">
+            <section className="bc-cart">
+              <div className="bc-cart__empty">
+                <h2 className="bc-cart__title--empty">Page Not Found</h2>
+                <p>You've hit a page that doesn't exist. Looking to shop?</p>
+                <Link to="/products" className="bc-cart__continue-shopping">Take a look around.</Link>
+        			</div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
   </Layout>
 )
 
