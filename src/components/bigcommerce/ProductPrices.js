@@ -9,7 +9,11 @@ const ProductPrices = ({ product }) => {
   const latestProduct =
     prices && prices[product.bigcommerce_id]
       ? prices[product.bigcommerce_id]
-      : product;
+      : {
+          price: null,
+          calculated_price: null,
+          sale_price: null
+        };
   return (
     <div className="bc-product__pricing initialized">
       {latestProduct.sale_price !== 0 ? (

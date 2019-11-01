@@ -7,7 +7,7 @@ const CurrencyFormatter = ({ currency, amount }) => {
     style: 'currency',
     currency
   }).format(amount);
-  return formattedPrice;
+  return amount && formattedPrice;
 };
 
 export default CurrencyFormatter;
