@@ -8,21 +8,23 @@ import Layout from '../components/Layout';
 export default ({
   data: {
     allBigCommerceProducts: {
-      nodes: [{ 
-        name, 
-        id, 
-        bigcommerce_id, 
-        sku, 
-        price,
-        calculated_price,
-        retail_price,
-        sale_price,
-        map_price,
-        description,
-        weight,
-        variants, 
-        images
-      }]
+      nodes: [
+        {
+          name,
+          id,
+          bigcommerce_id,
+          sku,
+          price,
+          calculated_price,
+          retail_price,
+          sale_price,
+          map_price,
+          description,
+          weight,
+          variants,
+          images
+        }
+      ]
     }
   }
 }) => {
@@ -30,7 +32,14 @@ export default ({
     images.length && images[0].url_standard
   );
 
-  const product = { price, calculated_price, retail_price, sale_price, map_price };
+  const product = {
+    price,
+    calculated_price,
+    retail_price,
+    sale_price,
+    map_price,
+    bigcommerce_id
+  };
 
   return (
     <Layout>
@@ -39,7 +48,8 @@ export default ({
           <h1
             className="has-text-weight-bold is-size-1"
             style={{
-              boxShadow: '0.5rem 0 0 rgba(0, 0, 0, 1), -0.5rem 0 0 rgba(0, 0, 0, 1)',
+              boxShadow:
+                '0.5rem 0 0 rgba(0, 0, 0, 1), -0.5rem 0 0 rgba(0, 0, 0, 1)',
               backgroundColor: 'rgba(0, 0, 0, 1)',
               color: 'white',
               padding: '1rem'
@@ -48,7 +58,6 @@ export default ({
           </h1>
         </div>
         <section className="section">
-          
           <div className="bc-product-single">
             <section className="bc-product-single__top">
               <div className="bc-product__gallery">
@@ -81,19 +90,17 @@ export default ({
               </div>
 
               <div className="bc-product-single__meta">
-
-                <h1 className="bc-product__title">
-                  {name}
-                </h1>
+                <h1 className="bc-product__title">{name}</h1>
 
                 <ProductPrices product={product} />
 
                 <span className="bc-product__sku">
-                  <span className="bc-product-single__meta-label">SKU:</span> {sku}
+                  <span className="bc-product-single__meta-label">SKU:</span>{' '}
+                  {sku}
                 </span>
 
                 <AddToCartButton
-                  productId={bigcommerce_id} 
+                  productId={bigcommerce_id}
                   variantId={variants[0].id}>
                   Add to Cart
                 </AddToCartButton>
@@ -103,8 +110,9 @@ export default ({
               <h4 className="bc-single-product__section-title">
                 Product Description
               </h4>
-              <div className="bc-product__description"dangerouslySetInnerHTML={{ __html: description }}>
-              </div>
+              <div
+                className="bc-product__description"
+                dangerouslySetInnerHTML={{ __html: description }}></div>
             </section>
             <section className="bc-single-product__specifications">
               <h4 className="bc-single-product__section-title">
@@ -112,12 +120,12 @@ export default ({
               </h4>
               <ul className="bc-product__spec-list">
                 <li className="bc-product__spec">
-                  <span className="bc-product__spec-title">Weight:</span> <span className="bc-product__spec-value">{weight} oz</span>
+                  <span className="bc-product__spec-title">Weight:</span>{' '}
+                  <span className="bc-product__spec-value">{weight} oz</span>
                 </li>
               </ul>
             </section>
           </div>
-
         </section>
       </div>
     </Layout>

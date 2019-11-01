@@ -22,7 +22,8 @@ export const ProductPageTemplate = ({
       <h2
         className="has-text-weight-bold is-size-1"
         style={{
-          boxShadow: '0.5rem 0 0 rgba(0, 0, 0, 0.75), -0.5rem 0 0 rgba(0, 0, 0, 0.75)',
+          boxShadow:
+            '0.5rem 0 0 rgba(0, 0, 0, 0.75), -0.5rem 0 0 rgba(0, 0, 0, 0.75)',
           backgroundColor: 'rgba(0, 0, 0, 0.75)',
           color: 'white',
           padding: '1rem'
@@ -32,13 +33,11 @@ export const ProductPageTemplate = ({
     </div>
     <section className="section section--gradient">
       <div className="container">
-
         <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
           {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        
       </div>
     </section>
   </div>
@@ -95,6 +94,7 @@ export const productPageQuery = graphql`
         retail_price
         sale_price
         map_price
+        bigcommerce_id
         custom_url {
           url
         }

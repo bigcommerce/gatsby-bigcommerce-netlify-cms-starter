@@ -1,7 +1,4 @@
-
-const CurrencyFormatter = props => {
-  const currency = props.currency;
-  const amount = props.amount;
+const CurrencyFormatter = ({ currency, amount }) => {
   const languageCode =
     typeof window !== 'undefined'
       ? window.navigator.language || 'en-US'
@@ -10,7 +7,7 @@ const CurrencyFormatter = props => {
     style: 'currency',
     currency
   }).format(amount);
-  return formattedPrice;
+  return amount && formattedPrice;
 };
 
 export default CurrencyFormatter;
