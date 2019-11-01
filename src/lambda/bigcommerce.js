@@ -108,17 +108,12 @@ export function handler(event, context, callback) {
   };
 
   // Here's a function we'll use to define how our response will look like when we callback
-  const pass = (response, cookieHeader) => {
-    const statusCode = response.status;
-    const body = JSON.stringify(response.data);
-    const headers = { ...CORS_HEADERS, ...cookieHeader };
-
+  const pass = (response, cookieHeader) =>
     callback(null, {
-      statusCode,
-      body,
-      headers
+      statusCode: response.status,
+      body: JSON.stringify(response.data),
+      headers: { ...CORS_HEADERS, ...cookieHeader }
     });
-  };
 
   // Process POST
   const post = body => {

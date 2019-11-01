@@ -6,7 +6,6 @@ export const PriceProvider = ({ children }) => {
   const [prices, setPrices] = useState({});
 
   const fetchPrices = () => {
-    console.log('fetching prices');
     fetch(`/.netlify/functions/bigcommerce?endpoint=catalog/products`, {
       credentials: 'same-origin',
       mode: 'same-origin'
