@@ -79,6 +79,10 @@ export const CartProvider = ({ children }) => {
       credentials: 'same-origin',
       mode: 'same-origin',
       body: JSON.stringify({
+        channel_id: (window.location.pathname.indexOf('fr') !== -1) ? 21400 : 21401,
+        currency: {
+          code: (window.location.pathname.indexOf('fr') !== -1) ? 'eur' : 'gbp'
+        },
         line_items: [
           {
             quantity: 1,

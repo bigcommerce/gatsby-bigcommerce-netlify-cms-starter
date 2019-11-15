@@ -6,6 +6,7 @@ import ProductPrices from '../components/bigcommerce/ProductPrices';
 import Layout from '../components/Layout';
 
 export default ({
+  pageContext,
   data: {
     allBigCommerceProducts: {
       nodes: [
@@ -54,7 +55,7 @@ export default ({
               color: 'white',
               padding: '1rem'
             }}>
-            {name}
+            {pageContext.overrides.name || name}
           </h1>
         </div>
         <section className="section">
@@ -90,7 +91,7 @@ export default ({
               </div>
 
               <div className="bc-product-single__meta">
-                <h1 className="bc-product__title">{name}</h1>
+                <h1 className="bc-product__title">{pageContext.overrides.name || name}</h1>
 
                 <ProductPrices product={product} />
 
@@ -112,7 +113,7 @@ export default ({
               </h4>
               <div
                 className="bc-product__description"
-                dangerouslySetInnerHTML={{ __html: description }}></div>
+                dangerouslySetInnerHTML={{ __html: pageContext.overrides.description || description }}></div>
             </section>
             <section className="bc-single-product__specifications">
               <h4 className="bc-single-product__section-title">
