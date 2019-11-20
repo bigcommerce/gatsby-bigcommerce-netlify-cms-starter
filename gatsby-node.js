@@ -5,6 +5,22 @@ const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { fmImagesToRelative } = require('gatsby-remark-relative-images');
 
+async function fetchCurrencies() {
+  return await axios({
+    url: `https://api.bigcommerce.com/stores/${process.env.API_STORE_HASH}/v2/currencies`,
+    method: 'get',
+    headers: {
+      'X-Auth-Token': process.env.API_TOKEN,
+      'X-Auth-Client': process.env.API_CLIENT_ID,
+      'Content-Type': 'application/json'
+    }
+  }).then((result) => {
+    return result.data.data;
+  }).catch(function (error) {
+    console.log(error);
+  });
+}
+
 async function fetchChannels() {
   return await axios({
     url: `https://api.bigcommerce.com/stores/${process.env.API_STORE_HASH}/v3/channels`,
@@ -77,14 +93,24 @@ exports.createPages = async ({ actions, graphql }) => {
   const posts = result.data.allMarkdownRemark.edges;
   const products = result.data.allBigCommerceProducts.nodes;
 
+  console.log('fetching currencies');
+  const currencies = await fetchCurrencies();
+
   console.log('fetching channels');
   const channels = await fetchChannels();
 
   for (var i = channels.length - 1; i >= 0; i--) {
     let channel = channels[i];
 
-    if (channel.is_enabled) {
+    if (channel.is_enabled && channel.type === 'storefront' && channel.platform === 'custom') {
+      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|');
+
       console.log(`creating product pages for channel: ${channel.name}`);
+      console.log(regionName);
+      console.log(regionCountryCode);
+      console.log(regionPathPrefix);
+      console.log(regionCurrency);
+
       let channelListings = await fetchChannelListings(channel.id);
 
       for (var x = channelListings.length - 1; x >= 0; x--) {
@@ -94,12 +120,16 @@ exports.createPages = async ({ actions, graphql }) => {
         if (channelListing.state === "active") {
           products.forEach( ({ bigcommerce_id, custom_url, id }) => {
             if (bigcommerce_id === channelListing.product_id) {
-              console.log(`${channel.external_id}/products${custom_url.url}`);
+              console.log(`${regionPathPrefix}/products${custom_url.url}`);
               createPage({
-                path: `${channel.external_id}/products${custom_url.url}`,
+                path: `${regionPathPrefix}/products${custom_url.url}`,
                 component: path.resolve(`src/templates/product-details.js`),
                 context: {
+                  baseProductPath: `/products${custom_url.url}`,
                   productId: id,
+                  channel,
+                  channels,
+                  currencies,
                   overrides: channelListing.overrides || {}
                 }
               });

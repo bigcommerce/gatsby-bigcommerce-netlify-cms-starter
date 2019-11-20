@@ -19,8 +19,23 @@ module.exports = {
         endpoints: {
           BigCommerceProducts: '/catalog/products?include=images,variants',
           BigCommerceCategories: '/catalog/categories',
-          BigCommerceBrands: "/catalog/brands",
-          BigCommerceChannels: "/channels"
+          BigCommerceBrands: '/catalog/brands',
+          BigCommerceChannels: '/channels'
+        }
+      }
+    },
+    {
+      resolve: 'gatsby-source-bigcommerce',
+      options: {
+        // REQUIRED
+        clientId: process.env.API_CLIENT_ID,
+        secret: process.env.API_SECRET,
+        accessToken: process.env.API_TOKEN,
+        storeHash: process.env.API_STORE_HASH,
+        apiVersion: 'v2',
+        responseType: 'json',
+        endpoints: {
+          BigCommerceCurrencies: '/currencies.json',
         }
       }
     },

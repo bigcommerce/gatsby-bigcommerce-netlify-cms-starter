@@ -19,7 +19,7 @@
     "gatsby-remark-copy-linked-files": "^2.0.7",
     "gatsby-remark-images": "^3.0.1",
     "gatsby-remark-relative-images": "^0.2.1",
-    "gatsby-source-bigcommerce": "^0.3.3",
+    "gatsby-source-bigcommerce": "^0.3.7",
     "gatsby-source-filesystem": "^2.0.26",
     "gatsby-transformer-remark": "^2.3.4",
     "gatsby-transformer-sharp": "^2.1.9",
@@ -34,6 +34,7 @@
     "qs": "^6.7.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-flags-select": "^1.1.10",
     "react-helmet": "^5.2.0",
     "set-cookie-parser": "^2.3.5",
     "uuid": "^3.2.1"
