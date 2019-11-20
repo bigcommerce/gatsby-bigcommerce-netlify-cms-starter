@@ -4,6 +4,7 @@ import github from '../img/github-icon.svg';
 import logo from '../img/logo-header.png';
 
 import CartContext from '../context/CartProvider';
+import RegionSelector from './bigcommerce/RegionSelector';
 
 const Navbar = class extends React.Component {
   constructor(props) {
@@ -89,6 +90,7 @@ const Navbar = class extends React.Component {
               </CartContext.Consumer>
             </div>
             <div className="navbar-end has-text-centered">
+              <RegionSelector pageContext={this.props.pageContext} />
               <a
                 className="navbar-item"
                 href="https://github.com/bigcommerce/gatsby-bigcommerce-netlify-cms-starter"

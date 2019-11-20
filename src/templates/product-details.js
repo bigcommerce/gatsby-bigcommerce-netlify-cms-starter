@@ -43,7 +43,7 @@ export default ({
   };
 
   return (
-    <Layout>
+    <Layout pageContext={pageContext}>
       <div className="content">
         <div className="has-text-centered margin-top-0">
           <h1

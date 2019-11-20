@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet';
 import Footer from './Footer';
 import Navbar from './Navbar';
@@ -7,7 +8,7 @@ import './all.sass';
 import './Layout.css';
 import useSiteMetadata from './SiteMetadata';
 
-const TemplateWrapper = ({ children }) => {
+const TemplateWrapper = ({ children, pageContext }) => {
   const { title, description } = useSiteMetadata();
   return (
     <div>
@@ -48,11 +49,16 @@ const TemplateWrapper = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Helmet>
       <Notify />
-      <Navbar />
+      <Navbar pageContext={pageContext} />
       <div>{children}</div>
       <Footer />
     </div>
   );
 };
+
+TemplateWrapper.propTypes = {
+  children: PropTypes.node,
+  pageContext: PropTypes.object,
+}
 
 export default TemplateWrapper;
