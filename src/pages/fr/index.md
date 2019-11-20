@@ -1,5 +1,6 @@
 ---
 templateKey: index-page
+path: /fr
 title: The world brought to your doorstep
 subtitle: Your one-stop shop for unique products you'll love
 image: /img/city-background.jpg
@@ -33,7 +34,7 @@ intro:
     for a rainy day to help open your mind? A piece of apparel that tells a story all it's
     own? That's what we seek out and hope you'll find here.
 basepath: 
-channel:
-  external_id: United States|US||USD
+channel: 
+  external_id: France|FR|fr|EUR
 ---
 

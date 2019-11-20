@@ -18,7 +18,6 @@ class RegionSelector extends React.Component {
     let matchedChannel = channels[0]
 
     for (var i = channels.length - 1; i >= 0; i--) {
-      // eslint-disable-next-line
       const regionLocaleCode = channels[i].external_id.split('|')[channelRegionLocaleIdx]
 
       if (regionLocaleCode === countryCode) {
@@ -30,22 +29,20 @@ class RegionSelector extends React.Component {
     return matchedChannel
   }
 
-  onSelectFlag(channels, baseProductPath, selectedCountryCode) {
+  onSelectFlag(channels, basePath, selectedCountryCode) {
     const selectedPathPrefix = this.findChannelByCountryCode(selectedCountryCode, channels).external_id.split('|')[channelRegionPathIdx]
 
-    navigate(`${selectedPathPrefix}/${baseProductPath}`)
+    navigate(`${selectedPathPrefix}/${basePath}`)
   }
 
   render() {
     const { data, pageContext } = this.props
     const { nodes: channels } = data.allBigCommerceChannels
-    const baseProductPath = pageContext.pageContext.baseProductPath
+    const basePath = pageContext.pageContext.basePath || ''
     const currentChannelCountryCode = pageContext.pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
 
     const countries = _.compact(channels.map(channel => {
-      // eslint-disable-next-line
-      const [ regionName, regionLocaleCode ] = channel.external_id.split('|')
-        return regionLocaleCode
+        return channel.external_id.split('|')[channelRegionLocaleIdx]
     }))
 
     const countryLabels = channels.map(channel => {
@@ -58,7 +55,7 @@ class RegionSelector extends React.Component {
         defaultCountry={currentChannelCountryCode}
         countries={countries}
         customLabels={{...countryLabels}}
-        onSelect={this.onSelectFlag.bind(this, channels, baseProductPath)} />
+        onSelect={this.onSelectFlag.bind(this, channels, basePath)} />
     )
   }
 }
