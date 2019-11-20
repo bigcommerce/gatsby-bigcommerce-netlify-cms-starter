@@ -58,9 +58,13 @@ AboutPageTemplate.propTypes = {
 
 const AboutPage = ({ data }) => {
   const { markdownRemark: post } = data
+  const pageContext = {
+    basePath: post.frontmatter.basepath,
+    channel: post.frontmatter.channel
+  }
 
   return (
-    <Layout>
+    <Layout pageContext={pageContext}>
       <AboutPageTemplate
         image={post.frontmatter.image}
         contentComponent={HTMLContent}
@@ -82,6 +86,10 @@ export const aboutPageQuery = graphql`
     markdownRemark(id: { eq: $id }) {
       html
       frontmatter {
+        basepath,
+        channel {
+          external_id
+        },
         title
         image {
           childImageSharp {

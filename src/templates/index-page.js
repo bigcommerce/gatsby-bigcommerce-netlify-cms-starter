@@ -113,6 +113,8 @@ export const IndexPageTemplate = ({
 );
 
 IndexPageTemplate.propTypes = {
+  basePath: PropTypes.string,
+  channel: PropTypes.string,
   image: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   title: PropTypes.string,
   subtitle: PropTypes.string,
@@ -128,9 +130,13 @@ IndexPageTemplate.propTypes = {
 
 const IndexPage = ({ data }) => {
   const { frontmatter } = data.markdownRemark;
+  const pageContext = {
+    basePath: frontmatter.basepath,
+    channel: frontmatter.channel
+  }
 
   return (
-    <Layout>
+    <Layout pageContext={pageContext}>
       <IndexPageTemplate
         image={frontmatter.image}
         title={frontmatter.title}
@@ -160,9 +166,13 @@ IndexPage.propTypes = {
 export default IndexPage;
 
 export const pageQuery = graphql`
-  query IndexPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
+  query IndexPageTemplate($id: String!) {
+    markdownRemark(id: { eq: $id }) {
       frontmatter {
+        basepath,
+        channel {
+          external_id
+        },
         title
         subtitle
         image {

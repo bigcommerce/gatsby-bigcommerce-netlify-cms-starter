@@ -112,7 +112,7 @@ exports.createPages = async ({ actions, graphql }) => {
       console.log(regionCurrency);
 
       let channelListings = await fetchChannelListings(channel.id);
-
+      let channelProducts = [];
       for (var x = channelListings.length - 1; x >= 0; x--) {
         let channelListing = channelListings[x];
         // console.log(`product_id: ${channelListing.product_id} listing_id: ${channelListing.listing_id}`);
@@ -121,11 +121,17 @@ exports.createPages = async ({ actions, graphql }) => {
           products.forEach( ({ bigcommerce_id, custom_url, id }) => {
             if (bigcommerce_id === channelListing.product_id) {
               console.log(`${regionPathPrefix}/products${custom_url.url}`);
+
+              channelProducts[bigcommerce_id] = {
+                productPath: `${regionPathPrefix}/products${custom_url.url}`,
+                overrides: channelListing.overrides || {}
+              }
+
               createPage({
                 path: `${regionPathPrefix}/products${custom_url.url}`,
                 component: path.resolve(`src/templates/product-details.js`),
                 context: {
-                  baseProductPath: `/products${custom_url.url}`,
+                  basePath: `/products${custom_url.url}`,
                   productId: id,
                   channel,
                   channels,
@@ -137,6 +143,20 @@ exports.createPages = async ({ actions, graphql }) => {
           });
         }
       }
+      
+      console.log(`${regionPathPrefix}/products`);
+      createPage({
+        path: `${regionPathPrefix}/products`,
+        component: path.resolve(`src/templates/product-list.js`),
+        context: {
+          basePath: `/products`,
+          channel,
+          channels,
+          currencies,
+          channelProductData: channelProducts
+        }
+      });  
+
     }
   }
 

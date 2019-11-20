@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import CurrencyFormatter from './CurrencyFormatter';
 import PriceContext from '../../context/PriceProvider';
 
-const currencyCode = (window.location.pathname.indexOf('fr') !== -1) ? 'eur' : 'gbp'; // TODO: Move this to use settings merchant sets up in BigCommerce (v2 Currencies API)
-
-const ProductPrices = ({ product }) => {
+const ProductPrices = ({ product, channelId, currencyCode }) => {
   const prices = useContext(PriceContext);
   const latestProduct =
     prices && prices[product.bigcommerce_id]

@@ -1,5 +1,6 @@
 ---
 templateKey: index-page
+path: /uk
 title: The world brought to your doorstep
 subtitle: Your one-stop shop for unique products you'll love
 image: /img/city-background.jpg
@@ -34,6 +35,6 @@ intro:
     own? That's what we seek out and hope you'll find here.
 basepath: 
 channel:
-  external_id: United States|US||USD
+  external_id: United Kingdom|GB|uk|GBP
 ---
 
