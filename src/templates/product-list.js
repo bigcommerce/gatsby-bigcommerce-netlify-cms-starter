@@ -4,12 +4,32 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import ProductCard from '../components/bigcommerce/ProductCard';
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
+const translations = {
+  'fr': {
+    'products': 'Des Produits',
+  },
+  'default': {
+    'products': 'Products',
+  }
+}
+
 export const ProductListTemplate = ({
   pageContext,
   products
 }) => {
   const channel = pageContext.channel
   const channelProductData = pageContext.channelProductData
+  let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
+  let pageText = translations['default']
+    
+  if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+    pageText = translations[channelRegionPathPrefix]
+  }
 
   return (
     <div className="content">
@@ -27,7 +47,7 @@ export const ProductListTemplate = ({
             color: 'white',
             padding: '1rem'
           }}>
-          Products
+          {pageText.products}
         </h2>
       </div>
       <section className="section section--gradient">

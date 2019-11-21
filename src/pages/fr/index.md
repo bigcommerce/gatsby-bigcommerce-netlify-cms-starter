@@ -1,16 +1,16 @@
 ---
 templateKey: index-page
 path: /fr
-title: The world brought to your doorstep
-subtitle: Your one-stop shop for unique products you'll love
+title: Le monde amené à votre porte
+subtitle: Votre guichet unique pour des produits uniques que vous allez adorer
 image: /img/city-background.jpg
-heading: The world brought to your doorstep
+heading: Le monde amené à votre porte
 mainpitch:
-  title: What is My Store?
+  title: Quel est Mon Magasin?
   description: >
-    My Store is a journey waiting to be had, from our journeys in the past. An 
-    ever changing collection of products that are meant to help broaden your 
-    daily life through the creation of others.
+    Mon magasin est un voyage en attente de nos voyages dans le passé. Un
+    collection en constante évolution de produits qui sont destinés à aider à élargir votre
+    la vie quotidienne à travers la création des autres.
 bigimage:
   image: /img/bazaar-home.jpg
   alt: Bazaar
@@ -18,21 +18,21 @@ intro:
   blurbs:
     - image: /img/close-up-cloth.jpg
       text: >
-        Close up of cloth
+        Gros plan de tissu
     - image: /img/art-chairs.jpg
       text: >
-        Artistic chairs
+        Chaises artistiques
     - image: /img/arts-and-crafts.jpg
       text: >
-        Colorful arts and crafts
+        Artisanat coloré
     - image: /img/assorted-boutique.jpg
       text: >
-        Assorted boutique
+        Assortiment de boutique
   heading: Purpose
   description: >
-    Looking for a final set piece for your home that brings you back to a certain memort? Something 
-    for a rainy day to help open your mind? A piece of apparel that tells a story all it's
-    own? That's what we seek out and hope you'll find here.
+    Vous recherchez une pièce définitive pour votre maison qui vous ramène à un certain souvenir? Quelque chose
+    pour un jour de pluie pour vous aider à ouvrir votre esprit? Un vêtement qui raconte une histoire
+    posséder? C'est ce que nous recherchons et espérons que vous trouverez ici.
 basepath: 
 channel: 
   external_id: France|FR|fr|EUR

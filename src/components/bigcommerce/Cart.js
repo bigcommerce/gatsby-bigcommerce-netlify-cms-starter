@@ -1,10 +1,36 @@
 import React from 'react';
 import { Link } from 'gatsby';
-
 import CurrencyFormatter from './CurrencyFormatter';
 import Loader from '../Loader';
-
 import CartContext from '../../context/CartProvider';
+
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
+const translations = {
+  'fr': {
+    'checkout': 'Passer À La Caisse',
+    'cartempty': 'Votre panier est vide.',
+    'lookaround': 'Regardez autour de vous.',
+    'item': 'Article',
+    'qty': 'Quantité',
+    'price': 'Prix',
+    'loadingcart': 'Chariot De Chargement',
+    'remove': 'Retirer',
+  },
+  'default': {
+    'checkout': 'Proceed to Checkout',
+    'cartempty': 'Your cart is empty.',
+    'lookaround': 'Take a look around.',
+    'item': 'Item',
+    'qty': 'Qty',
+    'price': 'Price',
+    'loadingcart': 'Loading Cart',
+    'remove': 'Remove',
+  }
+}
 
 const AdjustItem = props => {
   const { item, updatingItem, cartType } = props;
@@ -55,7 +81,7 @@ const CustomItems = props => {
                 className="bc-link bc-cart-item__remove-button"
                 onClick={() => props.removeItemFromCart(item.id)}
                 type="button">
-                Remove
+                {props.pageText.remove}
               </button>
             </div>
           )
@@ -101,7 +127,7 @@ const StandardItems = props => {
                 className="bc-link bc-cart-item__remove-button"
                 onClick={() => props.removeItemFromCart(item.id)}
                 type="button">
-                Remove
+                {props.pageText.remove}
               </button>
             </div>
           )
@@ -146,7 +172,7 @@ const GiftCertificateItems = props => {
                 className="bc-link bc-cart-item__remove-button"
                 onClick={() => props.removeItemFromCart(item.id)}
                 type="button">
-                Remove
+                {props.pageText.remove}
               </button>
             </div>
           )
@@ -181,7 +207,16 @@ const GiftCertificateItems = props => {
 const Cart = class extends React.Component {
   render() {
     const cartType = this.props.cartType;
-    let cartFooter;             
+    const pageContext = this.props.pageContext
+    const channel = pageContext.channel
+    let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
+    let pageText = translations['default']
+      
+    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+      pageText = translations[channelRegionPathPrefix]
+    }
+
+    let cartFooter;
 
     return (
       <CartContext.Consumer>
@@ -221,7 +256,7 @@ const Cart = class extends React.Component {
                       <button
                         className="bc-btn bc-cart-actions__checkout-button"
                         type="submit">
-                        Proceed to Checkout
+                        {pageText.checkout}
                       </button>
                     </form>
                   </div>
@@ -237,19 +272,20 @@ const Cart = class extends React.Component {
                   <p className="bc-cart-error__message"></p>
                 </div>
                 <header className="bc-cart-header">
-                  <div className="bc-cart-header__item">Item</div>
-                  <div className="bc-cart-header__qty">Qty</div>
-                  <div className="bc-cart-header__price">Price</div>
+                  <div className="bc-cart-header__item">{pageText.item}</div>
+                  <div className="bc-cart-header__qty">{pageText.qty}</div>
+                  <div className="bc-cart-header__price">{pageText.price}</div>
                 </header>
                 {state.cartLoading ? (
                   <div className="bc-cart__empty">
                     <h2 className="bc-cart__title--empty">
-                      <em>Loading Cart</em>
+                      <em>{pageText.loadingcart}</em>
                     </h2>
                   </div>
                 ) : numberItems > 0 ? (
                   <div className="bc-cart-body">
                     <StandardItems
+                      pageText={pageText}
                       currency={currency}
                       updatingItem={updatingItem}
                       updateCartItemQuantity={updateCartItemQuantity}
@@ -258,6 +294,7 @@ const Cart = class extends React.Component {
                       cartType={cartType}
                     />
                     <StandardItems
+                      pageText={pageText}
                       currency={currency}
                       updatingItem={updatingItem}
                       updateCartItemQuantity={updateCartItemQuantity}
@@ -266,6 +303,7 @@ const Cart = class extends React.Component {
                       cartType={cartType}
                     />
                     <CustomItems
+                      pageText={pageText}
                       currency={currency}
                       updatingItem={updatingItem}
                       updateCartItemQuantity={updateCartItemQuantity}
@@ -274,6 +312,7 @@ const Cart = class extends React.Component {
                       cartType={cartType}
                     />
                     <GiftCertificateItems
+                      pageText={pageText}
                       currency={currency}
                       updatingItem={updatingItem}
                       removeItemFromCart={removeItemFromCart}
@@ -284,10 +323,10 @@ const Cart = class extends React.Component {
                 ) : (
                   <div className="bc-cart__empty">
                     <h2 className="bc-cart__title--empty">
-                      Your cart is empty.
+                      {pageText.cartempty}
                     </h2>
                     <Link to="/products" className="bc-cart__continue-shopping">
-                      Take a look around.
+                      {pageText.lookaround}
                     </Link>
                   </div>
                 )}

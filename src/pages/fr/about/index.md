@@ -1,20 +1,20 @@
 ---
 templateKey: 'about-page'
 path: /fr/about
-title: About Us
+title: À Propos De Nous
 image: /img/bags-commerce-hanging.jpg
 basepath: about
 channel: 
   external_id: France|FR|fr|EUR
 ---
-### Creatively sourced for those that care
-We've searched the world to find products that we feel will not only speak to us, but any individuals that desire a positive outlook in a sustainable way.
+### Créative de source pour ceux qui se soucient
+Nous avons parcouru le monde à la recherche de produits qui, selon nous, ne nous parleront pas seulement, mais également à tous les individus souhaitant une vision positive de manière durable.
 
-### We're adventurers
-Check in and you'll see us focused on an exciting experience that is typically a bold, sometimes risky, undertaking. Our travels have taken us into activities ranging from skydiving to mountain climbing to scuba diving and back.
+### Nous sommes des aventuriers
+Enregistrez-vous et vous verrez que nous sommes concentrés sur une expérience excitante qui est généralement une entreprise audacieuse, parfois risquée. Nos voyages nous ont entraînés dans des activités allant du parachutisme à l'escalade en passant par la plongée sous-marine et le retour.
 
-### Retail is our therapy
-Taking the scenic route through a city and figuring out what resonates with us is one of our favorite activies. Curation equals relaxation for us. 
+### Le commerce de détail est notre thérapie
+Prendre la route panoramique à travers une ville et déterminer ce qui nous touche est l’une de nos activités préférées. Curation est synonyme de relaxation pour nous.
 
-### We started a while ago
-Our first retail shop was up and running almost 30 years ago!
+### Nous avons commencé il y a quelque temps
+Notre premier magasin était ouvert il y a presque 30 ans!

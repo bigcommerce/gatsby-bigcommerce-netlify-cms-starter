@@ -3,9 +3,30 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import BlogRoll from '../../components/BlogRoll'
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
+const translations = {
+  'fr': {
+    'storeblog': 'Le Blog Du Magasin',
+  },
+  'default': {
+    'storeblog': 'The Store Blog',
+  }
+}
+
 export default class BlogIndexPage extends React.Component {
   render() {
     const pageContext = this.props.pageContext
+    const channel = pageContext.channel
+    let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
+    let pageText = translations['default']
+      
+    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+      pageText = translations[channelRegionPathPrefix]
+    }
 
     return (
       <Layout pageContext={pageContext}>
@@ -24,7 +45,7 @@ export default class BlogIndexPage extends React.Component {
               padding: '1rem',
             }}
           >
-            The Store Blog
+            {pageText.storeblog}
           </h1>
         </div>
         <section className="section">
