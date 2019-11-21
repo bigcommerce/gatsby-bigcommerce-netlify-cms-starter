@@ -42,12 +42,12 @@ class RegionSelector extends React.Component {
     const currentChannelCountryCode = pageContext.pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
 
     const countries = _.compact(channels.map(channel => {
-        return channel.external_id.split('|')[channelRegionLocaleIdx]
+      return channel.external_id.split('|')[channelRegionLocaleIdx]
     }))
 
     const countryLabels = channels.map(channel => {
       const [ regionName, regionLocaleCode ] = channel.external_id.split('|')
-        return { [regionLocaleCode] : regionName }
+      return { [regionLocaleCode] : regionName }
     })
 
     return (
@@ -73,7 +73,7 @@ export default (pageContext) => (
   <StaticQuery
     query={graphql`
       query ChannelQuery {
-        allBigCommerceChannels {
+        allBigCommerceChannels(filter: {is_enabled: {eq: true}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
           nodes {
             id
             bigcommerce_id
