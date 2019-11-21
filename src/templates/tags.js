@@ -3,16 +3,26 @@ import Helmet from 'react-helmet'
 import { Link, graphql } from 'gatsby'
 import Layout from '../components/Layout'
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
 class TagRoute extends React.Component {
   render() {
+    const pageContext = this.props.pageContext
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+
     const posts = this.props.data.allMarkdownRemark.edges
     const postLinks = posts.map(post => (
       <li key={post.node.fields.slug}>
-        <Link to={post.node.fields.slug}>
+        <Link to={`${channelRegionPathPrefix}${post.node.fields.slug}`}>
           <h2 className="is-size-2">{post.node.frontmatter.title}</h2>
         </Link>
       </li>
     ))
+    
     const tag = this.props.pageContext.tag
     const title = this.props.data.site.siteMetadata.title
     const totalCount = this.props.data.allMarkdownRemark.totalCount
@@ -21,7 +31,7 @@ class TagRoute extends React.Component {
     } tagged with “${tag}”`
 
     return (
-      <Layout>
+      <Layout pageContext={pageContext}>
         <section className="section">
           <Helmet title={`${tag} | ${title}`} />
           <div className="container content">
@@ -33,7 +43,7 @@ class TagRoute extends React.Component {
                 <h3 className="title is-size-4 is-bold-light">{tagHeader}</h3>
                 <ul className="taglist">{postLinks}</ul>
                 <p>
-                  <Link to="/tags/">Browse all tags</Link>
+                  <Link to={`${channelRegionPathPrefix}/tags/`}>Browse all tags</Link>
                 </p>
               </div>
             </div>

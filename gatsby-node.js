@@ -1,9 +1,11 @@
-require('dotenv').config();
-const axios = require('axios');
-const _ = require('lodash');
-const path = require('path');
-const { createFilePath } = require('gatsby-source-filesystem');
-const { fmImagesToRelative } = require('gatsby-remark-relative-images');
+require('dotenv').config()
+const axios = require('axios')
+const _ = require('lodash')
+const path = require('path')
+const { createFilePath } = require('gatsby-source-filesystem')
+const { fmImagesToRelative } = require('gatsby-remark-relative-images')
+
+const availableRegions = []
 
 async function fetchCurrencies() {
   return await axios({
@@ -15,9 +17,9 @@ async function fetchCurrencies() {
       'Content-Type': 'application/json'
     }
   }).then((result) => {
-    return result.data.data;
+    return result.data.data
   }).catch(function (error) {
-    console.log(error);
+    console.log(error)
   });
 }
 
@@ -31,9 +33,9 @@ async function fetchChannels() {
       'Content-Type': 'application/json'
     }
   }).then((result) => {
-    return result.data.data;
+    return result.data.data
   }).catch(function (error) {
-    console.log(error);
+    console.log(error)
   });
 }
 
@@ -47,18 +49,32 @@ async function fetchChannelListings(channelID) {
       'Content-Type': 'application/json'
     }
   }).then((result) => {
-    return result.data.data;
+    return result.data.data
   }).catch(function (error) {
     console.log(error);
-  });
+  })
 }
 
 exports.createPages = async ({ actions, graphql }) => {
-  const { createPage } = actions;
+  const { createPage } = actions
 
   const result = await graphql(`
     {
       allMarkdownRemark(limit: 1000) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+            frontmatter {
+              tags
+              templateKey
+            }
+          }
+        }
+      }
+      allBlogPosts: allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "blog-post"}}}) {
         edges {
           node {
             id
@@ -86,41 +102,39 @@ exports.createPages = async ({ actions, graphql }) => {
   `);
 
   if (result.errors) {
-    result.errors.forEach(e => console.error(e.toString()));
-    return Promise.reject(result.errors);
+    result.errors.forEach(e => console.error(e.toString()))
+    return Promise.reject(result.errors)
   }
 
-  const posts = result.data.allMarkdownRemark.edges;
-  const products = result.data.allBigCommerceProducts.nodes;
+  const posts = result.data.allMarkdownRemark.edges
+  const blogPosts = result.data.allBlogPosts.edges
+  const products = result.data.allBigCommerceProducts.nodes
 
-  console.log('fetching currencies');
-  const currencies = await fetchCurrencies();
+  console.log('fetching currencies')
+  const currencies = await fetchCurrencies()
 
-  console.log('fetching channels');
-  const channels = await fetchChannels();
+  console.log('fetching channels')
+  const channels = await fetchChannels()
 
   for (var i = channels.length - 1; i >= 0; i--) {
-    let channel = channels[i];
+    let channel = channels[i]
 
     if (channel.is_enabled && channel.type === 'storefront' && channel.platform === 'custom') {
-      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|');
+      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+      availableRegions.push(channel)
 
-      console.log(`creating product pages for channel: ${channel.name}`);
-      console.log(regionName);
-      console.log(regionCountryCode);
-      console.log(regionPathPrefix);
-      console.log(regionCurrency);
+      console.log(`creating product pages for channel '${channel.name}' targeting ${regionName} (${regionCountryCode}) with currency of ${regionCurrency} using subdirectory /${regionPathPrefix}`)
 
-      let channelListings = await fetchChannelListings(channel.id);
-      let channelProducts = [];
+      let channelListings = await fetchChannelListings(channel.id)
+      let channelProducts = []
       for (var x = channelListings.length - 1; x >= 0; x--) {
-        let channelListing = channelListings[x];
+        let channelListing = channelListings[x]
         // console.log(`product_id: ${channelListing.product_id} listing_id: ${channelListing.listing_id}`);
 
         if (channelListing.state === "active") {
           products.forEach( ({ bigcommerce_id, custom_url, id }) => {
             if (bigcommerce_id === channelListing.product_id) {
-              console.log(`${regionPathPrefix}/products${custom_url.url}`);
+              console.log(`${regionPathPrefix}/products${custom_url.url}`)
 
               channelProducts[bigcommerce_id] = {
                 productPath: `${regionPathPrefix}/products${custom_url.url}`,
@@ -138,13 +152,13 @@ exports.createPages = async ({ actions, graphql }) => {
                   currencies,
                   overrides: channelListing.overrides || {}
                 }
-              });
+              })
             }
-          });
+          })
         }
       }
       
-      console.log(`${regionPathPrefix}/products`);
+      console.log(`${regionPathPrefix}/products`)
       createPage({
         path: `${regionPathPrefix}/products`,
         component: path.resolve(`src/templates/product-list.js`),
@@ -155,13 +169,16 @@ exports.createPages = async ({ actions, graphql }) => {
           currencies,
           channelProductData: channelProducts
         }
-      });  
+      })
 
     }
   }
 
+  const postSlugsCreated = [];
   posts.forEach(edge => {
     const id = edge.node.id;
+    console.log(`creating post ${edge.node.fields.slug}`)
+
     createPage({
       path: edge.node.fields.slug,
       tags: edge.node.frontmatter.tags,
@@ -172,23 +189,58 @@ exports.createPages = async ({ actions, graphql }) => {
       context: {
         id
       }
-    });
+    })
+
+    // Store posts created so we can skip over creating them in the next part
+    // since we want to preserve the markdown generated region overrides
+    postSlugsCreated.push(edge.node.fields.slug)
+  });
+
+  blogPosts.forEach(edge => {
+    const id = edge.node.id;
+
+    for (var i = availableRegions.length - 1; i >= 0; i--) {
+      const channel = availableRegions[i]
+      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+      let newPagePath = `${regionPathPrefix}${edge.node.fields.slug}`
+      if (regionPathPrefix !== '' && newPagePath[0] !== '/') {
+        newPagePath = `/${newPagePath}`
+      }
+
+      if (!postSlugsCreated.includes(newPagePath)) {
+        console.log(`creating blog post ${newPagePath} for channel '${channel.name}'`)
+
+        createPage({
+          path: newPagePath,
+          tags: edge.node.frontmatter.tags,
+          component: path.resolve(
+            `src/templates/${String(edge.node.frontmatter.templateKey)}.js`
+          ),
+          context: {
+            id,
+            basePath: edge.node.fields.slug,
+            channel
+          }
+        })
+      }
+    }
   });
 
   // Tag pages:
-  let tags = [];
+  let tags = []
+  const tagPagesCreated = [];
   // Iterate through each post, putting all found tags into `tags`
   posts.forEach(edge => {
     if (_.get(edge, `node.frontmatter.tags`)) {
-      tags = tags.concat(edge.node.frontmatter.tags);
+      tags = tags.concat(edge.node.frontmatter.tags)
     }
-  });
+  })
   // Eliminate duplicate tags
   tags = _.uniq(tags);
 
   // Make tag pages
   tags.forEach(tag => {
-    const tagPath = `/tags/${_.kebabCase(tag)}/`;
+    const tagPath = `/tags/${_.kebabCase(tag)}/`
 
     createPage({
       path: tagPath,
@@ -196,20 +248,71 @@ exports.createPages = async ({ actions, graphql }) => {
       context: {
         tag
       }
-    });
-  });
-};
+    })
+  })
+
+  // Make region tag pages
+  tags.forEach(tag => {
+    const tagPath = `/tags/${_.kebabCase(tag)}/`
+
+    for (var i = availableRegions.length - 1; i >= 0; i--) {
+      const channel = availableRegions[i]
+      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+      let newPagePath = `${regionPathPrefix}${tagPath}`
+      if (regionPathPrefix !== '' && newPagePath[0] !== '/') {
+        newPagePath = `/${newPagePath}`
+      }
+      
+      console.log(`creating tag page ${newPagePath} for channel '${channel.name}'`)
+
+      createPage({
+        path: newPagePath,
+        component: path.resolve(`src/templates/tags.js`),
+        context: {
+          tag,
+          basePath: tagPath,
+          channel
+        }
+      })
+    }
+  })
+}
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
   fmImagesToRelative(node); // convert image paths for gatsby images
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode });
+    const value = createFilePath({ node, getNode })
     createNodeField({
       name: `slug`,
       node,
       value
-    });
+    })
   }
-};
+}
+
+exports.onCreatePage = ({ page, actions }) => {
+  const { createPage, deletePage } = actions
+  const componentPath = `src/${page.componentPath.split('/src/')[1]}`
+  const replacePath = path => (path === `/` ? path : path.replace(/\/$/, ``))
+
+  deletePage(page)
+
+  for (var i = availableRegions.length - 1; i >= 0; i--) {
+    const channel = availableRegions[i]
+    const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+    const newPagePath = `${regionPathPrefix}${page.path}`
+    console.log(`creating page ${newPagePath} for channel '${channel.name}'`)
+
+    createPage({
+      path: replacePath(newPagePath),
+      component: page.componentPath,
+      context: {
+        ...page.context,
+        basePath: replacePath(page.path),
+        channel
+      },
+    })
+  }
+}

@@ -5,8 +5,10 @@ import BlogRoll from '../../components/BlogRoll'
 
 export default class BlogIndexPage extends React.Component {
   render() {
+    const pageContext = this.props.pageContext
+
     return (
-      <Layout>
+      <Layout pageContext={pageContext}>
         <div
           className="full-width-image-container margin-top-0"
           style={{
@@ -28,7 +30,7 @@ export default class BlogIndexPage extends React.Component {
         <section className="section">
           <div className="container">
             <div className="content">
-              <BlogRoll />
+              <BlogRoll pageContext={pageContext} />
             </div>
           </div>
         </section>

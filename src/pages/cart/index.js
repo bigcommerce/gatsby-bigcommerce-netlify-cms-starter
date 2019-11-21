@@ -5,8 +5,10 @@ import Cart from '../../components/bigcommerce/Cart'
 
 export default class CartIndexPage extends React.Component {
   render() {
+    const pageContext = this.props.pageContext
+
     return (
-      <Layout>
+      <Layout pageContext={pageContext}>
         <div
           className="has-text-centered margin-top-0"
         >

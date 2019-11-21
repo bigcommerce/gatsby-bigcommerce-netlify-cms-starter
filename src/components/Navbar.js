@@ -6,6 +6,11 @@ import logo from '../img/logo-header.png';
 import CartContext from '../context/CartProvider';
 import RegionSelector from './bigcommerce/RegionSelector';
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
 const Navbar = class extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +41,9 @@ const Navbar = class extends React.Component {
   };
 
   render() {
+    const pageContext = this.props.pageContext
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (
       <nav
@@ -44,7 +52,7 @@ const Navbar = class extends React.Component {
         aria-label="main-navigation">
         <div className="container">
           <div className="navbar-brand">
-            <Link to="/" className="navbar-item" title="Logo">
+            <Link to={`${channelRegionPathPrefix}`} className="navbar-item" title="Logo">
               <img src={logo} alt="My Store" />
             </Link>
             {/* Hamburger menu */}
@@ -61,22 +69,22 @@ const Navbar = class extends React.Component {
             id="navMenu"
             className={`navbar-menu ${this.state.navBarActiveClass}`}>
             <div className="navbar-start has-text-centered">
-              <Link className="navbar-item" to="/about">
+              <Link className="navbar-item" to={`${channelRegionPathPrefix}/about`}>
                 About
               </Link>
-              <Link className="navbar-item" to="/products">
+              <Link className="navbar-item" to={`${channelRegionPathPrefix}/products`}>
                 Products
               </Link>
-              <Link className="navbar-item" to="/blog">
+              <Link className="navbar-item" to={`${channelRegionPathPrefix}/blog`}>
                 Blog
               </Link>
-              <Link className="navbar-item" to="/contact">
+              <Link className="navbar-item" to={`${channelRegionPathPrefix}/contact`}>
                 Contact
               </Link>
               <CartContext.Consumer>
                 {value => {
                   return (
-                    <Link className="navbar-item menu-item-bigcommerce-cart" to="/cart">
+                    <Link className="navbar-item menu-item-bigcommerce-cart" to={`${channelRegionPathPrefix}/cart`}>
                       Cart
                       
                       {value &&

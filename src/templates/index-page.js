@@ -6,7 +6,13 @@ import Layout from '../components/Layout';
 import PhotoGrid from '../components/PhotoGrid';
 import BlogItem from '../components/BlogItem';
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
 export const IndexPageTemplate = ({
+  pageContext,
   image,
   title,
   subtitle,
@@ -16,103 +22,109 @@ export const IndexPageTemplate = ({
   description,
   intro,
   post
-}) => (
-  <div>
-    <div
-      className="full-width-image margin-top-0"
-      style={{
-        backgroundImage: `url(${
-          !!image.childImageSharp ? image.childImageSharp.fluid.src : image
-        })`,
-        backgroundPosition: `top left`,
-        backgroundAttachment: `fixed`
-      }}>
-      <div
-        style={{
-          display: 'flex',
-          height: '150px',
-          lineHeight: '1',
-          justifyContent: 'space-around',
-          alignItems: 'left',
-          flexDirection: 'column'
-        }}>
-        <h1
-          className="has-text-weight-bold is-size-3-mobile is-size-2-tablet is-size-1-widescreen"
-          style={{
-            boxShadow:
-              'rgba(0, 0, 0, 0.75) 0.5rem 0px 0px, rgba(0, 0, 0, 0.75) -0.5rem 0px 0px',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            color: 'white',
-            lineHeight: '1',
-            padding: '0.25em'
-          }}>
-          {title}
-        </h1>
-        <h3
-          className="has-text-weight-bold is-size-5-mobile is-size-5-tablet is-size-4-widescreen"
-          style={{
-            boxShadow:
-              'rgba(0, 0, 0, 0.75) 0.5rem 0px 0px, rgba(0, 0, 0, 0.75) -0.5rem 0px 0px',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            color: 'white',
-            lineHeight: '1',
-            padding: '0.25em'
-          }}>
-          {subtitle}
-        </h3>
-      </div>
-    </div>
+}) => {
+  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+  channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
-    <section className="section section--gradient">
-      <div className="container">
-        <div className="section">
-          <div className="columns">
-            <div className="column is-10 is-offset-1">
-              <div className="content">
+  return (
+    <div>
+      <div
+        className="full-width-image margin-top-0"
+        style={{
+          backgroundImage: `url(${
+            !!image.childImageSharp ? image.childImageSharp.fluid.src : image
+          })`,
+          backgroundPosition: `top left`,
+          backgroundAttachment: `fixed`
+        }}>
+        <div
+          style={{
+            display: 'flex',
+            height: '150px',
+            lineHeight: '1',
+            justifyContent: 'space-around',
+            alignItems: 'left',
+            flexDirection: 'column'
+          }}>
+          <h1
+            className="has-text-weight-bold is-size-3-mobile is-size-2-tablet is-size-1-widescreen"
+            style={{
+              boxShadow:
+                'rgba(0, 0, 0, 0.75) 0.5rem 0px 0px, rgba(0, 0, 0, 0.75) -0.5rem 0px 0px',
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              color: 'white',
+              lineHeight: '1',
+              padding: '0.25em'
+            }}>
+            {title}
+          </h1>
+          <h3
+            className="has-text-weight-bold is-size-5-mobile is-size-5-tablet is-size-4-widescreen"
+            style={{
+              boxShadow:
+                'rgba(0, 0, 0, 0.75) 0.5rem 0px 0px, rgba(0, 0, 0, 0.75) -0.5rem 0px 0px',
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              color: 'white',
+              lineHeight: '1',
+              padding: '0.25em'
+            }}>
+            {subtitle}
+          </h3>
+        </div>
+      </div>
+
+      <section className="section section--gradient">
+        <div className="container">
+          <div className="section">
+            <div className="columns">
+              <div className="column is-10 is-offset-1">
                 <div className="content">
-                  <div className="tile">
-                    <h3 className="subtitle">{mainpitch.description}</h3>
-                  </div>
-                </div>
-                
-                <section className="section">
-                  <div className="container has-text-centered">
-                    <div className="block">
-                      <img src={bigimage.image.publicURL} alt={bigimage.alt} />
+                  <div className="content">
+                    <div className="tile">
+                      <h3 className="subtitle">{mainpitch.description}</h3>
                     </div>
-                    
-                    <PhotoGrid gridItems={intro.blurbs} />
-                    
-                    <h4 className="title is-spaced is-4">{intro.heading}</h4>
-                    <p className="subtitle">{intro.description}</p>
                   </div>
-                </section>
-                
-                <div className="columns">
-                  <div className="column is-12 has-text-centered">
-                    <Link className="btn" to="/products">
-                      See all products
-                    </Link>
+                  
+                  <section className="section">
+                    <div className="container has-text-centered">
+                      <div className="block">
+                        <img src={bigimage.image.publicURL} alt={bigimage.alt} />
+                      </div>
+                      
+                      <PhotoGrid gridItems={intro.blurbs} />
+                      
+                      <h4 className="title is-spaced is-4">{intro.heading}</h4>
+                      <p className="subtitle">{intro.description}</p>
+                    </div>
+                  </section>
+                  
+                  <div className="columns">
+                    <div className="column is-12 has-text-centered">
+                      <Link className="btn" to={`${channelRegionPathPrefix}/products`}>
+                        See all products
+                      </Link>
+                    </div>
                   </div>
-                </div>
-                <div className="column is-12">
-                  <BlogItem post={post} columnWidth="is-12" />
-                  <div className="column is-12 has-text-centered">
-                    <Link className="btn" to="/blog">
-                      Read more
-                    </Link> 
+                  <div className="column is-12">
+                    <BlogItem post={post} pageContext={pageContext} columnWidth="is-12" />
+                    <div className="column is-12 has-text-centered">
+                      <Link className="btn" to={`${channelRegionPathPrefix}/blog`}>
+                        Read more
+                      </Link> 
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
-);
+      </section>
+    </div>
+  )
+};
 
 IndexPageTemplate.propTypes = {
+  pageContext: PropTypes.object,
   basePath: PropTypes.string,
   channel: PropTypes.string,
   image: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
@@ -138,6 +150,7 @@ const IndexPage = ({ data }) => {
   return (
     <Layout pageContext={pageContext}>
       <IndexPageTemplate
+        pageContext={pageContext}
         image={frontmatter.image}
         title={frontmatter.title}
         subtitle={frontmatter.subtitle}
