@@ -8,6 +8,9 @@ description: Radio telescope vastness is bearable only through love stirred by s
 tags:
   - cosmos
   - sagan
+basepath: 
+channel:
+  external_id: United States|US||USD
 ---
 ![chemex](/img/accessory-art.jpg)
 

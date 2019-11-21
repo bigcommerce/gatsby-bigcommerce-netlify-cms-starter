@@ -8,6 +8,9 @@ description: Destroy couch leave fur on owners clothes show belly
 tags:
   - kitty cat
   - cosmos
+basepath: 
+channel:
+  external_id: United States|US||USD
 ---
 
 ![flavor wheel](/img/animal-business-cat.jpg)

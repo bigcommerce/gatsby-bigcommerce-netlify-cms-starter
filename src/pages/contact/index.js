@@ -2,6 +2,11 @@ import React from 'react'
 import { navigate } from 'gatsby-link'
 import Layout from '../../components/Layout'
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
 function encode(data) {
   return Object.keys(data)
     .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
@@ -34,8 +39,12 @@ export default class Index extends React.Component {
   }
 
   render() {
+    const pageContext = this.props.pageContext
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+
     return (
-      <Layout>
+      <Layout pageContext={pageContext}>
         <div className="container is-fluid">
           <section className="section">
             <div className="container">
@@ -50,7 +59,7 @@ export default class Index extends React.Component {
                       <form
                         name="contact"
                         method="post"
-                        action="/contact/thanks/"
+                        action={`${channelRegionPathPrefix}/contact/thanks/`}
                         data-netlify="true"
                         data-netlify-honeypot="bot-field"
                         onSubmit={this.handleSubmit}

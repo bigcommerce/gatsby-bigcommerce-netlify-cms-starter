@@ -54,11 +54,17 @@ BlogPostTemplate.propTypes = {
   helmet: PropTypes.object,
 }
 
-const BlogPost = ({ data }) => {
+const BlogPost = ({ pageContext, data }) => {
   const { markdownRemark: post } = data
+  if (!pageContext.channel) {
+    pageContext = {
+      basePath: post.frontmatter.basepath,
+      channel: post.frontmatter.channel
+    }
+  }
 
   return (
-    <Layout>
+    <Layout pageContext={pageContext}>
       <BlogPostTemplate
         content={post.html}
         contentComponent={HTMLContent}
@@ -80,6 +86,7 @@ const BlogPost = ({ data }) => {
 }
 
 BlogPost.propTypes = {
+  pageContext: PropTypes.object,
   data: PropTypes.shape({
     markdownRemark: PropTypes.object,
   }),
@@ -94,6 +101,10 @@ export const pageQuery = graphql`
       html
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
+        basepath,
+        channel {
+          external_id
+        }
         title
         description
         tags

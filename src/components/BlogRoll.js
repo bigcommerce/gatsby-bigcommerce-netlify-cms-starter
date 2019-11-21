@@ -5,14 +5,14 @@ import BlogItem from './BlogItem'
 
 class BlogRoll extends React.Component {
   render() {
-    const { data } = this.props
+    const { data, pageContext } = this.props
     const { edges: posts } = data.allMarkdownRemark
 
     return (
       <div className="columns is-multiline">
         {posts &&
           posts.map(({ node: post }) => (
-            <BlogItem post={post} />
+            <BlogItem post={post} pageContext={pageContext} />
           ))}
       </div>
     )
@@ -27,7 +27,7 @@ BlogRoll.propTypes = {
   }),
 }
 
-export default () => (
+export default ({pageContext}) => (
   <StaticQuery
     query={graphql`
       query BlogRollQuery {
@@ -60,6 +60,6 @@ export default () => (
         }
       }
     `}
-    render={(data, count) => <BlogRoll data={data} count={count} />}
+    render={(data, count) => <BlogRoll data={data} count={count} pageContext={pageContext} />}
   />
 )
