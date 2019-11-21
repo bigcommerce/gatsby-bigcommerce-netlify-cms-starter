@@ -5,8 +5,17 @@ import ProductPrices from './ProductPrices';
 
 // const channelRegionNameIdx = 0
 // const channelRegionLocaleIdx = 1
-// const channelRegionPathIdx = 2
+const channelRegionPathIdx = 2
 const channelRegionCurrencyIdx = 3
+
+const translations = {
+  'fr': {
+    'addtocart': 'Ajouter Au Panier',
+  },
+  'default': {
+    'addtocart': 'Add to Cart',
+  }
+}
 
 class ProductCard extends React.Component {
   render() {
@@ -18,6 +27,12 @@ class ProductCard extends React.Component {
       const productLink = this.props.channelProductData[product.bigcommerce_id].productPath
       const channelId = channel.bigcommerce_id
       const currencyCode = channel.external_id.split('|')[channelRegionCurrencyIdx]
+      let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
+      let pageText = translations['default']
+        
+      if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+        pageText = translations[channelRegionPathPrefix]
+      }
 
       return (
         <div className="bc-product-card">
@@ -45,7 +60,7 @@ class ProductCard extends React.Component {
           <AddToCartButton
             productId={product.variants[0].product_id}
             variantId={product.variants[0].id}>
-            Add to Cart
+            {pageText.addtocart}
           </AddToCartButton>
         </div>
       )

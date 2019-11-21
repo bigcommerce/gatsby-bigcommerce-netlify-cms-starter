@@ -7,6 +7,23 @@ import Layout from '../../components/Layout'
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
+const translations = {
+  'fr': {
+    'contactus': 'Contactez Nous',
+    'yourname': 'Votre Nom',
+    'email': 'Email',
+    'message': 'Message',
+    'send': 'Envoyer',
+  },
+  'default': {
+    'contactus': 'Contact Us',
+    'yourname': 'Your Name',
+    'email': 'Email',
+    'message': 'Message',
+    'send': 'Send',
+  }
+}
+
 function encode(data) {
   return Object.keys(data)
     .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
@@ -41,6 +58,13 @@ export default class Index extends React.Component {
   render() {
     const pageContext = this.props.pageContext
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+
+    let pageText = translations['default']
+      
+    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+      pageText = translations[channelRegionPathPrefix]
+    }
+
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (
@@ -48,7 +72,7 @@ export default class Index extends React.Component {
         <div className="container is-fluid">
           <section className="section">
             <div className="container">
-              <h2 className="title has-text-centered">Contact Us</h2>
+              <h2 className="title has-text-centered">{pageText.contactus}</h2>
               <div className="columns">
                 <div className="column is-6">
                   <img src="/img/architecture-blur.jpg" alt="" style={{borderRadius: "6px"}} />
@@ -74,7 +98,7 @@ export default class Index extends React.Component {
                         </div>
                         <div className="field">
                           <label className="label" htmlFor={'name'}>
-                            Your name
+                            {pageText.yourname}
                           </label>
                           <div className="control">
                             <input
@@ -89,7 +113,7 @@ export default class Index extends React.Component {
                         </div>
                         <div className="field">
                           <label className="label" htmlFor={'email'}>
-                            Email
+                            {pageText.email}
                           </label>
                           <div className="control">
                             <input
@@ -104,7 +128,7 @@ export default class Index extends React.Component {
                         </div>
                         <div className="field">
                           <label className="label" htmlFor={'message'}>
-                            Message
+                            {pageText.message}
                           </label>
                           <div className="control">
                             <textarea
@@ -118,7 +142,7 @@ export default class Index extends React.Component {
                         </div>
                         <div className="field">
                           <button className="btn" type="submit">
-                            Send
+                            {pageText.send}
                           </button>
                         </div>
                       </form>

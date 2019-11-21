@@ -11,6 +11,23 @@ import RegionSelector from './bigcommerce/RegionSelector';
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
+const translations = {
+  'fr': {
+    'about': 'Sur',
+    'products': 'Des Produits',
+    'blog': 'Blog',
+    'contact': 'Contact',
+    'cart': 'Sac',
+  },
+  'default': {
+    'about': 'About',
+    'products': 'Products',
+    'blog': 'Blog',
+    'contact': 'Contact',
+    'cart': 'Cart',
+  }
+}
+
 const Navbar = class extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +60,12 @@ const Navbar = class extends React.Component {
   render() {
     const pageContext = this.props.pageContext
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+    let navItemText = translations['default']
+    
+    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+      navItemText = translations[channelRegionPathPrefix]
+    }
+
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (
@@ -70,22 +93,22 @@ const Navbar = class extends React.Component {
             className={`navbar-menu ${this.state.navBarActiveClass}`}>
             <div className="navbar-start has-text-centered">
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/about`}>
-                About
+                {navItemText.about}
               </Link>
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/products`}>
-                Products
+                {navItemText.products}
               </Link>
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/blog`}>
-                Blog
+                {navItemText.blog}
               </Link>
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/contact`}>
-                Contact
+                {navItemText.contact}
               </Link>
               <CartContext.Consumer>
                 {value => {
                   return (
                     <Link className="navbar-item menu-item-bigcommerce-cart" to={`${channelRegionPathPrefix}/cart`}>
-                      Cart
+                      {navItemText.cart}
                       
                       {value &&
                         value.state.cart &&
