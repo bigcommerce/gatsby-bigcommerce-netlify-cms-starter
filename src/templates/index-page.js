@@ -16,12 +16,12 @@ export const IndexPageTemplate = ({
   image,
   title,
   subtitle,
-  heading,
   mainpitch,
   bigimage,
-  description,
   intro,
-  post
+  post,
+  basepath,
+  channel
 }) => {
   let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
   channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
@@ -125,19 +125,17 @@ export const IndexPageTemplate = ({
 
 IndexPageTemplate.propTypes = {
   pageContext: PropTypes.object,
-  basePath: PropTypes.string,
-  channel: PropTypes.string,
   image: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   title: PropTypes.string,
   subtitle: PropTypes.string,
-  heading: PropTypes.string,
   mainpitch: PropTypes.object,
   bigimage: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  description: PropTypes.string,
   intro: PropTypes.shape({
     blurbs: PropTypes.array
   }),
-  post: PropTypes.object
+  post: PropTypes.object,
+  basepath: PropTypes.string,
+  channel: PropTypes.object,
 };
 
 const IndexPage = ({ pageContext, data }) => {
@@ -163,6 +161,8 @@ const IndexPage = ({ pageContext, data }) => {
         description={frontmatter.description}
         intro={frontmatter.intro}
         post={data.allMarkdownRemark.edges[0].node}
+        basepath={frontmatter.basepath}
+        channel={frontmatter.channel}
       />
     </Layout>
   );
