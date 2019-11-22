@@ -37,6 +37,7 @@ collections:
           - name: bigimage
             label: "Big Image"
             widget: object
+            fields:
               - { name: image, label: 'Image', widget: image }
               - { name: alt, label: 'Alt', widget: string }
           - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
