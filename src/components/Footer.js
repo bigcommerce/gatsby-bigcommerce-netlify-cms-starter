@@ -7,8 +7,42 @@ import instagram from '../img/social/instagram.svg'
 import twitter from '../img/social/twitter.svg'
 import vimeo from '../img/social/vimeo.svg'
 
+// const channelRegionNameIdx = 0
+// const channelRegionLocaleIdx = 1
+const channelRegionPathIdx = 2
+// const channelRegionCurrencyIdx = 3
+
+const translations = {
+  'fr': {
+    'home': 'Domicile',
+    'aboutus': 'À Propos De Nous',
+    'ourproducts': 'Nos Produits',
+    'admin': 'Admin',
+    'storeblog': 'Le Blog Du Magasin',
+    'contactus': 'Contactez Nous',
+  },
+  'default': {
+    'home': 'Home',
+    'aboutus': 'About Us',
+    'ourproducts': 'Our Products',
+    'admin': 'Admin',
+    'storeblog': 'The Store Blog',
+    'contactus': 'Contact Us',
+  }
+}
+
 const Footer = class extends React.Component {
   render() {
+    const pageContext = this.props.pageContext
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+    let pageText = translations['default']
+    
+    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
+      pageText = translations[channelRegionPathPrefix]
+    }
+
+    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+
     return (
       <footer className="footer has-background-black has-text-white-ter">
         <div className="content has-text-centered">
@@ -25,17 +59,17 @@ const Footer = class extends React.Component {
                 <section className="menu">
                   <ul className="menu-list">
                     <li>
-                      <Link to="/" className="navbar-item">
-                        Home
+                      <Link to={`${channelRegionPathPrefix}/`} className="navbar-item">
+                        {pageText.home}
                       </Link>
                     </li>
                     <li>
-                      <Link className="navbar-item" to="/about">
-                        About Us
+                      <Link className="navbar-item" to={`${channelRegionPathPrefix}/about`}>
+                        {pageText.aboutus}
                       </Link>
                     </li>
                     <li>
-                      <Link className="navbar-item" to="/products">
+                      <Link className="navbar-item" to={`${channelRegionPathPrefix}products`}>
                         Our Products
                       </Link>
                     </li>
@@ -46,7 +80,7 @@ const Footer = class extends React.Component {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Admin
+                        {pageText.admin}
                       </a>
                     </li>
                   </ul>
@@ -56,13 +90,13 @@ const Footer = class extends React.Component {
                 <section>
                   <ul className="menu-list">
                     <li>
-                      <Link className="navbar-item" to="/blog">
-                        The Store Blog
+                      <Link className="navbar-item" to={`${channelRegionPathPrefix}/blog`}>
+                        {pageText.storeblog}
                       </Link>
                     </li>
                     <li>
-                      <Link className="navbar-item" to="/contact">
-                        Contact Us
+                      <Link className="navbar-item" to={`${channelRegionPathPrefix}/contact`}>
+                        {pageText.contactus}
                       </Link>
                     </li>
                   </ul>
