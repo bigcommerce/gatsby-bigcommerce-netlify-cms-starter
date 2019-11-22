@@ -42,7 +42,7 @@ exports.createPages = async ({ actions, graphql }) => {
           }
         }
       }
-      allBlogPosts: allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "blog-post"}}}) {
+      allRootChannelPosts: allMarkdownRemark(filter: {frontmatter: {channel: { external_id: {regex: "/[|][|]/i"}}}}) {
         edges {
           node {
             id
@@ -101,7 +101,7 @@ exports.createPages = async ({ actions, graphql }) => {
   }
 
   const posts = result.data.allMarkdownRemark.edges
-  const blogPosts = result.data.allBlogPosts.edges
+  const rootChannelPosts = result.data.allRootChannelPosts.edges
   const products = result.data.allBigCommerceProducts.nodes
   const channels = result.data.allBigCommerceChannels.nodes
   const currencies = result.data.allBigCommerceCurrencies.nodes
@@ -183,7 +183,11 @@ exports.createPages = async ({ actions, graphql }) => {
     postSlugsCreated.push(edge.node.fields.slug)
   });
 
-  blogPosts.forEach(edge => {
+
+  // Now go through and create region specific pages automatically for root pages that are
+  // not manually created via markdown files in region specific directories. This allows newly
+  // added regions to have all the core pages without the requirement of making new markdown files.
+  rootChannelPosts.forEach(edge => {
     const id = edge.node.id;
 
     for (var i = availableRegions.length - 1; i >= 0; i--) {
@@ -195,7 +199,7 @@ exports.createPages = async ({ actions, graphql }) => {
       }
 
       if (!postSlugsCreated.includes(newPagePath)) {
-        console.log(`creating blog post ${newPagePath} for channel '${channel.name}'`)
+        console.log(`creating post ${newPagePath} for channel '${channel.name}'`)
 
         createPage({
           path: newPagePath,
