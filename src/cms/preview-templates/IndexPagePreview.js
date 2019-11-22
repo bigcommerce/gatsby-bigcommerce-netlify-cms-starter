@@ -14,6 +14,8 @@ const IndexPagePreview = ({ entry, getAsset }) => {
         heading={data.heading}
         intro={data.intro || { blurbs: [] }}
         mainpitch={data.mainpitch || {}}
+        basepath={data.basepath}
+        channel={data.channel || {}}
       />
     )
   } else {
