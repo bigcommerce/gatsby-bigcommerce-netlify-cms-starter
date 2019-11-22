@@ -19,6 +19,7 @@ const translations = {
     'price': 'Prix',
     'loadingcart': 'Chariot De Chargement',
     'remove': 'Retirer',
+    'subtotal': 'Sous total',
   },
   'default': {
     'checkout': 'Proceed to Checkout',
@@ -29,6 +30,7 @@ const translations = {
     'price': 'Price',
     'loadingcart': 'Loading Cart',
     'remove': 'Remove',
+    'subtotal': 'Subtotal',
   }
 }
 
@@ -216,6 +218,8 @@ const Cart = class extends React.Component {
       pageText = translations[channelRegionPathPrefix]
     }
 
+    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+
     let cartFooter;
 
     return (
@@ -238,7 +242,7 @@ const Cart = class extends React.Component {
             cartFooter = (
               <footer className="bc-cart-footer">
                 <div className="bc-cart-subtotal">
-                  <span className="bc-cart-subtotal__label">Subtotal: </span>
+                  <span className="bc-cart-subtotal__label">{pageText.subtotal}: </span>
                   <span className="bc-cart-subtotal__amount">
                     <CurrencyFormatter
                       currency={currency.code}
@@ -325,7 +329,7 @@ const Cart = class extends React.Component {
                     <h2 className="bc-cart__title--empty">
                       {pageText.cartempty}
                     </h2>
-                    <Link to="/products" className="bc-cart__continue-shopping">
+                    <Link to={`${channelRegionPathPrefix}/products`} className="bc-cart__continue-shopping">
                       {pageText.lookaround}
                     </Link>
                   </div>

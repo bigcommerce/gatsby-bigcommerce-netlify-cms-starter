@@ -20,7 +20,8 @@ module.exports = {
           BigCommerceProducts: '/catalog/products?include=images,variants',
           BigCommerceCategories: '/catalog/categories',
           BigCommerceBrands: '/catalog/brands',
-          BigCommerceChannels: '/channels'
+          BigCommerceChannels: '/channels',
+          BigCommerceSites: '/sites?limit=250',
         }
       }
     },
