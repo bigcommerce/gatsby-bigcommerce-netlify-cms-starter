@@ -48,7 +48,7 @@ const TemplateWrapper = ({ children, pageContext }) => {
         <meta property="og:image" content="/img/og-image.jpg" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Helmet>
-      <Notify />
+      <Notify pageContext={pageContext} />
       <Navbar pageContext={pageContext} />
       <div>{children}</div>
       <Footer />
