@@ -2,8 +2,8 @@ import React from 'react'
 import { navigate } from 'gatsby-link'
 import Layout from '../../components/Layout'
 
-// const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionNameIdx = 0
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
@@ -57,6 +57,8 @@ export default class Index extends React.Component {
 
   render() {
     const pageContext = this.props.pageContext
+    const channelRegionName = pageContext.channel.external_id.split('|')[channelRegionNameIdx]
+    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
 
     let pageText = translations['default']
@@ -90,6 +92,8 @@ export default class Index extends React.Component {
                       >
                         {/* The `form-name` hidden field is required to support form submissions without JavaScript */}
                         <input type="hidden" name="form-name" value="contact" />
+                        <input type="hidden" name="channel" value={channelRegionName} />
+                        <input type="hidden" name="locale" value={channelRegionLocale} />
                         <div hidden>
                           <label>
                             Don’t fill this out:{' '}
