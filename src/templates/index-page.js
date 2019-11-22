@@ -140,11 +140,14 @@ IndexPageTemplate.propTypes = {
   post: PropTypes.object
 };
 
-const IndexPage = ({ data }) => {
+const IndexPage = ({ pageContext, data }) => {
   const { frontmatter } = data.markdownRemark;
-  const pageContext = {
-    basePath: frontmatter.basepath,
-    channel: frontmatter.channel
+
+  if (!pageContext.channel) {
+    pageContext = {
+      basePath: frontmatter.basepath,
+      channel: frontmatter.channel
+    }
   }
 
   return (

@@ -56,11 +56,14 @@ AboutPageTemplate.propTypes = {
   contentComponent: PropTypes.func,
 }
 
-const AboutPage = ({ data }) => {
+const AboutPage = ({ pageContext, data }) => {
   const { markdownRemark: post } = data
-  const pageContext = {
-    basePath: post.frontmatter.basepath,
-    channel: post.frontmatter.channel
+
+  if (!pageContext.channel) {
+    pageContext = {
+      basePath: post.frontmatter.basepath,
+      channel: post.frontmatter.channel
+    }
   }
 
   return (
