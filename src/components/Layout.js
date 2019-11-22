@@ -51,7 +51,7 @@ const TemplateWrapper = ({ children, pageContext }) => {
       <Notify pageContext={pageContext} />
       <Navbar pageContext={pageContext} />
       <div>{children}</div>
-      <Footer />
+      <Footer pageContext={pageContext} />
     </div>
   );
 };
