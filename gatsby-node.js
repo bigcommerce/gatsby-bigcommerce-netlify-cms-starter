@@ -7,38 +7,6 @@ const { fmImagesToRelative } = require('gatsby-remark-relative-images')
 
 const availableRegions = []
 
-async function fetchCurrencies() {
-  return await axios({
-    url: `https://api.bigcommerce.com/stores/${process.env.API_STORE_HASH}/v2/currencies`,
-    method: 'get',
-    headers: {
-      'X-Auth-Token': process.env.API_TOKEN,
-      'X-Auth-Client': process.env.API_CLIENT_ID,
-      'Content-Type': 'application/json'
-    }
-  }).then((result) => {
-    return result.data.data
-  }).catch(function (error) {
-    console.log(error)
-  });
-}
-
-async function fetchChannels() {
-  return await axios({
-    url: `https://api.bigcommerce.com/stores/${process.env.API_STORE_HASH}/v3/channels`,
-    method: 'get',
-    headers: {
-      'X-Auth-Token': process.env.API_TOKEN,
-      'X-Auth-Client': process.env.API_CLIENT_ID,
-      'Content-Type': 'application/json'
-    }
-  }).then((result) => {
-    return result.data.data
-  }).catch(function (error) {
-    console.log(error)
-  });
-}
-
 async function fetchChannelListings(channelID) {
   return await axios({
     url: `https://api.bigcommerce.com/stores/${process.env.API_STORE_HASH}/v3/channels/${channelID}/listings`,
@@ -88,7 +56,7 @@ exports.createPages = async ({ actions, graphql }) => {
           }
         }
       }
-      allBigCommerceProducts(limit: 100) {
+      allBigCommerceProducts(limit: 1000) {
         nodes {
           id
           bigcommerce_id
@@ -96,6 +64,32 @@ exports.createPages = async ({ actions, graphql }) => {
           custom_url {
             url
           }
+        }
+      }
+      allBigCommerceChannels(filter: {is_enabled: {eq: true}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
+        nodes {
+          id
+          bigcommerce_id
+          external_id
+          is_enabled
+          name
+          platform
+          type
+        }
+      }
+      allBigCommerceCurrencies(filter: {enabled: {eq: true}}) {
+        nodes {
+          bigcommerce_id
+          decimal_places
+          decimal_token
+          currency_exchange_rate
+          currency_code
+          is_default
+          is_transactional
+          name
+          thousands_token
+          token
+          token_location
         }
       }
     }
@@ -109,69 +103,62 @@ exports.createPages = async ({ actions, graphql }) => {
   const posts = result.data.allMarkdownRemark.edges
   const blogPosts = result.data.allBlogPosts.edges
   const products = result.data.allBigCommerceProducts.nodes
-
-  console.log('fetching currencies')
-  const currencies = await fetchCurrencies()
-
-  console.log('fetching channels')
-  const channels = await fetchChannels()
+  const channels = result.data.allBigCommerceChannels.nodes
+  const currencies = result.data.allBigCommerceCurrencies.nodes
 
   for (var i = channels.length - 1; i >= 0; i--) {
     let channel = channels[i]
 
-    if (channel.is_enabled && channel.type === 'storefront' && channel.platform === 'custom') {
-      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
-      availableRegions.push(channel)
+    const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+    availableRegions.push(channel)
 
-      console.log(`creating product pages for channel '${channel.name}' targeting ${regionName} (${regionCountryCode}) with currency of ${regionCurrency} using subdirectory /${regionPathPrefix}`)
+    console.log(`creating product pages for channel '${channel.name}' targeting ${regionName} (${regionCountryCode}) with currency of ${regionCurrency} using subdirectory /${regionPathPrefix}`)
 
-      let channelListings = await fetchChannelListings(channel.id)
-      let channelProducts = []
-      for (var x = channelListings.length - 1; x >= 0; x--) {
-        let channelListing = channelListings[x]
-        // console.log(`product_id: ${channelListing.product_id} listing_id: ${channelListing.listing_id}`);
+    let channelListings = await fetchChannelListings(channel.bigcommerce_id)
+    let channelProducts = []
+    for (var x = channelListings.length - 1; x >= 0; x--) {
+      let channelListing = channelListings[x]
+      // console.log(`product_id: ${channelListing.product_id} listing_id: ${channelListing.listing_id}`);
 
-        if (channelListing.state === "active") {
-          products.forEach( ({ bigcommerce_id, custom_url, id }) => {
-            if (bigcommerce_id === channelListing.product_id) {
-              console.log(`${regionPathPrefix}/products${custom_url.url}`)
+      if (channelListing.state === "active") {
+        products.forEach( ({ bigcommerce_id, custom_url, id }) => {
+          if (bigcommerce_id === channelListing.product_id) {
+            console.log(`${regionPathPrefix}/products${custom_url.url}`)
 
-              channelProducts[bigcommerce_id] = {
-                productPath: `${regionPathPrefix}/products${custom_url.url}`,
+            channelProducts[bigcommerce_id] = {
+              productPath: `${regionPathPrefix}/products${custom_url.url}`,
+              overrides: channelListing.overrides || {}
+            }
+
+            createPage({
+              path: `${regionPathPrefix}/products${custom_url.url}`,
+              component: path.resolve(`src/templates/product-details.js`),
+              context: {
+                basePath: `/products${custom_url.url}`,
+                productId: id,
+                channel,
+                channels,
+                currencies,
                 overrides: channelListing.overrides || {}
               }
-
-              createPage({
-                path: `${regionPathPrefix}/products${custom_url.url}`,
-                component: path.resolve(`src/templates/product-details.js`),
-                context: {
-                  basePath: `/products${custom_url.url}`,
-                  productId: id,
-                  channel,
-                  channels,
-                  currencies,
-                  overrides: channelListing.overrides || {}
-                }
-              })
-            }
-          })
-        }
+            })
+          }
+        })
       }
-      
-      console.log(`${regionPathPrefix}/products`)
-      createPage({
-        path: `${regionPathPrefix}/products`,
-        component: path.resolve(`src/templates/product-list.js`),
-        context: {
-          basePath: `/products`,
-          channel,
-          channels,
-          currencies,
-          channelProductData: channelProducts
-        }
-      })
-
     }
+    
+    console.log(`${regionPathPrefix}/products`)
+    createPage({
+      path: `${regionPathPrefix}/products`,
+      component: path.resolve(`src/templates/product-list.js`),
+      context: {
+        basePath: `/products`,
+        channel,
+        channels,
+        currencies,
+        channelProductData: channelProducts
+      }
+    })
   }
 
   const postSlugsCreated = [];
