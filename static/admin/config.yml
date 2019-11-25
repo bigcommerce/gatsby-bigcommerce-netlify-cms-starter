@@ -36,8 +36,8 @@ collections:
         fields:
           - { name: external_id, label: 'Region Identification', widget: string }
 
-  - name: "blog"
-    label: "Home Page"
+  - name: "about"
+    label: "About"
     folder: "src/pages/about"
     slug: "index-{{localeKey}}"
     create: true
