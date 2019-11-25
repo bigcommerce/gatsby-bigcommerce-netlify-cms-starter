@@ -5,7 +5,7 @@ import translations from '../../helpers/translations'
 
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
+// const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
 export default class CartIndexPage extends React.Component {

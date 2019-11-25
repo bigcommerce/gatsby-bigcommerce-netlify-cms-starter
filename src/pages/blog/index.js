@@ -6,7 +6,7 @@ import translations from '../../helpers/translations'
 
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
+// const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
 export default class BlogIndexPage extends React.Component {
@@ -14,9 +14,6 @@ export default class BlogIndexPage extends React.Component {
     const pageContext = this.props.pageContext
     const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
     const pageText = translations.getTranslations(channelRegionLocale)
-
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (
       <Layout pageContext={pageContext}>

@@ -186,7 +186,6 @@ const Cart = class extends React.Component {
   render() {
     const cartType = this.props.cartType;
     const pageContext = this.props.pageContext
-    const channel = pageContext.channel
     const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
     const pageText = translations.getTranslations(channelRegionLocale)
 

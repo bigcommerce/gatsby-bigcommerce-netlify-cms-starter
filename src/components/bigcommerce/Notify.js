@@ -28,7 +28,6 @@ export default ({pageContext}) => {
 const Notification = ({ id, text, type, pageContext }) => {
   const value = useContext(CartContext);
   const removeNotification = value && value.removeNotification;
-  const channel = pageContext.channel
   const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
   const pageText = translations.getTranslations(channelRegionLocale)
 
