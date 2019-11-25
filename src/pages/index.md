@@ -1,5 +1,6 @@
 ---
 templateKey: index-page
+localeKey: default
 title: The world brought to your doorstep
 subtitle: Your one-stop shop for unique products you'll love
 image: /img/city-background.jpg
@@ -32,7 +33,7 @@ intro:
     Looking for a final set piece for your home that brings you back to a certain memort? Something 
     for a rainy day to help open your mind? A piece of apparel that tells a story all it's
     own? That's what we seek out and hope you'll find here.
-basepath: 
+basepath:
 channel:
   external_id: United States|US||USD
 ---

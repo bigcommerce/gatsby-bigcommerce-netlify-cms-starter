@@ -6,6 +6,36 @@ media_folder: static/img
 public_folder: /img
 
 collections:
+  - name: "index"
+    label: "Home Page"
+    folder: "src/pages"
+    slug: "index-{{localeKey}}"
+    create: true
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "index-page"}
+      - {label: "Locale Key", name: "localeKey", widget: "string", default: "index-page", "hint": "i.e. fr_FR, en_CA. 'default' is the fallback in case there is no content for a locale"}
+      - {label: Title, name: title, widget: string}
+      - {label: Image, name: image, widget: image}
+      - {label: Heading, name: heading, widget: string}
+      - {label: Subtitle, name: subtitle, widget: string}
+      - {label: Mainpitch, name: mainpitch, widget: object, fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]}
+      - name: bigimage
+        label: "Big Image"
+        widget: object
+        fields:
+          - { name: image, label: 'Image', widget: image }
+          - { name: alt, label: 'Alt', widget: string }
+      - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
+      - name: basepath
+        label: 'Page Base Path'
+        widget: string
+        required: false
+      - name: channel
+        label: 'Channel'
+        widget: object
+        fields:
+          - { name: external_id, label: 'Region Identification', widget: string }
+
   - name: "blog"
     label: "Blog"
     folder: "src/pages/blog"
@@ -24,32 +54,6 @@ collections:
   - name: "pages"
     label: "Pages"
     files:
-      - file: "src/pages/index.md"
-        label: "Landing Page"
-        name: "index"
-        fields:
-          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "index-page"}
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: Heading, name: heading, widget: string}
-          - {label: Subtitle, name: subtitle, widget: string}
-          - {label: Mainpitch, name: mainpitch, widget: object, fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]}
-          - name: bigimage
-            label: "Big Image"
-            widget: object
-            fields:
-              - { name: image, label: 'Image', widget: image }
-              - { name: alt, label: 'Alt', widget: string }
-          - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
-          - name: basepath
-            label: 'Base Path'
-            widget: string
-            required: false
-          - name: channel
-            label: 'Channel'
-            widget: object
-            fields:
-              - { name: external_id, label: 'Region Identification', widget: string }
       - file: "src/pages/about/index.md"
         label: "About"
         name: "about"
