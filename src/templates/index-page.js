@@ -23,6 +23,8 @@ export const IndexPageTemplate = ({
   basepath,
   channel
 }) => {
+  console.log('post')
+  console.log(post)
   let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
   channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
