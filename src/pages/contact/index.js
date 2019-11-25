@@ -1,28 +1,12 @@
 import React from 'react'
 import { navigate } from 'gatsby-link'
 import Layout from '../../components/Layout'
+import translations from '../../helpers/translations'
 
 const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'contactus': 'Contactez Nous',
-    'yourname': 'Votre Nom',
-    'email': 'Email',
-    'message': 'Message',
-    'send': 'Envoyer',
-  },
-  'default': {
-    'contactus': 'Contact Us',
-    'yourname': 'Your Name',
-    'email': 'Email',
-    'message': 'Message',
-    'send': 'Send',
-  }
-}
 
 function encode(data) {
   return Object.keys(data)
@@ -59,14 +43,9 @@ export default class Index extends React.Component {
     const pageContext = this.props.pageContext
     const channelRegionName = pageContext.channel.external_id.split('|')[channelRegionNameIdx]
     const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const pageText = translations.getTranslations(channelRegionLocale)
+
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-
-    let pageText = translations['default']
-      
-    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-      pageText = translations[channelRegionPathPrefix]
-    }
-
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (

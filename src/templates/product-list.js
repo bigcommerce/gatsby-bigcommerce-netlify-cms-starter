@@ -3,33 +3,23 @@ import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import ProductCard from '../components/bigcommerce/ProductCard';
+import translations from '../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'products': 'Des Produits',
-  },
-  'default': {
-    'products': 'Products',
-  }
-}
 
 export const ProductListTemplate = ({
   pageContext,
   products
 }) => {
-  const channel = pageContext.channel
   const channelProductData = pageContext.channelProductData
-  let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
-  let pageText = translations['default']
-    
-  if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-    pageText = translations[channelRegionPathPrefix]
-  }
+  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const pageText = translations.getTranslations(channelRegionLocale)
+
+  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
+  channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
   return (
     <div className="content">
@@ -54,7 +44,7 @@ export const ProductListTemplate = ({
         <div className="container">
           <div className="section bc-product-grid bc-product-grid--archive bc-product-grid--4col">
             {products.map(product => (
-              <ProductCard key={product.id} product={product} channelProductData={channelProductData} channel={channel} />
+              <ProductCard key={product.id} product={product} channelProductData={channelProductData} channel={pageContext.channel} />
             ))}
           </div>
         </div>

@@ -2,31 +2,14 @@ import React from 'react';
 import { Link } from 'gatsby';
 import github from '../img/github-icon.svg';
 import logo from '../img/logo-header.png';
-
 import CartContext from '../context/CartProvider';
 import RegionSelector from './bigcommerce/RegionSelector';
+import translations from '../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'about': 'Sur',
-    'products': 'Des Produits',
-    'blog': 'Blog',
-    'contact': 'Contact',
-    'cart': 'Sac',
-  },
-  'default': {
-    'about': 'About',
-    'products': 'Products',
-    'blog': 'Blog',
-    'contact': 'Contact',
-    'cart': 'Cart',
-  }
-}
 
 const Navbar = class extends React.Component {
   constructor(props) {
@@ -59,13 +42,10 @@ const Navbar = class extends React.Component {
 
   render() {
     const pageContext = this.props.pageContext
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    let navItemText = translations['default']
-    
-    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-      navItemText = translations[channelRegionPathPrefix]
-    }
+    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const navItemText = translations.getTranslations(channelRegionLocale)
 
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (

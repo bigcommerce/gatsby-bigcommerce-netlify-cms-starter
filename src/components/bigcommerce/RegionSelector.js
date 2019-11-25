@@ -19,8 +19,9 @@ class RegionSelector extends React.Component {
 
     for (var i = channels.length - 1; i >= 0; i--) {
       const regionLocaleCode = channels[i].external_id.split('|')[channelRegionLocaleIdx]
+      const regionCountryCode = regionLocaleCode.split('_')[1]
 
-      if (regionLocaleCode === countryCode) {
+      if (regionCountryCode === countryCode) {
         matchedChannel = channels[i]
         break
       }
@@ -39,10 +40,11 @@ class RegionSelector extends React.Component {
     const { data, pageContext } = this.props
     const { nodes: channels } = data.allBigCommerceChannels
     const basePath = pageContext.pageContext.basePath || ''
-    const currentChannelCountryCode = pageContext.pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const currentChannelLocale = pageContext.pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const currentChannelCountryCode = currentChannelLocale.split('_')[1]
 
     const countries = _.compact(channels.map(channel => {
-      return channel.external_id.split('|')[channelRegionLocaleIdx]
+      return channel.external_id.split('|')[channelRegionLocaleIdx].split('_')[1]
     }))
 
     const countryLabels = channels.map(channel => {

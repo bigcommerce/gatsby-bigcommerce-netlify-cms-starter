@@ -4,9 +4,10 @@ import { graphql } from 'gatsby';
 import AddToCartButton from '../components/bigcommerce/AddToCartButton';
 import ProductPrices from '../components/bigcommerce/ProductPrices';
 import Layout from '../components/Layout';
+import translations from '../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 // const channelRegionPathIdx = 2
 const channelRegionCurrencyIdx = 3
 
@@ -49,6 +50,8 @@ export default ({
 
   const channelId = pageContext.channel.bigcommerce_id
   const currencyCode = pageContext.channel.external_id.split('|')[channelRegionCurrencyIdx]
+  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const pageText = translations.getTranslations(channelRegionLocale)
 
   return (
     <Layout pageContext={pageContext}>
@@ -111,7 +114,7 @@ export default ({
                 <AddToCartButton
                   productId={bigcommerce_id}
                   variantId={variants[0].id}>
-                  Add to Cart
+                  {pageText.addtocart}
                 </AddToCartButton>
               </div>
             </section>

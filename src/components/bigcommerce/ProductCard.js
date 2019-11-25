@@ -2,20 +2,12 @@ import React from 'react';
 import { Link } from 'gatsby';
 import AddToCartButton from './AddToCartButton';
 import ProductPrices from './ProductPrices';
+import translations from '../../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'addtocart': 'Ajouter Au Panier',
-  },
-  'default': {
-    'addtocart': 'Add to Cart',
-  }
-}
 
 class ProductCard extends React.Component {
   render() {
@@ -27,12 +19,8 @@ class ProductCard extends React.Component {
       const productLink = this.props.channelProductData[product.bigcommerce_id].productPath
       const channelId = channel.bigcommerce_id
       const currencyCode = channel.external_id.split('|')[channelRegionCurrencyIdx]
-      let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
-      let pageText = translations['default']
-        
-      if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-        pageText = translations[channelRegionPathPrefix]
-      }
+      const channelRegionLocale = channel.external_id.split('|')[channelRegionLocaleIdx]
+      const pageText = translations.getTranslations(channelRegionLocale)
 
       return (
         <div className="bc-product-card">

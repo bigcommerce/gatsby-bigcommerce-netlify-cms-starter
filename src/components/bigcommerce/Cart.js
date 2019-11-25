@@ -3,36 +3,12 @@ import { Link } from 'gatsby';
 import CurrencyFormatter from './CurrencyFormatter';
 import Loader from '../Loader';
 import CartContext from '../../context/CartProvider';
+import translations from '../../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'checkout': 'Passer À La Caisse',
-    'cartempty': 'Votre panier est vide.',
-    'lookaround': 'Regardez autour de vous.',
-    'item': 'Article',
-    'qty': 'Quantité',
-    'price': 'Prix',
-    'loadingcart': 'Chariot De Chargement',
-    'remove': 'Retirer',
-    'subtotal': 'Sous total',
-  },
-  'default': {
-    'checkout': 'Proceed to Checkout',
-    'cartempty': 'Your cart is empty.',
-    'lookaround': 'Take a look around.',
-    'item': 'Item',
-    'qty': 'Qty',
-    'price': 'Price',
-    'loadingcart': 'Loading Cart',
-    'remove': 'Remove',
-    'subtotal': 'Subtotal',
-  }
-}
 
 const AdjustItem = props => {
   const { item, updatingItem, cartType } = props;
@@ -211,13 +187,10 @@ const Cart = class extends React.Component {
     const cartType = this.props.cartType;
     const pageContext = this.props.pageContext
     const channel = pageContext.channel
-    let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
-    let pageText = translations['default']
-      
-    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-      pageText = translations[channelRegionPathPrefix]
-    }
+    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const pageText = translations.getTranslations(channelRegionLocale)
 
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     let cartFooter;

@@ -1,46 +1,24 @@
 import React from 'react'
 import { Link } from 'gatsby'
-
 import logo from '../img/logo-footer.png'
 import facebook from '../img/social/facebook.svg'
 import instagram from '../img/social/instagram.svg'
 import twitter from '../img/social/twitter.svg'
 import vimeo from '../img/social/vimeo.svg'
+import translations from '../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'home': 'Domicile',
-    'aboutus': 'À Propos De Nous',
-    'ourproducts': 'Nos Produits',
-    'admin': 'Admin',
-    'storeblog': 'Le Blog Du Magasin',
-    'contactus': 'Contactez Nous',
-  },
-  'default': {
-    'home': 'Home',
-    'aboutus': 'About Us',
-    'ourproducts': 'Our Products',
-    'admin': 'Admin',
-    'storeblog': 'The Store Blog',
-    'contactus': 'Contact Us',
-  }
-}
 
 const Footer = class extends React.Component {
   render() {
     const pageContext = this.props.pageContext
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    let pageText = translations['default']
-    
-    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-      pageText = translations[channelRegionPathPrefix]
-    }
+    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const pageText = translations.getTranslations(channelRegionLocale)
 
+    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (

@@ -1,31 +1,18 @@
 import React from 'react'
 import Layout from '../../components/Layout'
 import Cart from '../../components/bigcommerce/Cart'
+import translations from '../../helpers/translations'
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'yourcart': 'Votre Panier',
-  },
-  'default': {
-    'yourcart': 'Your Cart',
-  }
-}
 
 export default class CartIndexPage extends React.Component {
   render() {
     const pageContext = this.props.pageContext
-    const channel = pageContext.channel
-    let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
-    let pageText = translations['default']
-      
-    if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-      pageText = translations[channelRegionPathPrefix]
-    }
+    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const pageText = translations.getTranslations(channelRegionLocale)
 
     return (
       <Layout pageContext={pageContext}>

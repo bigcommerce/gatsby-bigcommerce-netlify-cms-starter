@@ -2,22 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import { Link } from 'gatsby';
 import CartContext from '../../context/CartProvider';
 import Cart from './Cart'
+import translations from '../../helpers/translations'
 
 import './Notify.css';
 
 // const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
+const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
-
-const translations = {
-  'fr': {
-    'yourcart': 'Votre Panier',
-  },
-  'default': {
-    'yourcart': 'Your Cart',
-  }
-}
 
 export default ({pageContext}) => {
   const value = useContext(CartContext);
@@ -37,13 +29,10 @@ const Notification = ({ id, text, type, pageContext }) => {
   const value = useContext(CartContext);
   const removeNotification = value && value.removeNotification;
   const channel = pageContext.channel
-  let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
-  let pageText = translations['default']
-    
-  if (channelRegionPathPrefix.length > 0 && translations[channelRegionPathPrefix]) {
-    pageText = translations[channelRegionPathPrefix]
-  }
+  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const pageText = translations.getTranslations(channelRegionLocale)
 
+  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
   channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
   useEffect(() => {
