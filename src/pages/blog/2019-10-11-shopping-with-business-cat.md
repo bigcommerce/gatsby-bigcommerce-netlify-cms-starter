@@ -10,7 +10,7 @@ tags:
   - cosmos
 basepath: 
 channel:
-  external_id: United States|US||USD
+  external_id: United States|en_US||USD
 ---
 
 ![flavor wheel](/img/animal-business-cat.jpg)

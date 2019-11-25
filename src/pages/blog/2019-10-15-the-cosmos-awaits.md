@@ -10,7 +10,7 @@ tags:
   - sagan
 basepath: 
 channel:
-  external_id: United States|US||USD
+  external_id: United States|en_US||USD
 ---
 ![chemex](/img/accessory-art.jpg)
 

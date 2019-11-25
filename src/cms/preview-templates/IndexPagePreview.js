@@ -7,8 +7,15 @@ const IndexPagePreview = ({ entry, getAsset }) => {
 
   if (data) {
     console.log(data);
+
+    const pageContext = {
+      'basepath': data.basepath,
+      'channel': data.channel
+    }
+
     return (
       <IndexPageTemplate
+        pageContext={pageContext}
         image={data.image}
         title={data.title}
         subtitle={data.subtitle}
