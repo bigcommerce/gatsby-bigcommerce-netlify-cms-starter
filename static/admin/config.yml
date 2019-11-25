@@ -28,7 +28,8 @@ collections:
       - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
       - name: basepath
         label: 'Page Base Path'
-        widget: string
+        widget: hidden
+        default:
         required: false
       - name: channel
         label: 'Channel'
@@ -48,8 +49,8 @@ collections:
       - {label: "Body", name: "body", widget: "markdown"}
       - name: basepath
         label: 'Base Path'
-        widget: string
-        required: false
+        widget: hidden
+        default: 'about'
       - name: channel
         label: 'Channel'
         widget: object
