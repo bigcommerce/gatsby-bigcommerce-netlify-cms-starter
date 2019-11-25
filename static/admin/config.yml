@@ -46,6 +46,7 @@ collections:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "about-page"}
       - {label: "Locale Key", name: "localeKey", widget: "string", default: "index-page", "hint": "i.e. fr_FR, en_CA. 'default' is the fallback in case there is no content for a locale"}
       - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image"}
       - {label: "Body", name: "body", widget: "markdown"}
       - name: basepath
         label: 'Base Path'
