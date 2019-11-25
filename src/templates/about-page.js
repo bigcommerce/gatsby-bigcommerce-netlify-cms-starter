@@ -11,7 +11,6 @@ export const AboutPageTemplate = ({
   contentComponent 
 }) => {
   const PageContent = contentComponent || Content
-  console.log(PageContent)
 
   return (
     <div className="content">

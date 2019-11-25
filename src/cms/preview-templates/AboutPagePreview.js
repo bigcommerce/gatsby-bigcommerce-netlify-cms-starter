@@ -6,8 +6,6 @@ const AboutPagePreview = ({ entry, widgetFor }) => {
   const data = entry.getIn(['data']).toJS()
 
   if (data) {
-    console.log(data);
-
     const pageContext = {
       'basepath': data.basepath,
       'channel': data.channel
