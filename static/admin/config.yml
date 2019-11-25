@@ -37,6 +37,26 @@ collections:
           - { name: external_id, label: 'Region Identification', widget: string }
 
   - name: "blog"
+    label: "Home Page"
+    folder: "src/pages/about"
+    slug: "index-{{localeKey}}"
+    create: true
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "about-page"}
+      - {label: "Locale Key", name: "localeKey", widget: "string", default: "index-page", "hint": "i.e. fr_FR, en_CA. 'default' is the fallback in case there is no content for a locale"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - name: basepath
+        label: 'Base Path'
+        widget: string
+        required: false
+      - name: channel
+        label: 'Channel'
+        widget: object
+        fields:
+              - { name: external_id, label: 'Region Identification', widget: string }
+
+  - name: "blog"
     label: "Blog"
     folder: "src/pages/blog"
     create: true
@@ -50,23 +70,3 @@ collections:
       - {label: "Featured Image", name: "featuredimage", widget: image}
       - {label: "Body", name: "body", widget: "markdown"}
       - {label: "Tags", name: "tags", widget: "list"}
-
-  - name: "pages"
-    label: "Pages"
-    files:
-      - file: "src/pages/about/index.md"
-        label: "About"
-        name: "about"
-        fields:
-          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "about-page"}
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Body", name: "body", widget: "markdown"}
-          - name: basepath
-            label: 'Base Path'
-            widget: string
-            required: false
-          - name: channel
-            label: 'Channel'
-            widget: object
-            fields:
-              - { name: external_id, label: 'Region Identification', widget: string }

@@ -31,6 +31,6 @@ intro:
     que nous recherchons et espérons que vous trouverez ici.
   heading: Purpose
 channel:
-  external_id: France|FR|fr|EUR
+  external_id: France|fr_FR|fr|EUR
 ---
 

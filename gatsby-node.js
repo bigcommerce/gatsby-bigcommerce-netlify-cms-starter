@@ -38,6 +38,11 @@ exports.createPages = async ({ actions, graphql }) => {
             frontmatter {
               tags
               templateKey
+              localeKey
+              basepath
+              channel {
+                external_id
+              }
             }
           }
         }
@@ -52,6 +57,11 @@ exports.createPages = async ({ actions, graphql }) => {
             frontmatter {
               tags
               templateKey
+              localeKey
+              basepath
+              channel {
+                external_id
+              }
             }
           }
         }
@@ -109,10 +119,10 @@ exports.createPages = async ({ actions, graphql }) => {
   for (var i = channels.length - 1; i >= 0; i--) {
     let channel = channels[i]
 
-    const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+    const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
     availableRegions.push(channel)
 
-    console.log(`creating product pages for channel '${channel.name}' targeting ${regionName} (${regionCountryCode}) with currency of ${regionCurrency} using subdirectory /${regionPathPrefix}`)
+    console.log(`creating product pages for channel '${channel.name}' targeting ${regionName} (${regionLocaleCode}) with currency of ${regionCurrency} using subdirectory /${regionPathPrefix}`)
 
     let channelListings = await fetchChannelListings(channel.bigcommerce_id)
     let channelProducts = []
@@ -164,10 +174,26 @@ exports.createPages = async ({ actions, graphql }) => {
   const postSlugsCreated = [];
   posts.forEach(edge => {
     const id = edge.node.id;
-    console.log(`creating post ${edge.node.fields.slug}`)
+
+    let pagePath = edge.node.fields.slug
+    if (edge.node.frontmatter.localeKey && edge.node.frontmatter.localeKey !== 'default') {
+      const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = edge.node.frontmatter.channel.external_id.split('|')
+      
+      let basePath = edge.node.frontmatter.basepath ? edge.node.frontmatter.basepath : ''
+      if (basePath !== '' && basePath[0] !== '/') {
+        basePath = `/${basePath}`
+      }
+
+      let newPagePath = `${regionPathPrefix}${basePath}/`
+      if (regionPathPrefix !== '' && newPagePath[0] !== '/') {
+        pagePath = `/${newPagePath}`
+      }
+    }
+
+    console.log(`creating post ${pagePath}`)
 
     createPage({
-      path: edge.node.fields.slug,
+      path: pagePath,
       tags: edge.node.frontmatter.tags,
       component: path.resolve(
         `src/templates/${String(edge.node.frontmatter.templateKey)}.js`
@@ -180,7 +206,7 @@ exports.createPages = async ({ actions, graphql }) => {
 
     // Store posts created so we can skip over creating them in the next part
     // since we want to preserve the markdown generated region overrides
-    postSlugsCreated.push(edge.node.fields.slug)
+    postSlugsCreated.push(pagePath)
   });
 
 
@@ -192,7 +218,7 @@ exports.createPages = async ({ actions, graphql }) => {
 
     for (var i = availableRegions.length - 1; i >= 0; i--) {
       const channel = availableRegions[i]
-      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+      const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
       let newPagePath = `${regionPathPrefix}${edge.node.fields.slug}`
       if (regionPathPrefix !== '' && newPagePath[0] !== '/') {
         newPagePath = `/${newPagePath}`
@@ -248,7 +274,7 @@ exports.createPages = async ({ actions, graphql }) => {
 
     for (var i = availableRegions.length - 1; i >= 0; i--) {
       const channel = availableRegions[i]
-      const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+      const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
       let newPagePath = `${regionPathPrefix}${tagPath}`
       if (regionPathPrefix !== '' && newPagePath[0] !== '/') {
         newPagePath = `/${newPagePath}`
@@ -292,7 +318,7 @@ exports.onCreatePage = ({ page, actions }) => {
 
   for (var i = availableRegions.length - 1; i >= 0; i--) {
     const channel = availableRegions[i]
-    const [ regionName, regionCountryCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+    const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
     const newPagePath = `${regionPathPrefix}${page.path}`
     console.log(`creating page ${newPagePath} for channel '${channel.name}'`)
 

@@ -1,11 +1,11 @@
 ---
 templateKey: 'about-page'
-path: /fr/about
+localeKey: fr_FR
 title: À Propos De Nous
 image: /img/bags-commerce-hanging.jpg
 basepath: about
 channel: 
-  external_id: France|FR|fr|EUR
+  external_id: France|fr_FR|fr|EUR
 ---
 ### Créative de source pour ceux qui se soucient
 Nous avons parcouru le monde à la recherche de produits qui, selon nous, ne nous parleront pas seulement, mais également à tous les individus souhaitant une vision positive de manière durable.

@@ -35,6 +35,6 @@ intro:
     own? That's what we seek out and hope you'll find here.
 basepath:
 channel:
-  external_id: United States|US||USD
+  external_id: United States|en_US||USD
 ---
 

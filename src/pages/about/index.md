@@ -1,11 +1,11 @@
 ---
 templateKey: 'about-page'
-path: /about
+localeKey: default
 title: About Us
 image: /img/bags-commerce-hanging.jpg
 basepath: about
 channel:
-  external_id: United States|US||USD
+  external_id: United States|en_US||USD
 ---
 ### Creatively sourced for those that care
 We've searched the world to find products that we feel will not only speak to us, but any individuals that desire a positive outlook in a sustainable way.
