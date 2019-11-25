@@ -15,6 +15,10 @@ class BlogItem extends React.Component {
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
+    if (!post) {
+      return <div/>
+    }
+
     return (
       <div className={`is-parent column ${columnWidth}`} key={post.id}>
         <article
