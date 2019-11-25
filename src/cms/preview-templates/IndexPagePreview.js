@@ -16,6 +16,7 @@ const IndexPagePreview = ({ entry, getAsset }) => {
     return (
       <IndexPageTemplate
         pageContext={pageContext}
+        bigimage={data.bigimage}
         image={data.image}
         title={data.title}
         subtitle={data.subtitle}
