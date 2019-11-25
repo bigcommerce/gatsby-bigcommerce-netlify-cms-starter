@@ -3,14 +3,12 @@ templateKey: index-page
 localeKey: fr_FR
 title: Le monde amené à votre porte
 image: /img/city-background.jpg
-heading: Le monde amené à votre porte
 subtitle: Votre guichet unique pour des produits uniques que vous allez adorer
 mainpitch:
   description: >-
     Mon magasin est un voyage en attente de nos voyages dans le passé.
     Uncollection en constante évolution de produits qui sont destinés à aider à
     élargir votre la vie quotidienne à travers la création des autres.
-  title: Quel est Mon Magasin?
 bigimage:
   alt: Bazaar
   image: /img/bazaar-home.jpg

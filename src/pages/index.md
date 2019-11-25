@@ -4,9 +4,7 @@ localeKey: default
 title: The world brought to your doorstep
 subtitle: Your one-stop shop for unique products you'll love
 image: /img/city-background.jpg
-heading: The world brought to your doorstep
 mainpitch:
-  title: What is My Store?
   description: >
     My Store is a journey waiting to be had, from our journeys in the past. An 
     ever changing collection of products that are meant to help broaden your 

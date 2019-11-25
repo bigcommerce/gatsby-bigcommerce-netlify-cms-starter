@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, graphql } from 'gatsby';
-
+import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
 import Layout from '../components/Layout';
 import PhotoGrid from '../components/PhotoGrid';
 import BlogItem from '../components/BlogItem';
@@ -88,7 +88,7 @@ export const IndexPageTemplate = ({
                   <section className="section">
                     <div className="container has-text-centered">
                       <div className="block">
-                        <img src={bigimage.image.publicURL} alt={bigimage.alt} />
+                        <PreviewCompatibleImage imageInfo={bigimage} />
                       </div>
                       
                       <PhotoGrid gridItems={intro.blurbs} />
@@ -198,9 +198,7 @@ export const pageQuery = graphql`
             }
           }
         }
-        heading
         mainpitch {
-          title
           description
         }
         bigimage {
