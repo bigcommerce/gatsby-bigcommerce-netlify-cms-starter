@@ -29,6 +29,8 @@ export default {
     'blog': 'Blog',
     'contact': 'Contact',
     'cart': 'Cart',
+    'productdescription': 'Product Description',
+    'specifications': 'Specifications',
   },
   'fr_FR': {
     'storeblog': 'Le Blog Du Magasin',
@@ -59,6 +61,8 @@ export default {
     'blog': 'Blog',
     'contact': 'Contact',
     'cart': 'Sac',
+    'productdescription': 'Description du produit',
+    'specifications': 'Caractéristiques',
   },
   getTranslations: function(locale) {
   	let textObj = this['default']

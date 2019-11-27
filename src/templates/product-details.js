@@ -104,7 +104,7 @@ export default ({
               <div className="bc-product-single__meta">
                 <h1 className="bc-product__title">{pageContext.overrides.name || name}</h1>
 
-                <ProductPrices product={product} channelId={channelId} currencyCode={currencyCode} />
+                <ProductPrices product={product} channelId={channelId} currencyCode={currencyCode} customerId={0} />
 
                 <span className="bc-product__sku">
                   <span className="bc-product-single__meta-label">SKU:</span>{' '}
@@ -120,7 +120,7 @@ export default ({
             </section>
             <section className="bc-single-product__description">
               <h4 className="bc-single-product__section-title">
-                Product Description
+                {pageText.productdescription}
               </h4>
               <div
                 className="bc-product__description"
@@ -128,7 +128,7 @@ export default ({
             </section>
             <section className="bc-single-product__specifications">
               <h4 className="bc-single-product__section-title">
-                Specifications
+                {pageText.specifications}
               </h4>
               <ul className="bc-product__spec-list">
                 <li className="bc-product__spec">

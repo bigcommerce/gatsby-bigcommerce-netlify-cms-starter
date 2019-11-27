@@ -42,7 +42,7 @@ class ProductCard extends React.Component {
               <Link to={productLink} className="bc-product__title-link" title={overrides.name || product.name}>{overrides.name || product.name}</Link>
             </h3>
             
-            <ProductPrices product={product} channelId={channelId} currencyCode={currencyCode}  />
+            <ProductPrices product={product} channelId={channelId} currencyCode={currencyCode} customerId={0} />
           </div>
 
           <AddToCartButton

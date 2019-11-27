@@ -4,6 +4,7 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import ProductCard from '../components/bigcommerce/ProductCard';
 import translations from '../helpers/translations'
+// import PriceContext from '../context/PriceProvider';
 
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
