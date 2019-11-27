@@ -5,7 +5,7 @@ class ProductPrices extends React.Component {
   constructor(props) {
     super(props)
     
-    const storageKey = `${window.location.hostname}-${this.props.product.bigcommerce_id}-${this.props.channelId}-${this.props.currencyCode}-${this.props.customerId}`
+    const storageKey = `${this.props.product.bigcommerce_id}-${this.props.channelId}-${this.props.currencyCode}-${this.props.customerId}`
     let prices = { price: null, calculated_price: null, sale_price: null }
     let pricesCached = false
 
