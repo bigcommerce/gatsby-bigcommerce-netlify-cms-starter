@@ -49,15 +49,12 @@ export const CartProvider = ({ children }) => {
   useEffect(() => fetchCart(), [])
 
   const refreshCart = response => {
-    console.log('refreshCart')
     if (response.status === 204 || response.status === 404) {
       setState({ ...state, cartLoading: false })
     } else {
       const lineItems = response.data.line_items
       const cartAmount = response.data.cart_amount
       const currency = response.data.currency
-
-      console.log('in refresh response')
 
       setState({
         ...state,
