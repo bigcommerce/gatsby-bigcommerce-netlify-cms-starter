@@ -15,7 +15,7 @@ const channelRegionCurrencyIdx = 3
 
 const RegionSelector = ({data, count, pageContext}) => {
   const value = useContext(CartContext)
-  const { updateCartChannel } = value
+  const { updateCartChannel } = value || { updateCartChannel: () => { console.log('empty updateCartChannel function') }}
 
   const findChannelByCountryCode = (countryCode, channels) => {
     // Set to first channel initially so we have a fallback if no match is found
