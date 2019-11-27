@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Helmet } from 'react-helmet';
-import Footer from './Footer';
-import Navbar from './Navbar';
-import Notify from './bigcommerce/Notify';
-import './all.sass';
-import './Layout.css';
-import useSiteMetadata from './SiteMetadata';
+import { Helmet } from 'react-helmet'
+import Footer from './Footer'
+import Navbar from './Navbar'
+import Notify from './bigcommerce/Notify'
+import './all.sass'
+import './Layout.css'
+import useSiteMetadata from './SiteMetadata'
 
 const TemplateWrapper = ({ children, pageContext }) => {
-  const { title, description } = useSiteMetadata();
+  const { title, description } = useSiteMetadata()
   return (
     <div>
       <Helmet>
@@ -53,12 +53,12 @@ const TemplateWrapper = ({ children, pageContext }) => {
       <div>{children}</div>
       <Footer pageContext={pageContext} />
     </div>
-  );
-};
+  )
+}
 
 TemplateWrapper.propTypes = {
   children: PropTypes.node,
   pageContext: PropTypes.object,
 }
 
-export default TemplateWrapper;
+export default TemplateWrapper

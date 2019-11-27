@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link, graphql } from 'gatsby';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Link, graphql } from 'gatsby'
 import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
-import Layout from '../components/Layout';
-import PhotoGrid from '../components/PhotoGrid';
-import BlogItem from '../components/BlogItem';
+import Layout from '../components/Layout'
+import PhotoGrid from '../components/PhotoGrid'
+import BlogItem from '../components/BlogItem'
 
 // const channelRegionNameIdx = 0
 // const channelRegionLocaleIdx = 1
@@ -121,7 +121,7 @@ export const IndexPageTemplate = ({
       </section>
     </div>
   )
-};
+}
 
 IndexPageTemplate.propTypes = {
   pageContext: PropTypes.object,
@@ -136,10 +136,10 @@ IndexPageTemplate.propTypes = {
   post: PropTypes.object,
   basepath: PropTypes.string,
   channel: PropTypes.object,
-};
+}
 
 const IndexPage = ({ pageContext, data }) => {
-  const { frontmatter } = data.markdownRemark;
+  const { frontmatter } = data.markdownRemark
 
   if (!pageContext.channel) {
     pageContext = {
@@ -165,8 +165,8 @@ const IndexPage = ({ pageContext, data }) => {
         channel={frontmatter.channel}
       />
     </Layout>
-  );
-};
+  )
+}
 
 IndexPage.propTypes = {
   data: PropTypes.shape({
@@ -177,9 +177,9 @@ IndexPage.propTypes = {
       edges: PropTypes.array,
     })
   })
-};
+}
 
-export default IndexPage;
+export default IndexPage
 
 export const pageQuery = graphql`
   query IndexPageTemplate($id: String!) {
@@ -257,4 +257,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`;
+`

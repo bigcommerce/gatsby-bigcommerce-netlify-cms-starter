@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { graphql } from 'gatsby';
+import React, { useState } from 'react'
+import { graphql } from 'gatsby'
 
-import AddToCartButton from '../components/bigcommerce/AddToCartButton';
-import ProductPrices from '../components/bigcommerce/ProductPrices';
-import Layout from '../components/Layout';
+import AddToCartButton from '../components/bigcommerce/AddToCartButton'
+import ProductPrices from '../components/bigcommerce/ProductPrices'
+import Layout from '../components/Layout'
 import translations from '../helpers/translations'
 
 // const channelRegionNameIdx = 0
@@ -37,7 +37,7 @@ export default ({
 }) => {
   const [selectedImage, updateSelectedImage] = useState(
     images.length && images[0].url_standard
-  );
+  )
 
   const product = {
     price,
@@ -46,7 +46,7 @@ export default ({
     sale_price,
     map_price,
     bigcommerce_id
-  };
+  }
 
   const channelId = pageContext.channel.bigcommerce_id
   const currencyCode = pageContext.channel.external_id.split('|')[channelRegionCurrencyIdx]
@@ -141,8 +141,8 @@ export default ({
         </section>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
 export const query = graphql`
   query($productId: String!) {
@@ -175,4 +175,4 @@ export const query = graphql`
       }
     }
   }
-`;
+`

@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { navigate, graphql, StaticQuery } from 'gatsby'
 import _ from 'lodash'
-import ReactFlagsSelect from 'react-flags-select';
-import 'react-flags-select/css/react-flags-select.css';
-import './RegionSelector.css';
+import ReactFlagsSelect from 'react-flags-select'
+import 'react-flags-select/css/react-flags-select.css'
+import './RegionSelector.css'
 
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1

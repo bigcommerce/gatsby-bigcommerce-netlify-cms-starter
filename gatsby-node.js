@@ -19,7 +19,7 @@ async function fetchChannelListings(channelID) {
   }).then((result) => {
     return result.data.data
   }).catch(function (error) {
-    console.log(error);
+    console.log(error)
   })
 }
 
@@ -103,7 +103,7 @@ exports.createPages = async ({ actions, graphql }) => {
         }
       }
     }
-  `);
+  `)
 
   if (result.errors) {
     result.errors.forEach(e => console.error(e.toString()))
@@ -128,7 +128,7 @@ exports.createPages = async ({ actions, graphql }) => {
     let channelProducts = []
     for (var x = channelListings.length - 1; x >= 0; x--) {
       let channelListing = channelListings[x]
-      // console.log(`product_id: ${channelListing.product_id} listing_id: ${channelListing.listing_id}`);
+      // console.log(`product_id: ${channelListing.product_id} listing_id: ${channelListing.listing_id}`)
 
       if (channelListing.state === "active") {
         products.forEach( ({ bigcommerce_id, custom_url, id }) => {
@@ -171,9 +171,9 @@ exports.createPages = async ({ actions, graphql }) => {
     })
   }
 
-  const postSlugsCreated = [];
+  const postSlugsCreated = []
   posts.forEach(edge => {
-    const id = edge.node.id;
+    const id = edge.node.id
 
     let pagePath = edge.node.fields.slug
     if (edge.node.frontmatter.localeKey && edge.node.frontmatter.localeKey !== 'default') {
@@ -207,14 +207,14 @@ exports.createPages = async ({ actions, graphql }) => {
     // Store posts created so we can skip over creating them in the next part
     // since we want to preserve the markdown generated region overrides
     postSlugsCreated.push(pagePath)
-  });
+  })
 
 
   // Now go through and create region specific pages automatically for root pages that are
   // not manually created via markdown files in region specific directories. This allows newly
   // added regions to have all the core pages without the requirement of making new markdown files.
   rootChannelPosts.forEach(edge => {
-    const id = edge.node.id;
+    const id = edge.node.id
 
     for (var i = availableRegions.length - 1; i >= 0; i--) {
       const channel = availableRegions[i]
@@ -241,11 +241,11 @@ exports.createPages = async ({ actions, graphql }) => {
         })
       }
     }
-  });
+  })
 
   // Tag pages:
   let tags = []
-  const tagPagesCreated = [];
+  const tagPagesCreated = []
   // Iterate through each post, putting all found tags into `tags`
   posts.forEach(edge => {
     if (_.get(edge, `node.frontmatter.tags`)) {
@@ -253,7 +253,7 @@ exports.createPages = async ({ actions, graphql }) => {
     }
   })
   // Eliminate duplicate tags
-  tags = _.uniq(tags);
+  tags = _.uniq(tags)
 
   // Make tag pages
   tags.forEach(tag => {
@@ -296,8 +296,8 @@ exports.createPages = async ({ actions, graphql }) => {
 }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions;
-  fmImagesToRelative(node); // convert image paths for gatsby images
+  const { createNodeField } = actions
+  fmImagesToRelative(node) // convert image paths for gatsby images
 
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })

@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'gatsby';
-import Layout from '../components/Layout';
-import ProductCard from '../components/bigcommerce/ProductCard';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { graphql } from 'gatsby'
+import Layout from '../components/Layout'
+import ProductCard from '../components/bigcommerce/ProductCard'
 import translations from '../helpers/translations'
-// import PriceContext from '../context/PriceProvider';
 
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
@@ -49,15 +48,15 @@ export const ProductListTemplate = ({
       </section>
     </div>
   )
-};
+}
 
 ProductListTemplate.propTypes = {
   pageContext: PropTypes.object,
   products: PropTypes.array
-};
+}
 
 const ProductList = ({ pageContext, data }) => {
-  const products = data.allBigCommerceProducts.nodes;
+  const products = data.allBigCommerceProducts.nodes
 
   return (
     <Layout pageContext={pageContext}>
@@ -66,8 +65,8 @@ const ProductList = ({ pageContext, data }) => {
         products={products}
       />
     </Layout>
-  );
-};
+  )
+}
 
 ProductList.propTypes = {
   data: PropTypes.shape({
@@ -75,9 +74,9 @@ ProductList.propTypes = {
       nodes: PropTypes.array
     })
   })
-};
+}
 
-export default ProductList;
+export default ProductList
 
 export const productListQuery = graphql`
   query productList {
@@ -112,4 +111,4 @@ export const productListQuery = graphql`
       }
     }
   }
-`;
+`

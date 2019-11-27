@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'gatsby';
-import CurrencyFormatter from './CurrencyFormatter';
-import Loader from '../Loader';
-import CartContext from '../../context/CartProvider';
+import React from 'react'
+import { Link } from 'gatsby'
+import CurrencyFormatter from './CurrencyFormatter'
+import Loader from '../Loader'
+import CartContext from '../../context/CartProvider'
 import translations from '../../helpers/translations'
 
 // const channelRegionNameIdx = 0
@@ -11,8 +11,8 @@ const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
 const AdjustItem = props => {
-  const { item, updatingItem, cartType } = props;
-  let minusBtn, plusBtn;
+  const { item, updatingItem, cartType } = props
+  let minusBtn, plusBtn
 
   if (cartType === 'full') {
     minusBtn = (
@@ -40,13 +40,13 @@ const AdjustItem = props => {
       
       {plusBtn}
     </div>
-  );
-};
+  )
+}
 
 const CustomItems = props => {
-  const { items } = props;
-  const cartType = props.cartType;
-  let itemImage;
+  const { items } = props
+  const cartType = props.cartType
+  let itemImage
 
   return (
     <>
@@ -86,13 +86,13 @@ const CustomItems = props => {
         )
       })}
     </>
-  );
-};
+  )
+}
 
 const StandardItems = props => {
-  const { items } = props;
-  const cartType = props.cartType;
-  let itemImage;
+  const { items } = props
+  const cartType = props.cartType
+  let itemImage
 
   return (
     <>
@@ -132,13 +132,13 @@ const StandardItems = props => {
         )
       })}
     </>
-  );
-};
+  )
+}
 
 const GiftCertificateItems = props => {
-  const items = props.items;
-  const cartType = props.cartType;
-  let itemImage;
+  const items = props.items
+  const cartType = props.cartType
+  let itemImage
 
   return (
     <>
@@ -179,12 +179,12 @@ const GiftCertificateItems = props => {
         )
       })}
     </>
-  );
-};
+  )
+}
 
 const Cart = class extends React.Component {
   render() {
-    const cartType = this.props.cartType;
+    const cartType = this.props.cartType
     const pageContext = this.props.pageContext
     const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
     const pageText = translations.getTranslations(channelRegionLocale)
@@ -192,23 +192,23 @@ const Cart = class extends React.Component {
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
-    let cartFooter;
+    let cartFooter
 
     return (
       <CartContext.Consumer>
         {value => {
           if (!value) {
-            return null;
+            return null
           }
-          const { state, removeItemFromCart, updateCartItemQuantity } = value;
+          const { state, removeItemFromCart, updateCartItemQuantity } = value
           const {
             currency,
             cartAmount,
             lineItems,
             numberItems,
             redirectUrls
-          } = state.cart;
-          const { updatingItem } = state;
+          } = state.cart
+          const { updatingItem } = state
 
           if (cartType === 'full') {
             cartFooter = (
@@ -310,11 +310,11 @@ const Cart = class extends React.Component {
                 {cartFooter}
               </section>
             </div>
-          );
+          )
         }}
       </CartContext.Consumer>
-    );
+    )
   }
-};
+}
 
-export default Cart;
+export default Cart

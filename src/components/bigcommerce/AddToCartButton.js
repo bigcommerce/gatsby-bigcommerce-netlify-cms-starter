@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import CartContext from '../../context/CartProvider';
+import React, { useContext } from 'react'
+import CartContext from '../../context/CartProvider'
 
 const AddToCartButton = ({ children, productId, variantId }) => {
-  const value = useContext(CartContext);
-  const addToCart = value && value.addToCart;
-  const addingToCart = value && value.state.addingToCart;
+  const value = useContext(CartContext)
+  const addToCart = value && value.addToCart
+  const addingToCart = value && value.state.addingToCart
 
   return (
     <div className="bc-product-card">
@@ -21,7 +21,7 @@ const AddToCartButton = ({ children, productId, variantId }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddToCartButton;
+export default AddToCartButton

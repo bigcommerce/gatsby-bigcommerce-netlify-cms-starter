@@ -9,9 +9,9 @@ const channelRegionPathIdx = 2
 
 class BlogItem extends React.Component {
   render() {
-    const post = this.props.post;
+    const post = this.props.post
     const pageContext = this.props.pageContext
-    const columnWidth = this.props.columnWidth ? this.props.columnWidth : 'is-6';
+    const columnWidth = this.props.columnWidth ? this.props.columnWidth : 'is-6'
     let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
     channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
@@ -66,4 +66,4 @@ class BlogItem extends React.Component {
   }
 }
 
-export default BlogItem;
+export default BlogItem

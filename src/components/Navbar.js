@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'gatsby';
-import github from '../img/github-icon.svg';
-import logo from '../img/logo-header.png';
-import CartContext from '../context/CartProvider';
-import RegionSelector from './bigcommerce/RegionSelector';
+import React from 'react'
+import { Link } from 'gatsby'
+import github from '../img/github-icon.svg'
+import logo from '../img/logo-header.png'
+import CartContext from '../context/CartProvider'
+import RegionSelector from './bigcommerce/RegionSelector'
 import translations from '../helpers/translations'
 
 // const channelRegionNameIdx = 0
@@ -13,11 +13,11 @@ const channelRegionPathIdx = 2
 
 const Navbar = class extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       active: false,
       navBarActiveClass: ''
-    };
+    }
   }
 
   toggleHamburger = () => {
@@ -35,10 +35,10 @@ const Navbar = class extends React.Component {
             })
           : this.setState({
               navBarActiveClass: ''
-            });
+            })
       }
-    );
-  };
+    )
+  }
 
   render() {
     const pageContext = this.props.pageContext
@@ -96,7 +96,7 @@ const Navbar = class extends React.Component {
                           <span className="bigcommerce-cart__item-count full">{value.state.cart.numberItems}</span>
                         )}
                     </Link>
-                  );
+                  )
                 }}
               </CartContext.Consumer>
             </div>
@@ -115,8 +115,8 @@ const Navbar = class extends React.Component {
           </div>
         </div>
       </nav>
-    );
+    )
   }
-};
+}
 
-export default Navbar;
+export default Navbar

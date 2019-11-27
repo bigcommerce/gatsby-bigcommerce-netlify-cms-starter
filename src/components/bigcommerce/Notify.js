@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react';
-import { Link } from 'gatsby';
-import CartContext from '../../context/CartProvider';
+import React, { useContext, useEffect } from 'react'
+import { Link } from 'gatsby'
+import CartContext from '../../context/CartProvider'
 import Cart from './Cart'
 import translations from '../../helpers/translations'
 
-import './Notify.css';
+import './Notify.css'
 
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
@@ -12,9 +12,9 @@ const channelRegionPathIdx = 2
 // const channelRegionCurrencyIdx = 3
 
 export default ({pageContext}) => {
-  const value = useContext(CartContext);
-  const notifications = value && value.notifications;
-  const hasNotifications = Array.isArray(notifications) && notifications.length;
+  const value = useContext(CartContext)
+  const notifications = value && value.notifications
+  const hasNotifications = Array.isArray(notifications) && notifications.length
 
   return hasNotifications ? (
     <section className="Notify">
@@ -22,12 +22,12 @@ export default ({pageContext}) => {
         <Notification key={note.id} {...note} pageContext={pageContext} />
       ))}
     </section>
-  ) : null;
-};
+  ) : null
+}
 
 const Notification = ({ id, text, type, pageContext }) => {
-  const value = useContext(CartContext);
-  const removeNotification = value && value.removeNotification;
+  const value = useContext(CartContext)
+  const removeNotification = value && value.removeNotification
   const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
   const pageText = translations.getTranslations(channelRegionLocale)
 
@@ -36,11 +36,11 @@ const Notification = ({ id, text, type, pageContext }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      removeNotification(id);
-    }, 7000);
-    return () => clearTimeout(timer);
+      removeNotification(id)
+    }, 7000)
+    return () => clearTimeout(timer)
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   return (
     <article className="Notification Animate">
@@ -65,5 +65,5 @@ const Notification = ({ id, text, type, pageContext }) => {
         </div>
       </div>
     </article>
-  );
-};
+  )
+}

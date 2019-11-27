@@ -1,5 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-import './loading.css';
+import './loading.css'
 
-export default () => <div className="spinner"></div>;
+export default () => <div className="spinner"></div>
