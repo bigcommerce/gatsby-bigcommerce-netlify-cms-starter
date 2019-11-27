@@ -1,4 +1,7 @@
 const CurrencyFormatter = ({ currency, amount }) => {
+  if (!amount) {
+    amount = 0 
+  }
   const languageCode =
     typeof window !== 'undefined'
       ? window.navigator.language || 'en-US'

@@ -5,7 +5,10 @@ const CartContext = createContext()
 const initialState = {
   cartLoading: false,
   cartError: false,
+  locale: 'en_US',
   cart: {
+    channel_id: null,
+    customer_id: 0,
     currency: {
       code: 'USD'
     },
@@ -46,12 +49,15 @@ export const CartProvider = ({ children }) => {
   useEffect(() => fetchCart(), [])
 
   const refreshCart = response => {
+    console.log('refreshCart')
     if (response.status === 204 || response.status === 404) {
       setState({ ...state, cartLoading: false })
     } else {
       const lineItems = response.data.line_items
       const cartAmount = response.data.cart_amount
       const currency = response.data.currency
+
+      console.log('in refresh response')
 
       setState({
         ...state,
@@ -79,9 +85,9 @@ export const CartProvider = ({ children }) => {
       credentials: 'same-origin',
       mode: 'same-origin',
       body: JSON.stringify({
-        channel_id: (window.location.pathname.indexOf('fr') !== -1) ? 21400 : 21401,
+        channel_id: state.cart.channel_id,
         currency: {
-          code: (window.location.pathname.indexOf('fr') !== -1) ? 'eur' : 'gbp'
+          code: state.cart.currency.code
         },
         line_items: [
           {
@@ -197,8 +203,18 @@ export const CartProvider = ({ children }) => {
     })
   }
 
-  const updateCartChannel = (channel) => {
-    console.log('cartupdated!')
+  const updateCartChannel = (channelId, channelCurrency, channelLocale, channelPath) => {
+    setState({ 
+      locale: channelLocale,
+      path: channelPath,
+      cart: {
+        ...state.cart,
+        channel_id: channelId,
+        currency: {
+          code: channelCurrency
+        }
+      }
+    })
   }
 
   return (

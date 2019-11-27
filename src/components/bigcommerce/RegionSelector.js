@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import { navigate, graphql, StaticQuery } from 'gatsby'
+import CartContext from '../../context/CartProvider'
 import _ from 'lodash'
 import ReactFlagsSelect from 'react-flags-select'
 import 'react-flags-select/css/react-flags-select.css'
@@ -9,11 +10,14 @@ import './RegionSelector.css'
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+const channelRegionCurrencyIdx = 3
 
 
-class RegionSelector extends React.Component {
-  findChannelByCountryCode(countryCode, channels) {
+const RegionSelector = ({data, count, pageContext}) => {
+  const value = useContext(CartContext)
+  const { updateCartChannel } = value
+
+  const findChannelByCountryCode = (countryCode, channels) => {
     // Set to first channel initially so we have a fallback if no match is found
     let matchedChannel = channels[0]
 
@@ -30,36 +34,38 @@ class RegionSelector extends React.Component {
     return matchedChannel
   }
 
-  onSelectFlag(channels, basePath, selectedCountryCode) {
-    const selectedPathPrefix = this.findChannelByCountryCode(selectedCountryCode, channels).external_id.split('|')[channelRegionPathIdx]
+  const onSelectFlag = (channels, basePath, selectedCountryCode) => {
+    const selectedChannel = findChannelByCountryCode(selectedCountryCode, channels)
+    const selectedLocale = selectedChannel.external_id.split('|')[channelRegionLocaleIdx]
+    const selectedPathPrefix = selectedChannel.external_id.split('|')[channelRegionPathIdx]
+    const selectedCurrency = selectedChannel.external_id.split('|')[channelRegionCurrencyIdx]
 
     navigate(`${selectedPathPrefix}/${basePath}`)
+
+    updateCartChannel(selectedChannel.bigcommerce_id, selectedCurrency, selectedLocale, selectedPathPrefix)
   }
 
-  render() {
-    const { data, pageContext } = this.props
-    const { nodes: channels } = data.allBigCommerceChannels
-    const basePath = pageContext.pageContext.basePath || ''
-    const currentChannelLocale = pageContext.pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
-    const currentChannelCountryCode = currentChannelLocale.split('_')[1]
+  const { nodes: channels } = data.allBigCommerceChannels
+  const basePath = pageContext.pageContext.basePath || ''
+  const currentChannelLocale = pageContext.pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const currentChannelCountryCode = currentChannelLocale.split('_')[1]
 
-    const countries = _.compact(channels.map(channel => {
-      return channel.external_id.split('|')[channelRegionLocaleIdx].split('_')[1]
-    }))
+  const countries = _.compact(channels.map(channel => {
+    return channel.external_id.split('|')[channelRegionLocaleIdx].split('_')[1]
+  }))
 
-    const countryLabels = channels.map(channel => {
-      const [ regionName, regionLocaleCode ] = channel.external_id.split('|')
-      return { [regionLocaleCode] : regionName }
-    })
+  const countryLabels = channels.map(channel => {
+    const [ regionName, regionLocaleCode ] = channel.external_id.split('|')
+    return { [regionLocaleCode] : regionName }
+  })
 
-    return (
-      <ReactFlagsSelect
-        defaultCountry={currentChannelCountryCode}
-        countries={countries}
-        customLabels={{...countryLabels}}
-        onSelect={this.onSelectFlag.bind(this, channels, basePath)} />
-    )
-  }
+  return (
+    <ReactFlagsSelect
+      defaultCountry={currentChannelCountryCode}
+      countries={countries}
+      customLabels={{...countryLabels}}
+      onSelect={onSelectFlag.bind(this, channels, basePath)} />
+  )
 }
 
 RegionSelector.propTypes = {

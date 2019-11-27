@@ -8,7 +8,7 @@ import translations from '../../helpers/translations'
 // const channelRegionNameIdx = 0
 const channelRegionLocaleIdx = 1
 const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+const channelRegionCurrencyIdx = 3
 
 const AdjustItem = props => {
   const { item, updatingItem, cartType } = props
@@ -185,12 +185,6 @@ const GiftCertificateItems = props => {
 const Cart = class extends React.Component {
   render() {
     const cartType = this.props.cartType
-    const pageContext = this.props.pageContext
-    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
-    const pageText = translations.getTranslations(channelRegionLocale)
-
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     let cartFooter
 
@@ -200,15 +194,31 @@ const Cart = class extends React.Component {
           if (!value) {
             return null
           }
-          const { state, removeItemFromCart, updateCartItemQuantity } = value
+          const { state, removeItemFromCart, updateCartItemQuantity, updateCartChannel } = value
           const {
+            channel_id,
             currency,
             cartAmount,
             lineItems,
             numberItems,
             redirectUrls
           } = state.cart
-          const { updatingItem } = state
+          const { updatingItem, locale, path } = state
+
+          const channel = this.props.pageContext.channel
+          const channelRegionLocale = channel.external_id.split('|')[channelRegionLocaleIdx]
+          const channelRegionCurrency = channel.external_id.split('|')[channelRegionCurrencyIdx]
+          let pageText = translations.getTranslations(channelRegionLocale)
+
+          let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
+          channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+
+          if (!channel_id) {
+            updateCartChannel(channel.bigcommerce_id, channelRegionCurrency, channelRegionLocale, channelRegionPathPrefix)
+          } else {
+            pageText = translations.getTranslations(locale)
+            channelRegionPathPrefix = (!path.length) ? '' : '/' + path
+          }
 
           if (cartType === 'full') {
             cartFooter = (
