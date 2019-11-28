@@ -6019,6 +6019,10 @@ button.bc-btn.bc-cart-actions__checkout-button {
 
 /* Overrides */
 
+.content-wrapper {
+  overflow: hidden;
+}
+
 .bc-btn {
   background-color: black !important;
 }
