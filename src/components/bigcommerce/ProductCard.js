@@ -3,11 +3,7 @@ import { Link } from 'gatsby';
 import AddToCartButton from './AddToCartButton';
 import ProductPrices from './ProductPrices';
 import translations from '../../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-// const channelRegionPathIdx = 2
-const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../../helpers/channels'
 
 class ProductCard extends React.Component {
   render() {
@@ -16,10 +12,9 @@ class ProductCard extends React.Component {
     if (this.props.channelProductData[product.bigcommerce_id]) {
       const overrides = this.props.channelProductData[product.bigcommerce_id].overrides
       const channel = this.props.channel
-      const productLink = this.props.channelProductData[product.bigcommerce_id].productPath
       const channelId = channel.bigcommerce_id
-      const currencyCode = channel.external_id.split('|')[channelRegionCurrencyIdx]
-      const channelRegionLocale = channel.external_id.split('|')[channelRegionLocaleIdx]
+      const { channelRegionLocale, channelRegionPathPrefix, channelRegionCurrency } = parseChannelRegionInfo(channel)
+      const productLink = `${channelRegionPathPrefix}/products${product.custom_url.url}`
       const pageText = translations.getTranslations(channelRegionLocale)
 
       return (
@@ -42,12 +37,14 @@ class ProductCard extends React.Component {
               <Link to={productLink} className="bc-product__title-link" title={overrides.name || product.name}>{overrides.name || product.name}</Link>
             </h3>
             
-            <ProductPrices product={product} channelId={channelId} currencyCode={currencyCode} customerId={0} />
+            <ProductPrices product={product} channelId={channelId} currencyCode={channelRegionCurrency} customerId={0} />
           </div>
 
           <AddToCartButton
             productId={product.variants[0].product_id}
-            variantId={product.variants[0].id}>
+            variantId={product.variants[0].id}
+            channelRegionLocale={channelRegionLocale}
+            >
             {pageText.addtocart}
           </AddToCartButton>
         </div>

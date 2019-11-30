@@ -3,11 +3,7 @@ import { kebabCase } from 'lodash'
 import Helmet from 'react-helmet'
 import { Link, graphql } from 'gatsby'
 import Layout from '../../components/Layout'
-
-// const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../../helpers/channels'
 
 const TagsPage = ({
   pageContext,
@@ -18,8 +14,7 @@ const TagsPage = ({
     },
   },
 }) => {
-  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-  channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+  const { channelRegionPathPrefix } = parseChannelRegionInfo(pageContext.channel)
 
   return (
     <Layout pageContext={pageContext}>

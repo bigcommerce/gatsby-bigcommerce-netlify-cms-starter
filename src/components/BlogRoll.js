@@ -12,7 +12,7 @@ class BlogRoll extends React.Component {
       <div className="columns is-multiline">
         {posts &&
           posts.map(({ node: post }) => (
-            <BlogItem post={post} pageContext={pageContext} />
+            <BlogItem post={post} pageContext={pageContext} key={post.id} />
           ))}
       </div>
     )

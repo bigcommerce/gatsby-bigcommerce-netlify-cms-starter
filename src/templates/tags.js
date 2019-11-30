@@ -2,17 +2,14 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Link, graphql } from 'gatsby'
 import Layout from '../components/Layout'
-
-// const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import translations from '../helpers/translations'
+import parseChannelRegionInfo from '../helpers/channels'
 
 class TagRoute extends React.Component {
   render() {
     const pageContext = this.props.pageContext
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+    const { channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(pageContext.channel)
+    const pageText = translations.getTranslations(channelRegionLocale)
 
     const posts = this.props.data.allMarkdownRemark.edges
     const postLinks = posts.map(post => (
@@ -43,7 +40,7 @@ class TagRoute extends React.Component {
                 <h3 className="title is-size-4 is-bold-light">{tagHeader}</h3>
                 <ul className="taglist">{postLinks}</ul>
                 <p>
-                  <Link to={`${channelRegionPathPrefix}/tags/`}>Browse all tags</Link>
+                  <Link to={`${channelRegionPathPrefix}/tags/`}>{pageText.browsealltags}</Link>
                 </p>
               </div>
             </div>

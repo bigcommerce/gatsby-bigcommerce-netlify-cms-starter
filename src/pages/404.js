@@ -1,19 +1,28 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import PropTypes from 'prop-types'
+import { Link, graphql, StaticQuery } from 'gatsby'
 import Layout from '../components/Layout'
 import translations from '../helpers/translations'
+import parseChannelRegionInfo from '../helpers/channels'
 
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+const NotFoundPageComponent = ({data, count, pageContext}) => {
+  
+  const determineChannelViaWindowPath = (channels, rootChannel) => {
+    for (var i = channels.length - 1; i >= 0; i--) {
+      const { channelRegionPathPrefix } = parseChannelRegionInfo(channels[i])
 
-const NotFoundPage = ({pageContext}) => {
-  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+      if (channelRegionPathPrefix.length > 0 && window.location.pathname.match(`${channelRegionPathPrefix}/`) !== null) {
+        return channels[i]
+      }
+    }
+
+    return rootChannel
+  }
+
+  const channel = determineChannelViaWindowPath(data.allBigCommerceChannels.nodes, data.rootChannel)
+  const { channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(channel)
   const pageText = translations.getTranslations(channelRegionLocale)
-
-  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-  channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+  pageContext.channel = channel
 
   return (
     <Layout pageContext={pageContext}>
@@ -36,4 +45,36 @@ const NotFoundPage = ({pageContext}) => {
   )
 }
 
-export default NotFoundPage
+NotFoundPageComponent.propTypes = {
+  data: PropTypes.shape({
+    allBigCommerceChannels: PropTypes.shape({
+      nodes: PropTypes.array,
+    }),
+    rootChannel: PropTypes.object,
+  }),
+  pageContext: PropTypes.object,
+}
+
+export default (pageContext) => (
+  <StaticQuery
+    query={graphql`
+      query PageNotFoundChannelQuery {
+        allBigCommerceChannels(filter: {is_enabled: {eq: true}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
+          nodes {
+            id
+            bigcommerce_id
+            external_id
+            name
+          }
+        }
+        rootChannel: bigCommerceChannels(external_id: {regex: "/[|][|]/i"}, is_enabled: {eq: true}) {
+          id
+          bigcommerce_id
+          external_id
+          name
+        }
+      }
+    `}
+    render={(data, count) => <NotFoundPageComponent data={data} count={count} pageContext={pageContext.pageContext} />}
+  />
+)

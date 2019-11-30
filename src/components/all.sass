@@ -115,10 +115,12 @@ $menu-label-color: $white-ter
   border-left: 4px solid #000 !important
   box-shadow: none !important
   background-color: #fff !important
-.blog-list-item.is-featured:before
+.blog-list-item .featured-badge
+  display: none
+.blog-list-item.is-featured .featured-badge
   border: 2px solid #000
   color: #000
-  content: "Featured Blog Post"
+  display: inline-block
   font-size: .8rem
   font-variant: all-small-caps;
   padding: .2rem

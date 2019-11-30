@@ -5,11 +5,7 @@ import logo from '../img/logo-header.png'
 import CartContext from '../context/CartProvider'
 import RegionSelector from './bigcommerce/RegionSelector'
 import translations from '../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../helpers/channels'
 
 const Navbar = class extends React.Component {
   constructor(props) {
@@ -41,12 +37,8 @@ const Navbar = class extends React.Component {
   }
 
   render() {
-    const pageContext = this.props.pageContext
-    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
-    const navItemText = translations.getTranslations(channelRegionLocale)
-
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+    const { channelRegionLocale, channelRegionPathPrefix, channelRegionHomeLink } = parseChannelRegionInfo(this.props.pageContext.channel)
+    const pageText = translations.getTranslations(channelRegionLocale)
 
     return (
       <nav
@@ -55,7 +47,7 @@ const Navbar = class extends React.Component {
         aria-label="main-navigation">
         <div className="container">
           <div className="navbar-brand">
-            <Link to={`${channelRegionPathPrefix}`} className="navbar-item" title="Logo">
+            <Link to={`${channelRegionHomeLink}`} className="navbar-item" title="Logo">
               <img src={logo} alt="My Store" />
             </Link>
             {/* Hamburger menu */}
@@ -73,22 +65,22 @@ const Navbar = class extends React.Component {
             className={`navbar-menu ${this.state.navBarActiveClass}`}>
             <div className="navbar-start has-text-centered">
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/about`}>
-                {navItemText.about}
+                {pageText.about}
               </Link>
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/products`}>
-                {navItemText.products}
+                {pageText.products}
               </Link>
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/blog`}>
-                {navItemText.blog}
+                {pageText.blog}
               </Link>
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/contact`}>
-                {navItemText.contact}
+                {pageText.contact}
               </Link>
               <CartContext.Consumer>
                 {value => {
                   return (
                     <Link className="navbar-item menu-item-bigcommerce-cart" to={`${channelRegionPathPrefix}/cart`}>
-                      {navItemText.cart}
+                      {pageText.cart}
                       
                       {value &&
                         value.state.cart &&

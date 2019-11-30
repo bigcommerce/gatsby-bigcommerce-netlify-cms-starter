@@ -136,7 +136,6 @@ exports.createPages = async ({ actions, graphql }) => {
             console.log(`${regionPathPrefix}/products${custom_url.url}`)
 
             channelProducts[bigcommerce_id] = {
-              productPath: `${regionPathPrefix}/products${custom_url.url}`,
               overrides: channelListing.overrides || {}
             }
 

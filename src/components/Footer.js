@@ -6,20 +6,13 @@ import instagram from '../img/social/instagram.svg'
 import twitter from '../img/social/twitter.svg'
 import vimeo from '../img/social/vimeo.svg'
 import translations from '../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../helpers/channels'
 
 const Footer = class extends React.Component {
   render() {
     const pageContext = this.props.pageContext
-    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const { channelRegionLocale, channelRegionPathPrefix, channelRegionHomeLink } = parseChannelRegionInfo(pageContext.channel)
     const pageText = translations.getTranslations(channelRegionLocale)
-
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (
       <footer className="footer has-background-black has-text-white-ter">
@@ -37,7 +30,7 @@ const Footer = class extends React.Component {
                 <section className="menu">
                   <ul className="menu-list">
                     <li>
-                      <Link to={`${channelRegionPathPrefix}/`} className="navbar-item">
+                      <Link to={`${channelRegionHomeLink}`} className="navbar-item">
                         {pageText.home}
                       </Link>
                     </li>
@@ -47,7 +40,7 @@ const Footer = class extends React.Component {
                       </Link>
                     </li>
                     <li>
-                      <Link className="navbar-item" to={`${channelRegionPathPrefix}products`}>
+                      <Link className="navbar-item" to={`${channelRegionPathPrefix}/products`}>
                         Our Products
                       </Link>
                     </li>

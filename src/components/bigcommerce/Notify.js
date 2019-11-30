@@ -3,13 +3,9 @@ import { Link } from 'gatsby'
 import CartContext from '../../context/CartProvider'
 import Cart from './Cart'
 import translations from '../../helpers/translations'
+import parseChannelRegionInfo from '../../helpers/channels'
 
 import './Notify.css'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
 
 export default ({pageContext}) => {
   const value = useContext(CartContext)
@@ -28,11 +24,8 @@ export default ({pageContext}) => {
 const Notification = ({ id, text, type, pageContext }) => {
   const value = useContext(CartContext)
   const removeNotification = value && value.removeNotification
-  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const { channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(pageContext.channel)
   const pageText = translations.getTranslations(channelRegionLocale)
-
-  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-  channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
   useEffect(() => {
     const timer = setTimeout(() => {

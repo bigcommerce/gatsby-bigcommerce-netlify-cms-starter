@@ -2,16 +2,12 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import Cart from '../../components/bigcommerce/Cart'
 import translations from '../../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-// const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../../helpers/channels'
 
 export default class CartIndexPage extends React.Component {
   render() {
     const pageContext = this.props.pageContext
-    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const { channelRegionLocale } = parseChannelRegionInfo(pageContext.channel)
     const pageText = translations.getTranslations(channelRegionLocale)
 
     return (

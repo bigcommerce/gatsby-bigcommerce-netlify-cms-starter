@@ -5,11 +5,8 @@ import PreviewCompatibleImage from '../components/PreviewCompatibleImage'
 import Layout from '../components/Layout'
 import PhotoGrid from '../components/PhotoGrid'
 import BlogItem from '../components/BlogItem'
-
-// const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import translations from '../helpers/translations'
+import parseChannelRegionInfo from '../helpers/channels'
 
 export const IndexPageTemplate = ({
   pageContext,
@@ -23,8 +20,8 @@ export const IndexPageTemplate = ({
   basepath,
   channel
 }) => {
-  let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-  channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+  const { channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(pageContext.channel)
+  const pageText = translations.getTranslations(channelRegionLocale)
 
   return (
     <div>
@@ -101,7 +98,7 @@ export const IndexPageTemplate = ({
                   <div className="columns">
                     <div className="column is-12 has-text-centered">
                       <Link className="btn" to={`${channelRegionPathPrefix}/products`}>
-                        See all products
+                        {pageText.seeallproducts}
                       </Link>
                     </div>
                   </div>
@@ -109,7 +106,7 @@ export const IndexPageTemplate = ({
                     <BlogItem post={post} pageContext={pageContext} columnWidth="is-12" />
                     <div className="column is-12 has-text-centered">
                       <Link className="btn" to={`${channelRegionPathPrefix}/blog`}>
-                        Read more
+                        {pageText.readmore}
                       </Link> 
                     </div>
                   </div>

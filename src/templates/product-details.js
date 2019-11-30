@@ -5,11 +5,7 @@ import AddToCartButton from '../components/bigcommerce/AddToCartButton'
 import ProductPrices from '../components/bigcommerce/ProductPrices'
 import Layout from '../components/Layout'
 import translations from '../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-// const channelRegionPathIdx = 2
-const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../helpers/channels'
 
 export default ({
   pageContext,
@@ -49,8 +45,7 @@ export default ({
   }
 
   const channelId = pageContext.channel.bigcommerce_id
-  const currencyCode = pageContext.channel.external_id.split('|')[channelRegionCurrencyIdx]
-  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const { channelRegionLocale, channelRegionCurrency } = parseChannelRegionInfo(pageContext.channel)
   const pageText = translations.getTranslations(channelRegionLocale)
 
   return (
@@ -104,7 +99,7 @@ export default ({
               <div className="bc-product-single__meta">
                 <h1 className="bc-product__title">{pageContext.overrides.name || name}</h1>
 
-                <ProductPrices product={product} channelId={channelId} currencyCode={currencyCode} customerId={0} />
+                <ProductPrices product={product} channelId={channelId} currencyCode={channelRegionCurrency} customerId={0} />
 
                 <span className="bc-product__sku">
                   <span className="bc-product-single__meta-label">SKU:</span>{' '}

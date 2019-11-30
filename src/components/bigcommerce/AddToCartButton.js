@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
 import CartContext from '../../context/CartProvider'
+import translations from '../../helpers/translations'
 
-const AddToCartButton = ({ children, productId, variantId }) => {
+const AddToCartButton = ({ children, productId, variantId, channelRegionLocale }) => {
   const value = useContext(CartContext)
   const addToCart = value && value.addToCart
   const addingToCart = value && value.state.addingToCart
+  const pageText = translations.getTranslations(channelRegionLocale)
 
   return (
     <div className="bc-product-card">
@@ -16,7 +18,7 @@ const AddToCartButton = ({ children, productId, variantId }) => {
             type="submit"
             disabled={addingToCart === productId}
             onClick={() => addToCart(productId, variantId)}>
-            {addingToCart === productId ? 'Adding to Cart' : children}
+            {addingToCart === productId ? pageText.addingtocart : children}
           </button>
         </div>
       </div>

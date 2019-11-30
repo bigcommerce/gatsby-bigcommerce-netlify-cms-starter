@@ -2,11 +2,7 @@ import React from 'react'
 import { navigate } from 'gatsby-link'
 import Layout from '../../components/Layout'
 import translations from '../../helpers/translations'
-
-const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../../helpers/channels'
 
 function encode(data) {
   return Object.keys(data)
@@ -41,12 +37,8 @@ export default class Index extends React.Component {
 
   render() {
     const pageContext = this.props.pageContext
-    const channelRegionName = pageContext.channel.external_id.split('|')[channelRegionNameIdx]
-    const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+    const { channelRegionName, channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(pageContext.channel)
     const pageText = translations.getTranslations(channelRegionLocale)
-
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
     return (
       <Layout pageContext={pageContext}>

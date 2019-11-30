@@ -9,7 +9,7 @@
   },
   "packageRules": [
     {
-      "packageNames": ["netlify-cms-app"],
+      "packageNames": ["gatsby-bigcommerce-netlify-cms-starter"],
       "rangeStrategy": "bump"
     }
   ]

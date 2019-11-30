@@ -1,40 +1,37 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import PreviewCompatibleImage from './PreviewCompatibleImage'
-
-// const channelRegionNameIdx = 0
-// const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import translations from '../helpers/translations'
+import parseChannelRegionInfo from '../helpers/channels'
 
 class BlogItem extends React.Component {
   render() {
     const post = this.props.post
-    const pageContext = this.props.pageContext
     const columnWidth = this.props.columnWidth ? this.props.columnWidth : 'is-6'
-    let channelRegionPathPrefix = pageContext.channel.external_id.split('|')[channelRegionPathIdx]
-    channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
+    const { channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(this.props.pageContext.channel)
+    const pageText = translations.getTranslations(channelRegionLocale)
 
     if (!post) {
-      return <div/>
+      return <div />
     }
 
     return (
-      <div className={`is-parent column ${columnWidth}`} key={post.id}>
+      <div className={`is-parent column ${columnWidth}`}>
         <article
           className={`blog-list-item tile is-child box notification ${
             post.frontmatter.featuredpost ? 'is-featured' : ''
           }`}
         >
+          <div className="featured-badge">
+            {pageText.featuredpost}
+          </div>
           <header>
             {post.frontmatter.featuredimage ? (
               <div className="featured-thumbnail">
                 <PreviewCompatibleImage
                   imageInfo={{
                     image: post.frontmatter.featuredimage,
-                    alt: `featured image thumbnail for post ${
-                      post.title
-                    }`,
+                    alt: `featured image thumbnail for post ${post.frontmatter.title}`
                   }}
                 />
               </div>
@@ -57,7 +54,7 @@ class BlogItem extends React.Component {
             <br />
             <br />
             <Link className="button" to={`${channelRegionPathPrefix}${post.fields.slug}`}>
-              Keep Reading →
+              {pageText.keepreading} →
             </Link>
           </p>
         </article>

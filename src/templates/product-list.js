@@ -4,18 +4,14 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import ProductCard from '../components/bigcommerce/ProductCard'
 import translations from '../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-// const channelRegionPathIdx = 2
-// const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../helpers/channels'
 
 export const ProductListTemplate = ({
   pageContext,
   products
 }) => {
   const channelProductData = pageContext.channelProductData
-  const channelRegionLocale = pageContext.channel.external_id.split('|')[channelRegionLocaleIdx]
+  const { channelRegionLocale } = parseChannelRegionInfo(pageContext.channel)
   const pageText = translations.getTranslations(channelRegionLocale)
 
   return (

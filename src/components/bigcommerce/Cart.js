@@ -4,11 +4,7 @@ import CurrencyFormatter from './CurrencyFormatter'
 import Loader from '../Loader'
 import CartContext from '../../context/CartProvider'
 import translations from '../../helpers/translations'
-
-// const channelRegionNameIdx = 0
-const channelRegionLocaleIdx = 1
-const channelRegionPathIdx = 2
-const channelRegionCurrencyIdx = 3
+import parseChannelRegionInfo from '../../helpers/channels'
 
 const AdjustItem = props => {
   const { item, updatingItem, cartType } = props
@@ -204,14 +200,9 @@ const Cart = class extends React.Component {
             redirectUrls
           } = state.cart
           const { updatingItem, locale, path } = state
-
           const channel = this.props.pageContext.channel
-          const channelRegionLocale = channel.external_id.split('|')[channelRegionLocaleIdx]
-          const channelRegionCurrency = channel.external_id.split('|')[channelRegionCurrencyIdx]
+          let { channelRegionLocale, channelRegionPathPrefix, channelRegionCurrency } = parseChannelRegionInfo(channel)
           let pageText = translations.getTranslations(channelRegionLocale)
-
-          let channelRegionPathPrefix = channel.external_id.split('|')[channelRegionPathIdx]
-          channelRegionPathPrefix = (!channelRegionPathPrefix.length) ? '' : '/' + channelRegionPathPrefix
 
           if (!channel_id) {
             updateCartChannel(channel.bigcommerce_id, channelRegionCurrency, channelRegionLocale, channelRegionPathPrefix)
