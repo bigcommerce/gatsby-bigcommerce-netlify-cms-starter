@@ -11,7 +11,7 @@ const NotFoundPageComponent = ({data, count, pageContext}) => {
     for (var i = channels.length - 1; i >= 0; i--) {
       const { channelRegionPathPrefix } = parseChannelRegionInfo(channels[i])
 
-      if (channelRegionPathPrefix.length > 0 && window.location.pathname.match(`${channelRegionPathPrefix}/`) !== null) {
+      if (channelRegionPathPrefix.length > 0 && window && window.location.pathname.match(`${channelRegionPathPrefix}/`) !== null) {
         return channels[i]
       }
     }
