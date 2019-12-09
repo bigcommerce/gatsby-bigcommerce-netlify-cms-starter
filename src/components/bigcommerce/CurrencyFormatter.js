@@ -1,6 +1,8 @@
+import React from 'react'
+
 const CurrencyFormatter = ({ currency, amount }) => {
   if (!amount) {
-    amount = 0 
+    return <span dangerouslySetInnerHTML={{ __html: "&nbsp;" }} />
   }
   const languageCode =
     typeof window !== 'undefined'
