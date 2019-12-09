@@ -14,6 +14,7 @@ const RegionSelector = ({data, count, pageContext}) => {
   const channels = data.allBigCommerceChannels.nodes
   const basePagePath = pageContext.basePath || ''
   const { channelRegionCountryCode } = parseChannelRegionInfo(pageContext.channel)
+  console.log(pageContext)
 
   const findChannelByCountryCode = (countryCode, channels) => {
     // Set to first channel initially so we have a fallback if no match is found

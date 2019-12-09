@@ -201,7 +201,7 @@ export const CartProvider = ({ children }) => {
   }
 
   const updateCartChannel = (channelId, channelCurrency, channelLocale, channelPath) => {
-    setState({ 
+    setState({
       locale: channelLocale,
       path: channelPath,
       cart: {
@@ -210,6 +210,15 @@ export const CartProvider = ({ children }) => {
         currency: {
           code: channelCurrency
         }
+      }
+    })
+  }
+
+  const updateCartCustomer = (customerId) => {
+    setState({
+      cart: {
+        ...state.cart,
+        customer_id: customerId
       }
     })
   }
@@ -224,7 +233,8 @@ export const CartProvider = ({ children }) => {
         notifications,
         addNotification,
         removeNotification,
-        updateCartChannel
+        updateCartChannel,
+        updateCartCustomer
       }}>
       {children}
     </CartContext.Provider>

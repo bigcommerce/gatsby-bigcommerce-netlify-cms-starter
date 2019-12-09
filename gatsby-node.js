@@ -315,6 +315,11 @@ exports.onCreatePage = ({ page, actions }) => {
 
   deletePage(page)
 
+  // if (page.path.match(/^\/app/)) {
+  //   // Update matchpath for customer pages that require authentication
+  //   page.matchPath = "/app/*"
+  // }
+
   for (var i = availableRegions.length - 1; i >= 0; i--) {
     const channel = availableRegions[i]
     const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
@@ -322,6 +327,7 @@ exports.onCreatePage = ({ page, actions }) => {
     console.log(`creating page ${newPagePath} for channel '${channel.name}'`)
 
     createPage({
+      ...page,
       path: replacePath(newPagePath),
       component: page.componentPath,
       context: {

@@ -37,6 +37,8 @@ export default {
     'seeallproducts': 'See All Products',
     'readmore': 'Read more',
     'browsealltags': 'Browse all tags',
+    'login': 'Login',
+    'profile': 'Profile',
   },
   'fr_FR': {
     'storeblog': 'Le Blog Du Magasin',
@@ -75,6 +77,8 @@ export default {
     'seeallproducts': 'Voir tous les produits',
     'readmore': 'Lire la suite',
     'browsealltags': 'Parcourir tous les tags',
+    'login': 'S\'identifier',
+    'profile': 'Profil',
   },
   getTranslations: function(locale) {
   	let textObj = this['default']

@@ -4,12 +4,14 @@ import AddToCartButton from './AddToCartButton';
 import ProductPrices from './ProductPrices';
 import translations from '../../helpers/translations'
 import parseChannelRegionInfo from '../../helpers/channels'
+import { getUser, isLoggedIn } from '../../services/auth'
 
 class ProductCard extends React.Component {
   render() {
     const product = this.props.product
     
     if (this.props.channelProductData[product.bigcommerce_id]) {
+      const customer = isLoggedIn() ? getUser().customer : 0
       const overrides = this.props.channelProductData[product.bigcommerce_id].overrides
       const channel = this.props.channel
       const channelId = channel.bigcommerce_id
@@ -37,7 +39,7 @@ class ProductCard extends React.Component {
               <Link to={productLink} className="bc-product__title-link" title={overrides.name || product.name}>{overrides.name || product.name}</Link>
             </h3>
             
-            <ProductPrices product={product} channelId={channelId} currencyCode={channelRegionCurrency} customerId={0} />
+            <ProductPrices product={product} channelId={channelId} currencyCode={channelRegionCurrency} customer={customer} />
           </div>
 
           <AddToCartButton

@@ -4,8 +4,7 @@ import CurrencyFormatter from './CurrencyFormatter'
 class ProductPrices extends React.Component {
   constructor(props) {
     super(props)
-    
-    const storageKey = `${this.props.product.bigcommerce_id}-${this.props.channelId}-${this.props.currencyCode}-${this.props.customerId}`
+    const storageKey = `${this.props.product.bigcommerce_id}-${this.props.channelId}-${this.props.currencyCode}-${this.props.customer}`
     let prices = { price: null, calculated_price: null, sale_price: null }
     let pricesCached = false
 
@@ -30,7 +29,7 @@ class ProductPrices extends React.Component {
       return
     }
 
-    const { product, channelId, currencyCode, customerId } = this.props
+    const { product, channelId, currencyCode, customer } = this.props
 
     const items = [{
       "product_id": product.bigcommerce_id
@@ -43,7 +42,7 @@ class ProductPrices extends React.Component {
       body: JSON.stringify({
         "channel_id": channelId,
         "currency_code": currencyCode,
-        "customer_id": customerId,
+        "customer": customer,
         "items": items
       })
     })

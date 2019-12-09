@@ -1,11 +1,12 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import github from '../img/github-icon.svg'
 import logo from '../img/logo-header.png'
 import CartContext from '../context/CartProvider'
 import RegionSelector from './bigcommerce/RegionSelector'
 import translations from '../helpers/translations'
 import parseChannelRegionInfo from '../helpers/channels'
+import { getUser, isLoggedIn, logout } from "../services/auth"
 
 const Navbar = class extends React.Component {
   constructor(props) {
@@ -39,6 +40,13 @@ const Navbar = class extends React.Component {
   render() {
     const { channelRegionLocale, channelRegionPathPrefix, channelRegionHomeLink } = parseChannelRegionInfo(this.props.pageContext.channel)
     const pageText = translations.getTranslations(channelRegionLocale)
+
+    const content = { message: "", login: true }
+    if (isLoggedIn()) {
+      content.message = `Hello, ${getUser().name}`
+    } else {
+      content.message = "You are not logged in"
+    }
 
     return (
       <nav
@@ -76,6 +84,19 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/contact`}>
                 {pageText.contact}
               </Link>
+              <Link className="navbar-item" to={`${channelRegionPathPrefix}/app/profile`}>Profile</Link>
+              {isLoggedIn() ? (
+                <a
+                  href="/"
+                  className="navbar-item"
+                  onClick={event => {
+                    event.preventDefault()
+                    logout(() => navigate(`${channelRegionPathPrefix}/app/login`))
+                  }}
+                >
+                  Logout
+                </a>
+              ) : null}              
               <CartContext.Consumer>
                 {value => {
                   return (

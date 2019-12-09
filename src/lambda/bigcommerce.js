@@ -2,6 +2,7 @@ require('dotenv').config()
 const axios = require('axios')
 const cookie = require('cookie')
 const setCookie = require('set-cookie-parser')
+const jwt = require('jsonwebtoken')
 
 // only log in development mode
 const devModeLog = str => process.env !== 'production' && console.log(str)
@@ -20,6 +21,7 @@ export function handler(event, context, callback) {
   const API_TOKEN = process.env.API_TOKEN
   const API_SECRET = process.env.API_SECRET
   const CORS_ORIGIN = process.env.CORS_ORIGIN
+  const JWT_SECRET = process.env.JWT_SECRET
   // Set up headers
   const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
@@ -37,6 +39,7 @@ export function handler(event, context, callback) {
   }
   // Get endpoint value from query string
   const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
+  const ENDPOINT_VERSION_NUMBER = event.queryStringParameters.api_version || 'v3'
 
   // Parse out cookies and change endpoint to include cartId for certain cart requests
   const cookies = setCookie.parse(event.headers.cookie, {
@@ -48,7 +51,7 @@ export function handler(event, context, callback) {
 
   // Assemble BC API URL
   const constructURL = () => {
-    let ROOT_URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/v3/`
+    let ROOT_URL = `https://api.bigcommerce.com/stores/${API_STORE_HASH}/${ENDPOINT_VERSION_NUMBER}/`
     if (ENDPOINT_QUERY_STRING === 'carts/items') {
       if (hasCartIdCookie) {
         if (typeof event.queryStringParameters.itemId != 'undefined') {
@@ -87,7 +90,8 @@ export function handler(event, context, callback) {
     if (ENDPOINT_QUERY_STRING === 'carts' && statusCode === 404) {
       cookieHeader = {
         'Set-Cookie': cookie.serialize('cartId', '', {
-          maxAge: -1
+          maxAge: -1,
+          sameSite: 'strict'
         })
       }
       devModeLog('- Expiring cardId cookieHeader: -')
@@ -96,7 +100,8 @@ export function handler(event, context, callback) {
       if (!hasCartIdCookie && body.data.id) {
         cookieHeader = {
           'Set-Cookie': cookie.serialize('cartId', body.data.id, {
-            maxAge: 60 * 60 * 24 * 28 // 4 weeks
+            maxAge: 60 * 60 * 24 * 28, // 4 weeks
+            sameSite: 'strict'
           })
         }
         devModeLog('- Assigning cookieHeader: -')
@@ -105,6 +110,21 @@ export function handler(event, context, callback) {
     }
 
     return cookieHeader
+  }
+
+  // Here's a function we'll use to parse the JSON body and convert customer JWT token into customer group id if present
+  const parseBody = (eventBody) => {
+    let body = JSON.parse(eventBody)
+    if (typeof body.customer != 'undefined' && body.customer !== 0) {
+      try {
+        const decodedCustomerObj = jwt.verify(body.customer, JWT_SECRET)
+        body.customer_group_id = decodedCustomerObj.groupId
+      } catch(err) {
+        // console.log(err)
+      }
+      delete body.customer
+    }
+    return body
   }
 
   // Here's a function we'll use to define how our response will look like when we callback
@@ -130,7 +150,7 @@ export function handler(event, context, callback) {
     devModeLog('--------')
     devModeLog('- POST -')
     devModeLog('--------')
-    post(JSON.parse(event.body))
+    post(parseBody(event.body))
   }
 
   // Process GET
@@ -168,7 +188,7 @@ export function handler(event, context, callback) {
     devModeLog('-------')
     devModeLog('- PUT -')
     devModeLog('-------')
-    put(JSON.parse(event.body))
+    put(parseBody(event.body))
   }
 
   // Process DELETE

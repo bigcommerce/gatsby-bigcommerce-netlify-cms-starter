@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { graphql } from 'gatsby'
-
 import AddToCartButton from '../components/bigcommerce/AddToCartButton'
 import ProductPrices from '../components/bigcommerce/ProductPrices'
 import Layout from '../components/Layout'
 import translations from '../helpers/translations'
 import parseChannelRegionInfo from '../helpers/channels'
+import { getUser, isLoggedIn } from '../services/auth'
 
 export default ({
   pageContext,
@@ -34,6 +34,8 @@ export default ({
   const [selectedImage, updateSelectedImage] = useState(
     images.length && images[0].url_standard
   )
+
+  const customer = isLoggedIn() ? getUser().customer : 0
 
   const product = {
     price,
@@ -99,7 +101,7 @@ export default ({
               <div className="bc-product-single__meta">
                 <h1 className="bc-product__title">{pageContext.overrides.name || name}</h1>
 
-                <ProductPrices product={product} channelId={channelId} currencyCode={channelRegionCurrency} customerId={0} />
+                <ProductPrices product={product} channelId={channelId} currencyCode={channelRegionCurrency} customer={customer} />
 
                 <span className="bc-product__sku">
                   <span className="bc-product-single__meta-label">SKU:</span>{' '}
