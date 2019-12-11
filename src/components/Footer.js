@@ -6,7 +6,7 @@ import instagram from '../img/social/instagram.svg'
 import twitter from '../img/social/twitter.svg'
 import vimeo from '../img/social/vimeo.svg'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo } from '../helpers/channels'
 
 const Footer = class extends React.Component {
   render() {

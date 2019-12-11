@@ -5,7 +5,7 @@ import logo from '../img/logo-header.png'
 import CartContext from '../context/CartProvider'
 import RegionSelector from './bigcommerce/RegionSelector'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo } from '../helpers/channels'
 import { getUser, isLoggedIn, logout } from "../services/auth"
 
 const Navbar = class extends React.Component {
@@ -84,7 +84,7 @@ const Navbar = class extends React.Component {
               <Link className="navbar-item" to={`${channelRegionPathPrefix}/contact`}>
                 {pageText.contact}
               </Link>
-              <Link className="navbar-item" to={`${channelRegionPathPrefix}/app/profile`}>Profile</Link>
+              <Link className="navbar-item" to={`${channelRegionPathPrefix}/app/profile`}>Account Profile</Link>
               {isLoggedIn() ? (
                 <a
                   href="/"

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 import PreviewCompatibleImage from './PreviewCompatibleImage'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo } from '../helpers/channels'
 
 class BlogItem extends React.Component {
   render() {

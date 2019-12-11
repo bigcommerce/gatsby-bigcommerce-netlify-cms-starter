@@ -2,7 +2,7 @@ import React from 'react'
 import { navigate } from 'gatsby-link'
 import Layout from '../../components/Layout'
 import translations from '../../helpers/translations'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo } from '../../helpers/channels'
 
 function encode(data) {
   return Object.keys(data)

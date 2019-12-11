@@ -4,7 +4,7 @@ import AddToCartButton from '../components/bigcommerce/AddToCartButton'
 import ProductPrices from '../components/bigcommerce/ProductPrices'
 import Layout from '../components/Layout'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo } from '../helpers/channels'
 import { getUser, isLoggedIn } from '../services/auth'
 
 export default ({

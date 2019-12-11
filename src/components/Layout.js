@@ -7,6 +7,8 @@ import Notify from './bigcommerce/Notify'
 import './all.sass'
 import './Layout.css'
 import useSiteMetadata from './SiteMetadata'
+import CartContext from '../context/CartProvider'
+import { parseChannelRegionInfo } from '../helpers/channels'
 
 const TemplateWrapper = ({ children, pageContext }) => {
   const { title, description } = useSiteMetadata()
@@ -52,6 +54,24 @@ const TemplateWrapper = ({ children, pageContext }) => {
       <Navbar pageContext={pageContext} />
       <div>{children}</div>
       <Footer pageContext={pageContext} />
+      <CartContext.Consumer>
+        {value => {
+          if (!value) {
+            return null
+          }
+          const { state, updateCartChannel } = value
+          const { channel_id } = state.cart
+
+          console.log(pageContext)
+
+          if (!channel_id && pageContext.channel.bigcommerce_id) {
+            const channel = pageContext.channel
+            const { channelRegionLocale, channelRegionPathPrefix, channelRegionCurrency } = parseChannelRegionInfo(channel)
+
+            updateCartChannel(channel.bigcommerce_id, channelRegionCurrency, channelRegionLocale, channelRegionPathPrefix)
+          }
+        }}
+      </CartContext.Consumer>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import BlogRoll from '../../components/BlogRoll'
 import translations from '../../helpers/translations'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo } from '../../helpers/channels'
 
 export default class BlogIndexPage extends React.Component {
   render() {

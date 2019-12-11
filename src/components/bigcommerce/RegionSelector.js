@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import { navigate, graphql, StaticQuery } from 'gatsby'
 import CartContext from '../../context/CartProvider'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo, findChannelByCountryCode } from '../../helpers/channels'
 import _ from 'lodash'
 import ReactFlagsSelect from 'react-flags-select'
 import 'react-flags-select/css/react-flags-select.css'
@@ -14,23 +14,6 @@ const RegionSelector = ({data, count, pageContext}) => {
   const channels = data.allBigCommerceChannels.nodes
   const basePagePath = pageContext.basePath || ''
   const { channelRegionCountryCode } = parseChannelRegionInfo(pageContext.channel)
-  console.log(pageContext)
-
-  const findChannelByCountryCode = (countryCode, channels) => {
-    // Set to first channel initially so we have a fallback if no match is found
-    let matchedChannel = channels[0]
-
-    for (var i = channels.length - 1; i >= 0; i--) {
-      const { channelRegionCountryCode } = parseChannelRegionInfo(channels[i])
-
-      if (channelRegionCountryCode === countryCode) {
-        matchedChannel = channels[i]
-        break
-      }
-    }
-
-    return matchedChannel
-  }
 
   const onSelectFlag = (channels, basePagePath, selectedCountryCode) => {
     const selectedChannel = findChannelByCountryCode(selectedCountryCode, channels)

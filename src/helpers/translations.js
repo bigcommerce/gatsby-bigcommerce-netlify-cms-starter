@@ -1,3 +1,5 @@
+import React from 'react'
+import { Link } from 'gatsby'
 
 export default {
   'default': {
@@ -37,8 +39,19 @@ export default {
     'seeallproducts': 'See All Products',
     'readmore': 'Read more',
     'browsealltags': 'Browse all tags',
-    'login': 'Login',
+    'logintitle': 'Login',
+    'loginbutton': 'Log in',
+    'loginbuttonloading': 'Loading...',
+    'loginfailed': 'Please check that you have entered your email address and password correctly',
     'profile': 'Profile',
+    'emailaddress': 'Email Address',
+    'password': 'Password',
+    'profilename': 'Name',
+    'profileemail': 'E-mail',
+    'logintoviewpage': (url) => { return (
+        <>You should <Link to={url}>log in</Link> to see restricted content</>
+        )
+    },
   },
   'fr_FR': {
     'storeblog': 'Le Blog Du Magasin',
@@ -77,8 +90,19 @@ export default {
     'seeallproducts': 'Voir tous les produits',
     'readmore': 'Lire la suite',
     'browsealltags': 'Parcourir tous les tags',
-    'login': 'S\'identifier',
+    'logintitle': 'S\'identifier',
+    'loginbutton': 'S\'identifier',
+    'loginbuttonloading': 'Chargement...',
+    'loginfailed': 'Veuillez vérifier que vous avez correctement entré votre adresse e-mail et votre mot de passe',
     'profile': 'Profil',
+    'emailaddress': 'Adresse e-mail',
+    'password': 'Mot de passe',
+    'profilename': 'Le nom',
+    'profileemail': 'E-mail',
+    'logintoviewpage': (url) => { return (
+        <>Vous devez <Link to={url}>vous connecter</Link> pour voir le contenu restreint</>
+        )
+    },
   },
   getTranslations: function(locale) {
   	let textObj = this['default']

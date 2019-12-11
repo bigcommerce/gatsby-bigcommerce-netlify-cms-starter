@@ -4,7 +4,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import ProductCard from '../components/bigcommerce/ProductCard'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo } from '../helpers/channels'
 
 export const ProductListTemplate = ({
   pageContext,

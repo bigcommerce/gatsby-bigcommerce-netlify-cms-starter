@@ -46,6 +46,7 @@ export function handler(event, context, callback) {
     decodeValues: true, // default: true
     map: true // default: false
   })
+  devModeLog(cookies)
   const hasCartIdCookie = cookies.hasOwnProperty('cartId')
   devModeLog(`- hasCartIdCookie? ${hasCartIdCookie.toString()} -`)
 
@@ -77,12 +78,8 @@ export function handler(event, context, callback) {
   const setCookieHeader = (responseType, response) => {
     let cookieHeader = null
 
-    devModeLog('(in setCookieHeader function) responseType: ', responseType)
-    devModeLog(
-      '(in setCookieHeader function) ENDPOINT_QUERY_STRING: ',
-      ENDPOINT_QUERY_STRING
-    )
-    // devModeLog('(in setCookieHeader function) response: ', response)
+    devModeLog(`(in setCookieHeader function) responseType: ${responseType}`)
+    devModeLog(`(in setCookieHeader function) ENDPOINT_QUERY_STRING: ${ENDPOINT_QUERY_STRING}`)
 
     const statusCode = response.status
     const body = response.data

@@ -214,15 +214,6 @@ export const CartProvider = ({ children }) => {
     })
   }
 
-  const updateCartCustomer = (customerId) => {
-    setState({
-      cart: {
-        ...state.cart,
-        customer_id: customerId
-      }
-    })
-  }
-
   return (
     <CartContext.Provider
       value={{
@@ -233,8 +224,7 @@ export const CartProvider = ({ children }) => {
         notifications,
         addNotification,
         removeNotification,
-        updateCartChannel,
-        updateCartCustomer
+        updateCartChannel
       }}>
       {children}
     </CartContext.Provider>

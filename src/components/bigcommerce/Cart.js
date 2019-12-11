@@ -4,7 +4,7 @@ import CurrencyFormatter from './CurrencyFormatter'
 import Loader from '../Loader'
 import CartContext from '../../context/CartProvider'
 import translations from '../../helpers/translations'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo } from '../../helpers/channels'
 
 const AdjustItem = props => {
   const { item, updatingItem, cartType } = props

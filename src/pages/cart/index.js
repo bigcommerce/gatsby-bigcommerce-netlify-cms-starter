@@ -2,7 +2,7 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import Cart from '../../components/bigcommerce/Cart'
 import translations from '../../helpers/translations'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo } from '../../helpers/channels'
 
 export default class CartIndexPage extends React.Component {
   render() {

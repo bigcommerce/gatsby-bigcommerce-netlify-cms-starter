@@ -3,7 +3,7 @@ import { Link } from 'gatsby';
 import AddToCartButton from './AddToCartButton';
 import ProductPrices from './ProductPrices';
 import translations from '../../helpers/translations'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo } from '../../helpers/channels'
 import { getUser, isLoggedIn } from '../../services/auth'
 
 class ProductCard extends React.Component {

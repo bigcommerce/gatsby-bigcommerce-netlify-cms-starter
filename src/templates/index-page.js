@@ -6,7 +6,7 @@ import Layout from '../components/Layout'
 import PhotoGrid from '../components/PhotoGrid'
 import BlogItem from '../components/BlogItem'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo } from '../helpers/channels'
 
 export const IndexPageTemplate = ({
   pageContext,

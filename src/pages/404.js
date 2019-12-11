@@ -3,22 +3,9 @@ import PropTypes from 'prop-types'
 import { Link, graphql, StaticQuery } from 'gatsby'
 import Layout from '../components/Layout'
 import translations from '../helpers/translations'
-import parseChannelRegionInfo from '../helpers/channels'
+import { parseChannelRegionInfo, determineChannelViaWindowPath } from '../helpers/channels'
 
 const NotFoundPageComponent = ({data, count, pageContext}) => {
-  
-  const determineChannelViaWindowPath = (channels, rootChannel) => {
-    for (var i = channels.length - 1; i >= 0; i--) {
-      const { channelRegionPathPrefix } = parseChannelRegionInfo(channels[i])
-
-      if (typeof window !== 'undefined' && channelRegionPathPrefix.length > 0 && window.location.pathname.match(`${channelRegionPathPrefix}/`) !== null) {
-        return channels[i]
-      }
-    }
-
-    return rootChannel
-  }
-
   const channel = determineChannelViaWindowPath(data.allBigCommerceChannels.nodes, data.rootChannel)
   const { channelRegionLocale, channelRegionPathPrefix } = parseChannelRegionInfo(channel)
   const pageText = translations.getTranslations(channelRegionLocale)

@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 import CartContext from '../../context/CartProvider'
 import Cart from './Cart'
 import translations from '../../helpers/translations'
-import parseChannelRegionInfo from '../../helpers/channels'
+import { parseChannelRegionInfo } from '../../helpers/channels'
 
 import './Notify.css'
 
