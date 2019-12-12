@@ -8,7 +8,7 @@ static/admin/*.bundle.*
 .DS_Store
 yarn-error.log
 .env
-lambda
+/lambda
 
 # Local Netlify folder
 .netlify
