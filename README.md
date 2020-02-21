@@ -2,6 +2,8 @@
 
 Note: This starter uses Gatsby v2.
 
+[Demo store](https://bigcommerce-store.netlify.com/)
+
 ## Prerequisites
 
 - Node (v8.2.0 or higher)
