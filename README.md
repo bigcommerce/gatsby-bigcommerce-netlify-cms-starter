@@ -4,6 +4,8 @@ Note: This starter uses Gatsby v2.
 
 [Demo store](https://bigcommerce-store.netlify.com/)
 
+Accompanying tutorial blog post: [Building a JAMstack Ecommerce Storefront with BigCommerce & Netlify](https://www.netlify.com/blog/2020/02/21/building-a-jamstack-ecommerce-storefront-with-bigcommerce-netlify/)
+
 ## Prerequisites
 
 - Node (v8.2.0 or higher)
