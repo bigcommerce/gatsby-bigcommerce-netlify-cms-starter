@@ -83,7 +83,7 @@ export default () => (
   <StaticQuery
     query={graphql`
       query {
-        allBigCommerceChannels(filter: {is_enabled: {eq: true}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
+        allBigCommerceChannels(filter: {is_enabled: {eq: true}, external_id: {ne: ""}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
           nodes {
             id
             bigcommerce_id

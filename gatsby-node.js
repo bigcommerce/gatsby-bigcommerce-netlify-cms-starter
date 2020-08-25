@@ -76,7 +76,7 @@ exports.createPages = async ({ actions, graphql }) => {
           }
         }
       }
-      allBigCommerceChannels(filter: {is_enabled: {eq: true}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
+      allBigCommerceChannels(filter: {is_enabled: {eq: true}, external_id: {ne: ""}, platform: {eq: "custom"}, type: {eq: "storefront"}}) {
         nodes {
           id
           bigcommerce_id
@@ -120,6 +120,12 @@ exports.createPages = async ({ actions, graphql }) => {
     let channel = channels[i]
 
     const [ regionName, regionLocaleCode, regionPathPrefix, regionCurrency ] = channel.external_id.split('|')
+
+    if (!regionName || !regionLocaleCode || !regionCurrency) {
+      console.log(`skipping channel '${channel.name}' as region name, locale, and currency are not all defined`)
+      continue
+    }
+
     availableRegions.push(channel)
 
     console.log(`creating product pages for channel '${channel.name}' targeting ${regionName} (${regionLocaleCode}) with currency of ${regionCurrency} using subdirectory /${regionPathPrefix}`)
