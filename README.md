@@ -4,14 +4,14 @@ Note: This starter uses Gatsby v2.
 
 ## Prerequisites
 
-- Node (v8.2.0 or higher)
+- Node (v10.16.3) Recommended
 - [Gatsby CLI](https://www.gatsbyjs.org/docs/)
 - [Netlify CLI](https://www.netlify.com/docs/cli/)
 - [A BigCommerce Instance with API keys](https://developer.bigcommerce.com/api-docs)
 
 ## Setting up BigCommerce
 
-The BigCommerce source plugin relies on API Keys. In this starter we are using the node project `dotenv` to access these variables. Make a copy of the `SAMPLE.env` file and fill in the variables from your [BigCommerce API user details](https://developer.bigcommerce.com/api-docs/getting-started/authentication#authentication_getting-api-credentials).
+The BigCommerce source plugin relies on API Keys. In this starter we are using the node project `dotenv` to access these variables. Make a copy of the `SAMPLE.env` file and fill in the variables from your [BigCommerce API user details](https://developer.bigcommerce.com/api-docs/getting-started/authentication/rest-api-authentication).
 
 *Note: You can sign up for a free trial on bigcommerce.com, which includes API access, if you don't already have an account. There is also a partner program which includes a sandbox account to play around in.*
 
@@ -137,3 +137,12 @@ Photos in starter from various photographers:
 # CONTRIBUTING
 
 Contributions are always welcome, no matter how large or small.
+
+# Have Questions?
+#### Reach out the BigCommerce Developer Community
+
+- [Developer Community](https://support.bigcommerce.com/s/community)
+- [Developer Community Email](community@bigcommerce.com)
+- [BigCommerece Developer Twitter](https://twitter.com/bigcommercedevs)
+- [Raye Thompson, Developer Advocate Twitter](https://twitter.com/rayeethompson)
+- [Raye Thompson, Developer Advocate Email](rachael.thompson@bigcommerce.com)
