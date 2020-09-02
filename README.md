@@ -1,6 +1,10 @@
-# Gatsby + BigCommerce + Netlify CMS Starter
+# Gatsby + BigCommerce + Netlify CMS Starter: Mutli-Region 
 
-Note: This starter uses Gatsby v2.
+## Abstract
+
+The following is an overview of the creation of a headless multi-region eCommerce site using BigCommerce APIs. There was a presentation given at the Netlify Headless Commerce Summit on September 3, 2020. You will find references and materials to support the development of a multi-region headless site using GatsbyJS, BigCommerce, and Netlify in the [BigCommerce Developer Library](https://developer.bigcommerce.com/dev-library/examples/gatsby/headless/multi-region/netlify/build-innovate-and-grow-multi-region-ecommerce-with-bigcommerce/). 
+
+*Note: This starter uses Gatsby v2.*
 
 ## Prerequisites
 
@@ -15,7 +19,9 @@ The BigCommerce source plugin relies on API Keys. In this starter we are using t
 
 *Note: You can sign up for a free trial on bigcommerce.com, which includes API access, if you don't already have an account. There is also a partner program which includes a sandbox account to play around in.*
 
-Once you have your API keys, do the following:
+Please review the documentation in the [Developer Library](https://developer.bigcommerce.com/dev-library/examples/gatsby/headless/multi-region/netlify/build-innovate-and-grow-multi-region-ecommerce-with-bigcommerce/) for how to set up Channels for this application. Click on the link to the Article.
+
+Once you have your API keys and Channels, do the following:
   * Install dependencies
   	* `yarn`
   * Set up environment variables
@@ -144,5 +150,7 @@ Contributions are always welcome, no matter how large or small.
 - [Developer Community](https://support.bigcommerce.com/s/community)
 - [Developer Community Email](community@bigcommerce.com)
 - [BigCommerece Developer Twitter](https://twitter.com/bigcommercedevs)
-- [Raye Thompson, Developer Advocate Twitter](https://twitter.com/rayeethompson)
+- [Raye Thompson, Developer Advocate Twitter](https://twitter.com/rayeethompson
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+)
 - [Raye Thompson, Developer Advocate Email](rachael.thompson@bigcommerce.com)
