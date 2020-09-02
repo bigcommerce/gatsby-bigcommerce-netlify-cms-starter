@@ -2,6 +2,10 @@
 
 Note: This starter uses Gatsby v2.
 
+Want to learn about how to use Multi-Region?
+- [GitHub Repo](https://github.com/bigcommerce/gatsby-bigcommerce-netlify-cms-starter/tree/multi-channel)
+- [Netlify Headless Commerce Summit 2020 Presentation](https://developer.bigcommerce.com/dev-library/examples/gatsby/headless/multi-region/netlify/build-innovate-and-grow-multi-region-ecommerce-with-bigcommerce/)
+
 ## Prerequisites
 
 - Node (v8.2.0 or higher)
