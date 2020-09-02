@@ -1,4 +1,4 @@
-# Gatsby + BigCommerce + Netlify CMS Starter: Mutli-Region 
+# Gatsby + BigCommerce + Netlify CMS Starter: Multi-Region 
 
 ## Abstract
 
