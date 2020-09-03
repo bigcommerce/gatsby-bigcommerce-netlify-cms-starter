@@ -6,6 +6,9 @@ The following is an overview of the creation of a headless multi-region eCommerc
 
 *Note: This starter uses Gatsby v2.*
 
+[Need the starter app?](https://github.com/bigcommerce/gatsby-bigcommerce-netlify-cms-starter)
+[Want to know the basics?](https://www.youtube.com/watch?v=Wnm_ErMrjDM)
+
 ## Prerequisites
 
 - Node (v10.16.3) Recommended
