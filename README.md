@@ -6,9 +6,13 @@ Note: This starter uses Gatsby v2.
 
 Accompanying tutorial blog post: [Building a JAMstack Ecommerce Storefront with BigCommerce & Netlify](https://www.netlify.com/blog/2020/02/21/building-a-jamstack-ecommerce-storefront-with-bigcommerce-netlify/)
 
+Accompanying overview video: [Building e-commerce storefronts on the JAMstack](https://www.youtube.com/watch?v=Wnm_ErMrjDM)
+
+This version of the starter is meant to power a simple, single language storefront. If you are looking for something more complex, there is also a branch that supports multiple regions within a single storefront [here](https://github.com/bigcommerce/gatsby-bigcommerce-netlify-cms-starter/tree/multi-channel).
+
 ## Prerequisites
 
-- Node (v8.2.0 or higher)
+- Node (v10.16.3) Recommended
 - [Gatsby CLI](https://www.gatsbyjs.org/docs/)
 - [Netlify CLI](https://www.netlify.com/docs/cli/)
 - [A BigCommerce Instance with API keys](https://developer.bigcommerce.com/api-docs)
