@@ -50,7 +50,7 @@ export function handler(event, context, callback) {
     callback(null, {
       statusCode: response.status,
       body: JSON.stringify(response.data),
-      headers: { CORS_HEADERS }
+      headers: { ...CORS_HEADERS }
     })
 
   // Process POST
