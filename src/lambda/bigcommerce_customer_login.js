@@ -66,6 +66,7 @@ export function handler(event, context, callback) {
       devModeLog(storeUrl)
 
       const dateCreated = Math. round((new Date()). getTime() / 1000);
+      // Descriptions of payload fields can be seen here: https://developer.bigcommerce.com/api-docs/storefront/customer-login-api
       const  payload = {
           "iss": API_CLIENT_ID,
           "iat": dateCreated,
@@ -78,7 +79,8 @@ export function handler(event, context, callback) {
       devModeLog('payload')
       devModeLog(payload)
 
-      let token = jwt.sign(payload, JWT_SECRET, {algorithm:'HS256'});
+      // The JWT token must be signed by the BC API Secret, which should be different than the Gatsby app's JWT secret
+      let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
       const loginUrl = `${storeUrl}/login/token/${token}`;
 
       const response = {
