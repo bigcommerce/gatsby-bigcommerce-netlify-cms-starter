@@ -58,7 +58,12 @@ export function handler(event, context, callback) {
   const get = requestBody => {
     try {
       const loggedInCustomerData = jwt.verify(event.queryStringParameters.customer, JWT_SECRET);
+      devModeLog('loggedInCustomerData')
+      devModeLog(loggedInCustomerData)
+
       const storeUrl = `https://store-${API_STORE_HASH}.mybigcommerce.com`;
+      devModeLog('storeUrl')
+      devModeLog(storeUrl)
 
       const dateCreated = Math. round((new Date()). getTime() / 1000);
       const  payload = {
@@ -70,6 +75,9 @@ export function handler(event, context, callback) {
           "customer_id": loggedInCustomerData.id,
           "redirect_to": event.queryStringParameters.redirect,
       }
+      devModeLog('payload')
+      devModeLog(payload)
+
       let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
       const loginUrl = `${storeUrl}/login/token/${token}`;
 
@@ -82,6 +90,9 @@ export function handler(event, context, callback) {
 
       pass(response)
     } catch(err) {
+      devModeLog('error')
+      devModeLog(err)
+
       const response = {
         status: 500,
         data: {
