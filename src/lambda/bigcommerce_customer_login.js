@@ -96,7 +96,7 @@ export function handler(event, context, callback) {
     devModeLog('--------')
     devModeLog('- GET -')
     devModeLog('--------')
-    get(JSON.parse(event.body))
+    get()
   }
 
   // Process POST
