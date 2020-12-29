@@ -1,6 +1,7 @@
 require('dotenv').config()
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
+const {v4: uuidv4} = require('uuid')
 
 // only log in development mode
 const devModeLog = str => process.env !== 'production' && console.log(str)
@@ -52,6 +53,51 @@ export function handler(event, context, callback) {
       body: JSON.stringify(response.data),
       headers: { ...CORS_HEADERS }
     })
+
+  // Process GET
+  const get = requestBody => {
+    try {
+      const loggedInCustomerData = jwt.verify(event.queryStringParameters.customerId, JWT_SECRET);
+      const storeUrl = `https://store-${API_STORE_HASH}.mybigcommerce.com`;
+
+      const dateCreated = Math. round((new Date()). getTime() / 1000);
+      const  payload = {
+          "iss": API_CLIENT_ID,
+          "iat": dateCreated,
+          "jti": uuidv4(),
+          "operation": "customer_login",
+          "store_hash": API_STORE_HASH,
+          "customer_id": loggedInCustomerData.id,
+          "redirect_to": loggedInCustomerData.redirect,
+      }
+      let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
+      const loginUrl = `${storeUrl}/login/token/${token}`;
+
+      const response = {
+        status: 200,
+        data: {
+          url: loginUrl
+        }
+      }
+
+      pass(response)
+    } catch(err) {
+      const response = {
+        status: 500,
+        data: {
+          error: err
+        }
+      }
+
+      pass(response)
+    }
+  }
+  if (event.httpMethod === 'GET') {
+    devModeLog('--------')
+    devModeLog('- GET -')
+    devModeLog('--------')
+    get(JSON.parse(event.body))
+  }
 
   // Process POST
   const post = requestBody => {
