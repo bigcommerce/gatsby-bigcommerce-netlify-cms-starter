@@ -78,7 +78,7 @@ export function handler(event, context, callback) {
       devModeLog('payload')
       devModeLog(payload)
 
-      let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
+      let token = jwt.sign(payload, JWT_SECRET, {algorithm:'HS256'});
       const loginUrl = `${storeUrl}/login/token/${token}`;
 
       const response = {
