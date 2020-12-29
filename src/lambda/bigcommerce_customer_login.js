@@ -57,7 +57,7 @@ export function handler(event, context, callback) {
   // Process GET
   const get = requestBody => {
     try {
-      const loggedInCustomerData = jwt.verify(event.queryStringParameters.customerId, JWT_SECRET);
+      const loggedInCustomerData = jwt.verify(event.queryStringParameters.customer, JWT_SECRET);
       const storeUrl = `https://store-${API_STORE_HASH}.mybigcommerce.com`;
 
       const dateCreated = Math. round((new Date()). getTime() / 1000);
@@ -68,7 +68,7 @@ export function handler(event, context, callback) {
           "operation": "customer_login",
           "store_hash": API_STORE_HASH,
           "customer_id": loggedInCustomerData.id,
-          "redirect_to": loggedInCustomerData.redirect,
+          "redirect_to": event.queryStringParameters.redirect,
       }
       let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
       const loginUrl = `${storeUrl}/login/token/${token}`;
