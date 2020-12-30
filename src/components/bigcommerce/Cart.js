@@ -190,14 +190,14 @@ const Cart = class extends React.Component {
           if (!value) {
             return null
           }
-          const { state, removeItemFromCart, updateCartItemQuantity, updateCartChannel } = value
+          const { state, removeItemFromCart, updateCartItemQuantity, updateCartChannel, redirectToCheckout } = value
           const {
             channel_id,
             currency,
             cartAmount,
             lineItems,
             numberItems,
-            redirectUrls
+            // redirectUrls
           } = state.cart
           const { updatingItem, locale, path } = state
           const channel = this.props.pageContext.channel
@@ -226,16 +226,12 @@ const Cart = class extends React.Component {
 
                 {numberItems > 0 && (
                   <div className="bc-cart-actions">
-                    <form
-                      action={redirectUrls.checkout_url}
-                      method="post"
-                      encType="multipart/form-data">
-                      <button
-                        className="bc-btn bc-cart-actions__checkout-button"
-                        type="submit">
-                        {pageText.checkout}
-                      </button>
-                    </form>
+                    <button
+                      className="bc-btn bc-cart-actions__checkout-button"
+                      onClick={() => redirectToCheckout()}
+                    >
+                      {pageText.checkout}
+                    </button>
                   </div>
                 )}
               </footer>

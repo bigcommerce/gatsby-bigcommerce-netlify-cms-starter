@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react'
+import { getUser } from '../services/auth'
 
 const CartContext = createContext()
 
@@ -214,6 +215,32 @@ export const CartProvider = ({ children }) => {
     })
   }
 
+  const redirectToCheckout = () => {
+    const user = getUser()
+    if (typeof user.secureData === 'undefined') {
+      // User isn't logged in, so redirect to normal checkout redirect url
+      window.location = state.cart.redirectUrls.checkout_url
+      return
+    } else {
+      // User is logged in, so create customer login url that redirects to the checkout
+      fetch(
+        `/.netlify/functions/bigcommerce_customer_login?secureCustomerData=${user.secureData}&redirect=${btoa(state.cart.redirectUrls.checkout_url)}`,
+        {
+          credentials: 'same-origin',
+          mode: 'same-origin',
+        }
+      )
+        .then(res => res.json())
+        .then(response => {
+          window.location = response.url
+          return
+        })
+        .catch(error => {
+          console.log('Redirect failed')
+        })
+    }
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -224,7 +251,8 @@ export const CartProvider = ({ children }) => {
         notifications,
         addNotification,
         removeNotification,
-        updateCartChannel
+        updateCartChannel,
+        redirectToCheckout
       }}>
       {children}
     </CartContext.Provider>

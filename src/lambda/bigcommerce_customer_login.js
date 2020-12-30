@@ -1,6 +1,7 @@
 require('dotenv').config()
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
+const {v4: uuidv4} = require('uuid')
 
 // only log in development mode
 const devModeLog = str => process.env !== 'production' && console.log(str)
@@ -20,7 +21,10 @@ export function handler(event, context, callback) {
   const API_SECRET = process.env.API_SECRET
   const CORS_ORIGIN = process.env.CORS_ORIGIN
   const JWT_SECRET = process.env.JWT_SECRET
+  const STOREFRONTAPI_ENDPOINT = process.env.STOREFRONTAPI_ENDPOINT
   const STOREFRONT_API_TOKEN = process.env.STOREFRONT_API_TOKEN
+  const STOREFRONT_BASE_URL = process.env.STOREFRONT_BASE_URL
+  
   // Set up headers
   const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
@@ -40,7 +44,7 @@ export function handler(event, context, callback) {
    'Content-Type': 'application/json',
    'Authorization': `Bearer ${STOREFRONT_API_TOKEN}`
   }
-  const STOREFRONTAPI_ENDPOINT = 'https://channel-override-test-store.mybigcommerce.com/graphql'
+  
   // Get endpoint value from query string
   const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
   const ENDPOINT_VERSION_NUMBER = event.queryStringParameters.api_version || 'v3'
@@ -52,6 +56,62 @@ export function handler(event, context, callback) {
       body: JSON.stringify(response.data),
       headers: { ...CORS_HEADERS }
     })
+
+  // Process GET
+  const get = requestBody => {
+    try {
+      const loggedInCustomerData = jwt.verify(event.queryStringParameters.secureCustomerData, JWT_SECRET);
+      devModeLog('loggedInCustomerData')
+      devModeLog(loggedInCustomerData)
+
+      const dateCreated = Math. round((new Date()). getTime() / 1000);
+      // Descriptions of payload fields can be seen here: https://developer.bigcommerce.com/api-docs/storefront/customer-login-api
+      const  payload = {
+          "iss": API_CLIENT_ID,
+          "iat": dateCreated,
+          "jti": uuidv4(),
+          "operation": "customer_login",
+          "store_hash": API_STORE_HASH,
+          "customer_id": loggedInCustomerData.id,
+          // The redirect param is base64 encoded to simplify transfering the url within a GET request, 
+          // so we need to convert it back into a string here
+          "redirect_to": Buffer.from(event.queryStringParameters.redirect, 'base64').toString(),
+      }
+      devModeLog('payload')
+      devModeLog(payload)
+
+      // The JWT token must be signed by the BC API Secret, which should be different than the Gatsby app's JWT secret
+      let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
+      const loginUrl = `${STOREFRONT_BASE_URL}/login/token/${token}`;
+
+      const response = {
+        status: 200,
+        data: {
+          url: loginUrl
+        }
+      }
+
+      pass(response)
+    } catch(err) {
+      devModeLog('error')
+      devModeLog(err)
+
+      const response = {
+        status: 500,
+        data: {
+          error: err
+        }
+      }
+
+      pass(response)
+    }
+  }
+  if (event.httpMethod === 'GET') {
+    devModeLog('--------')
+    devModeLog('- GET -')
+    devModeLog('--------')
+    get()
+  }
 
   // Process POST
   const post = requestBody => {
@@ -105,7 +165,7 @@ export function handler(event, context, callback) {
                   })
                 } else {
                   devModeLog('customer lookup succeeded');
-                  response.data.data.customer.id = jwt.sign({
+                  response.data.data.customer.secureData = jwt.sign({
                     id: response.data.data.customer.id,
                     groupId: response.data.data.customer.groupId
                   }, JWT_SECRET);
