@@ -21,7 +21,10 @@ export function handler(event, context, callback) {
   const API_SECRET = process.env.API_SECRET
   const CORS_ORIGIN = process.env.CORS_ORIGIN
   const JWT_SECRET = process.env.JWT_SECRET
+  const STOREFRONTAPI_ENDPOINT = process.env.STOREFRONTAPI_ENDPOINT
   const STOREFRONT_API_TOKEN = process.env.STOREFRONT_API_TOKEN
+  const STOREFRONT_BASE_URL = process.env.STOREFRONT_BASE_URL
+  
   // Set up headers
   const REQUEST_HEADERS = {
     'X-Auth-Client': API_CLIENT_ID,
@@ -41,7 +44,7 @@ export function handler(event, context, callback) {
    'Content-Type': 'application/json',
    'Authorization': `Bearer ${STOREFRONT_API_TOKEN}`
   }
-  const STOREFRONTAPI_ENDPOINT = 'https://channel-override-test-store.mybigcommerce.com/graphql'
+  
   // Get endpoint value from query string
   const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
   const ENDPOINT_VERSION_NUMBER = event.queryStringParameters.api_version || 'v3'
@@ -57,13 +60,9 @@ export function handler(event, context, callback) {
   // Process GET
   const get = requestBody => {
     try {
-      const loggedInCustomerData = jwt.verify(event.queryStringParameters.customer, JWT_SECRET);
+      const loggedInCustomerData = jwt.verify(event.queryStringParameters.secureCustomerData, JWT_SECRET);
       devModeLog('loggedInCustomerData')
       devModeLog(loggedInCustomerData)
-
-      const storeUrl = `https://store-${API_STORE_HASH}.mybigcommerce.com`;
-      devModeLog('storeUrl')
-      devModeLog(storeUrl)
 
       const dateCreated = Math. round((new Date()). getTime() / 1000);
       // Descriptions of payload fields can be seen here: https://developer.bigcommerce.com/api-docs/storefront/customer-login-api
@@ -74,14 +73,16 @@ export function handler(event, context, callback) {
           "operation": "customer_login",
           "store_hash": API_STORE_HASH,
           "customer_id": loggedInCustomerData.id,
-          "redirect_to": event.queryStringParameters.redirect,
+          // The redirect param is base64 encoded to simplify transfering the url within a GET request, 
+          // so we need to convert it back into a string here
+          "redirect_to": Buffer.from(event.queryStringParameters.redirect, 'base64').toString(),
       }
       devModeLog('payload')
       devModeLog(payload)
 
       // The JWT token must be signed by the BC API Secret, which should be different than the Gatsby app's JWT secret
       let token = jwt.sign(payload, API_SECRET, {algorithm:'HS256'});
-      const loginUrl = `${storeUrl}/login/token/${token}`;
+      const loginUrl = `${STOREFRONT_BASE_URL}/login/token/${token}`;
 
       const response = {
         status: 200,
@@ -164,7 +165,7 @@ export function handler(event, context, callback) {
                   })
                 } else {
                   devModeLog('customer lookup succeeded');
-                  response.data.data.customer.id = jwt.sign({
+                  response.data.data.customer.secureData = jwt.sign({
                     id: response.data.data.customer.id,
                     groupId: response.data.data.customer.groupId
                   }, JWT_SECRET);

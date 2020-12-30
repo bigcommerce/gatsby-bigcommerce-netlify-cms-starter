@@ -30,10 +30,9 @@ export const handleLogin = async ({ username, password }) => {
     console.log(response)
     if (!response.error) {
       setUser({
-        username: response.data.customer.id,
         name: response.data.customer.firstName,
         email: response.data.customer.email,
-        customer: response.data.customer.id
+        secureData: response.data.customer.secureData
       })
 
       didLoginSucceed = true
@@ -49,7 +48,7 @@ export const handleLogin = async ({ username, password }) => {
 
 export const isLoggedIn = () => {
   const user = getUser()
-  return !!user.username
+  return !!user.email
 }
 
 export const logout = callback => {
