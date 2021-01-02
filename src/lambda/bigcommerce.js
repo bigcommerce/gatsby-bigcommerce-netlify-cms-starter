@@ -40,6 +40,16 @@ export function handler(event, context, callback) {
   // Get endpoint value from query string
   const ENDPOINT_QUERY_STRING = event.queryStringParameters.endpoint
   const ENDPOINT_VERSION_NUMBER = event.queryStringParameters.api_version || 'v3'
+  // Set which BC API endpoints / methods are allowed to be utilized via this function
+  const ACCESSIBLE_API_ENDPOINTS = [
+    'POST_carts',
+    'GET_carts',
+    'POST_carts/items',
+    'GET_carts/items',
+    'PUT_carts/items',
+    'DELETE_carts/items',
+    'POST_pricing/products',
+  ]
 
   // Parse out cookies and change endpoint to include cartId for certain cart requests
   const cookies = setCookie.parse(event.headers.cookie, {
@@ -112,6 +122,17 @@ export function handler(event, context, callback) {
   // Here's a function we'll use to parse the JSON body and convert customer JWT token into customer group id if present
   const parseBody = (eventBody) => {
     let body = JSON.parse(eventBody)
+
+    // Remove list_price from items in cart requests so price cannot be overridden
+    if (ENDPOINT_QUERY_STRING === 'carts/items' || ENDPOINT_QUERY_STRING === 'carts') {
+      if (typeof body.line_items !== 'undefined') {
+        body.line_items.map(item => {
+          delete item.list_price
+          return item
+        })
+      }
+    }
+
     if (typeof body.customer != 'undefined' && body.customer !== 0) {
       try {
         const decodedCustomerObj = jwt.verify(body.customer, JWT_SECRET)
@@ -131,6 +152,21 @@ export function handler(event, context, callback) {
       body: JSON.stringify(response.data),
       headers: { ...CORS_HEADERS, ...cookieHeader }
     })
+
+  // Deny access to endpoints that aren't needed for starter
+  const endpointCheck = `${event.httpMethod}_${ENDPOINT_QUERY_STRING}`
+  if (ACCESSIBLE_API_ENDPOINTS.indexOf(endpointCheck) === -1) {
+    devModeLog('--------')
+    devModeLog(`- Inaccessible API endpoint / method hit: ${endpointCheck} -`)
+    devModeLog('--------')
+    pass({
+      status: 403,
+      data: {
+        error: "Requested API endpoint / method not accessible."
+      }
+    })
+    return
+  }
 
   // Process POST
   const post = body => {
