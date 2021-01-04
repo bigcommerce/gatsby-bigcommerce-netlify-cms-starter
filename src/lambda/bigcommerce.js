@@ -131,6 +131,10 @@ export function handler(event, context, callback) {
           return item
         })
       }
+
+      if (typeof body.line_item !== 'undefined') {
+        delete body.line_item.list_price
+      }
     }
 
     if (typeof body.customer != 'undefined' && body.customer !== 0) {
